@@ -26,68 +26,49 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import {SafeAreaProvider} from 'react-native-safe-area-context'
+import { NavigationContainer } from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+import Browse from './screens/Browse'
+import Home from './screens/Home'
+import {ChatScreen} from './screens/Chat/ChatScreen'
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const Tab = createBottomTabNavigator()
+
+const App = () => {
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    <SafeAreaProvider>
+        <StatusBar barStyle="dark-content" backgroundColor="#00aaff" />
+        <NavigationContainer>
+            <Tab.Navigator
+            screenOptions={({route})=>({
+                tabBarIcon:({color})=>{
+                    let iconName;
+                    if(route.name === "home") {
+                        iconName = ''
+                    } else if (route.name === "search") {
+                        iconName = ""
+                    }
+                },
+
+                })
+            }
+            initialRouteName="Home"
+            activeColor="#f0edf6"
+            inactiveColor="#3e2465"
+            barStyle={{ backgroundColor: '#694fad' }}
+            tabBarColor="#00aaff"
+            >
+                <Tab.Screen name="home" component={Home} />
+                <Tab.Screen name="browse" component={Browse} />
+                <Tab.Screen name="chat" component={ChatScreen} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>
+
+    );
 };
 
 
