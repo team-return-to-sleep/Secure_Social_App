@@ -2,14 +2,16 @@ import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,SafeAreaView} from 'react-native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 import Header from './Header'
 
+
 const Browse = () => {
     const [name, setName] = useState('')
   return (
-
+    <>
     <View style={{flex:1}}>
         <Header name="Browse Screen"/>
         <TextInput
@@ -27,6 +29,8 @@ const Browse = () => {
         </Button>
     </View>
 
+
+    </>
   );
 };
 

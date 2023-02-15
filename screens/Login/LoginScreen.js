@@ -2,11 +2,11 @@ import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title, TextInput, Button} from 'react-native-paper';
 import {View,Text,SafeAreaView,Alert} from 'react-native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 
-
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
     const [Username, setName] = useState('')
     const [Password, setPassword] = useState('')
 
@@ -32,6 +32,7 @@ const LoginScreen = () => {
             mode="contained"
             style={{margin:20}}
             //onPress={this._loginAsync}>
+            onPress={() => navigation.navigate("Toolbar", {screen:'Home'})}
             >
             Login
         </Button>
@@ -48,7 +49,7 @@ const LoginScreen = () => {
         Alert.alert("Login Error: Please enter a password")
     } else {
         // do authentication stuff
-        navigation.navigate("home", {name:this.Username})
+        navigation.navigate("Toolbar", {screen:'Home'})
     }
   };
 

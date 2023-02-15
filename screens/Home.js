@@ -3,18 +3,21 @@ import { Appbar, Title } from 'react-native-paper';
 import {View,Text,SafeAreaView} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 
-const Home = (props) => {
-  const profileName = props.route.params;
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Toolbar from './Toolbar'
 
-  const getName = () => {
-    let profileName;
-    const {name} = props.route.params
-    profileName = name
-    return profileName;
-  }
+const Home = ({navigation}) => {
+//  const profileName = props.route.params;
+//
+//  const getName = () => {
+//    let profileName;
+//    const {name} = props.route.params
+//    profileName = name
+//    return profileName;
+//  }
 
   return (
-
+    <>
     <Appbar.Header
     theme={{
         colors:{
@@ -27,10 +30,11 @@ const Home = (props) => {
 
     >
         <Title>
-            <Text>Hello, `profileName`</Text>
+            <Text>Hello, user</Text>
         </Title>
     </Appbar.Header>
 
+    </>
   );
 };
 
