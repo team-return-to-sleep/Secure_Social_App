@@ -6,7 +6,7 @@ import {View,Text,SafeAreaView,Alert} from 'react-native'
 
 
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = () => {
     const [Username, setName] = useState('')
     const [Password, setPassword] = useState('')
 
@@ -31,7 +31,8 @@ const LoginScreen = ({navigation}) => {
         <Button icon="content-save"
             mode="contained"
             style={{margin:20}}
-            onPress={this._loginAsync}>
+            //onPress={this._loginAsync}>
+            >
             Login
         </Button>
     </View>
@@ -40,7 +41,7 @@ const LoginScreen = ({navigation}) => {
 
   /********************* Async functions *********************/
 
-  _loginAsync = async({navigation}) => {
+  const _loginAsync = ({navigation}) => {
     if (this.Username == null || this.Username == '') {
         Alert.alert("Login Error: Please enter a username")
     } else if (this.Password == null || this.Password == '') {
