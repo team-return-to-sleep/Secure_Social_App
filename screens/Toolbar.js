@@ -19,33 +19,29 @@ const Toolbar = () => {
   let iconName = '';
 
   return (
-  <Tab.Navigator
-              screenOptions={({route})=>({
-                  tabBarIcon:({color})=>{
-                      if(route.name === "home") {
-                          iconName = 'home-account'
-                     } else if (route.name === "browse") {
-                          iconName = "compass"
-                      } else if (route.name === "chat") {
-                          iconName = "chat"
-                      }
-                      return <MaterialCommunityIcons name={iconName} size={25} color={color} />
-                  },
+        <Tab.Navigator
+            screenOptions={({route})=>({
+                tabBarIcon:({color})=>{
+                    if(route.name === "home") {
+                        iconName = 'home-account'
+                    } else if (route.name === "browse") {
+                        iconName = "compass"
+                    } else if (route.name === "chat") {
+                        iconName = "chat"
+                    }
+                    return <MaterialCommunityIcons name={iconName} size={25} color={color} />
+                },
+            })}
 
-                  })
-              }
-
-              activeColor="#f0edf6"
-              inactiveColor="#3e2465"
-              barStyle={{ backgroundColor: '#694fad' }}
-              tabBarColor="#00aaff"
-              >
-                  <Tab.Screen name="home" component={Home}
-
-                  />
-                  <Tab.Screen name="browse" component={Browse} />
-                  <Tab.Screen name="chat" component={ChatScreen} />
-              </Tab.Navigator>
+            activeColor="#f0edf6"
+            inactiveColor="#3e2465"
+            barStyle={{ backgroundColor: '#694fad' }}
+            tabBarColor="#00aaff"
+        >
+            <Tab.Screen name="home" component={Home}/>
+            <Tab.Screen name="browse" component={Browse} options={{ headerShown: false }}/>
+            <Tab.Screen name="chat" component={ChatScreen} />
+        </Tab.Navigator>
   );
 };
 

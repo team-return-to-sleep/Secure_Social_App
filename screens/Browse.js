@@ -25,7 +25,7 @@ const Browse = () => {
         style={{margin:20}}
         onPress={() => console.log('Pressed')
         }>
-            Save Changes
+            Search User
         </Button>
     </View>
 
