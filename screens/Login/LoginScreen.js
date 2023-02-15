@@ -10,6 +10,20 @@ const LoginScreen = ({navigation}) => {
     const [Username, setName] = useState('')
     const [Password, setPassword] = useState('')
 
+    // Not actually async, may need to restructure this as a class with functions
+    /********************* Async functions *********************/
+
+   const _loginAsync = () => {
+     if (Username == null || Username == '') {
+         Alert.alert("Login Error: Please enter a username")
+     } else if (Password == null || Password == '') {
+         Alert.alert("Login Error: Please enter a password")
+     } else {
+         // do authentication stuff
+         navigation.navigate("Toolbar", {screen:'Home'})
+     }
+   };
+
   return (
 
     <View style={{flex:1}}>
@@ -31,8 +45,8 @@ const LoginScreen = ({navigation}) => {
         <Button icon="content-save"
             mode="contained"
             style={{margin:20}}
-            //onPress={this._loginAsync}>
-            onPress={() => navigation.navigate("Toolbar", {screen:'Home'})}
+            onPress={_loginAsync}
+            //onPress={() => navigation.navigate("Toolbar", {screen:'Home'})}
             >
             Login
         </Button>
@@ -40,18 +54,7 @@ const LoginScreen = ({navigation}) => {
 
   );
 
-  /********************* Async functions *********************/
 
-  const _loginAsync = ({navigation}) => {
-    if (this.Username == null || this.Username == '') {
-        Alert.alert("Login Error: Please enter a username")
-    } else if (this.Password == null || this.Password == '') {
-        Alert.alert("Login Error: Please enter a password")
-    } else {
-        // do authentication stuff
-        navigation.navigate("Toolbar", {screen:'Home'})
-    }
-  };
 
 };
 
