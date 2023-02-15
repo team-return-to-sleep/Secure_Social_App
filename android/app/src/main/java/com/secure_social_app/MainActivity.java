@@ -6,7 +6,7 @@ import com.facebook.react.ReactRootView;
 
 import android.os.Bundle;
 
-public class MainActivity extends ReactActivity 
+public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
