@@ -3,7 +3,15 @@ import { Appbar, Title } from 'react-native-paper';
 import {View,Text,SafeAreaView} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 
-const Home = () => {
+const Home = (props) => {
+  const profileName = props.route.params;
+
+  const getName = () => {
+    let profileName;
+    const {name} = props.route.params
+    profileName = name
+    return profileName;
+  }
 
   return (
 
@@ -19,7 +27,7 @@ const Home = () => {
 
     >
         <Title>
-            <Text>Secure Messaging App</Text>
+            <Text>Hello, `profileName`</Text>
         </Title>
     </Appbar.Header>
 
