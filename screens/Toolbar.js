@@ -9,6 +9,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Browse from './Browse'
 import Home from './Home'
 import {ChatScreen} from './Chat/ChatScreen'
+import Account from './Account'
+import ProfileRoot from './Profile/ProfileRoot'
 
 const BOTTOM_APPBAR_HEIGHT = 80;
 const MEDIUM_FAB_HEIGHT = 56;
@@ -28,6 +30,8 @@ const Toolbar = () => {
                         iconName = "compass"
                     } else if (route.name === "chat") {
                         iconName = "chat"
+                    } else if (route.name === "account") {
+                        iconName = "account-circle"
                     }
                     return <MaterialCommunityIcons name={iconName} size={25} color={color} />
                 },
@@ -41,6 +45,7 @@ const Toolbar = () => {
             <Tab.Screen name="home" component={Home}/>
             <Tab.Screen name="browse" component={Browse} options={{ headerShown: false }}/>
             <Tab.Screen name="chat" component={ChatScreen} />
+            <Tab.Screen name="account" component={ProfileRoot} options={{ headerShown: false }}/>
         </Tab.Navigator>
   );
 };

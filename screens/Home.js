@@ -6,7 +6,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
 
-const Home = ({navigation}) => {
+const Home = () => {
 //  const profileName = props.route.params;
 //
 //  const getName = () => {
