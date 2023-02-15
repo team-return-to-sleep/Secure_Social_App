@@ -29,12 +29,15 @@ import {
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Browse from './screens/Browse'
 import Home from './screens/Home'
 import {ChatScreen} from './screens/Chat/ChatScreen'
+import LoginScreen from './screens/Login/LoginScreen'
 
 const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
 
 const App = () => {
 
@@ -42,6 +45,12 @@ const App = () => {
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#00aaff" />
         <NavigationContainer>
+            <Stack.Navigator initialRouteName="Login">
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="home" component={Home}
+                    initialParams={{name:"guest"}}
+                />
+            </Stack.Navigator>
             <Tab.Navigator
             screenOptions={({route})=>({
                 tabBarIcon:({color})=>{
@@ -61,7 +70,9 @@ const App = () => {
             barStyle={{ backgroundColor: '#694fad' }}
             tabBarColor="#00aaff"
             >
-                <Tab.Screen name="home" component={Home} />
+                <Tab.Screen name="home" component={Home}
+                    initialParams={{name:"guest"}}
+                />
                 <Tab.Screen name="browse" component={Browse} />
                 <Tab.Screen name="chat" component={ChatScreen} />
             </Tab.Navigator>
