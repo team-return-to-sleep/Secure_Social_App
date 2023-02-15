@@ -21,6 +21,12 @@ const Account = ({navigation}) => {
 
         <Header name="Account Info" />
 
+        <Text style={{margin:20, fontSize:25}}>
+            Display name: {info.name} {'\n'}
+            Interests: {info.interests} {'\n'}
+            Age: {info.age} {'\n'}
+        </Text>
+
         <Button icon="content-save"
         mode="contained"
         style={{margin:20}}
