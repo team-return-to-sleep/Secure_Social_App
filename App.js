@@ -33,6 +33,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Browse from './screens/Browse'
 import Home from './screens/Home'
 import {ChatScreen} from './screens/Chat/ChatScreen'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const Tab = createBottomTabNavigator()
 
@@ -47,10 +48,13 @@ const App = () => {
                 tabBarIcon:({color})=>{
                     let iconName;
                     if(route.name === "home") {
-                        iconName = ''
-                    } else if (route.name === "search") {
-                        iconName = ""
+                        iconName = 'home-account'
+                    } else if (route.name === "browse") {
+                        iconName = "compass"
+                    } else if (route.name === "chat") {
+                        iconName = "chat"
                     }
+                    return <MaterialCommunityIcons name={iconName} size={25} color={color} />
                 },
 
                 })
@@ -58,7 +62,7 @@ const App = () => {
             initialRouteName="Home"
             activeColor="#f0edf6"
             inactiveColor="#3e2465"
-            barStyle={{ backgroundColor: '#694fad' }}
+            barStyle={{ backgroundColor: '#00aaff' }}
             tabBarColor="#00aaff"
             >
                 <Tab.Screen name="home" component={Home} />
