@@ -30,6 +30,9 @@ import {SafeAreaProvider} from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Amplify, {Auth} from '@aws-amplify/core'
+import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
+import config from './src/aws-exports'
 
 import Browse from './screens/Browse'
 import Home from './screens/Home'
@@ -39,6 +42,8 @@ import LoginScreen from './screens/Login/LoginScreen'
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 
+Amplify.configure(config)
+// Auth.signOut();
 const App = () => {
 
   return (
@@ -60,6 +65,43 @@ const App = () => {
 
     );
 };
+
+const signUpConfig = {
+    header: "Sign Up",
+    hideAllDefaults: true,
+    signUpFields: [
+        {
+            label: "Full name",
+            key: "name",
+            required: true,
+            displayOrder: 1,
+            type: "string",
+        },
+        {
+            label: "Email",
+            key: "email",
+            required: true,
+            displayOrder: 2,
+            type: "string",
+        },
+        {
+            label: "Username",
+            key: "preferred_username",
+            required: true,
+            displayOrder: 3,
+            type: "string",
+        },
+        {
+            label: "Password",
+            key: "password",
+            required: true,
+            displayOrder: 4,
+            type: "password",
+        },
+    ]
+}
+
+const customTheme = {...AmplifyTheme}
 
 //<NavigationContainer>
 //
@@ -90,4 +132,4 @@ const App = () => {
 //            </Tab.Navigator>
 //          </NavigationContainer>
 
-export default App;
+export default withAuthenticator(App, {signUpConfig});
