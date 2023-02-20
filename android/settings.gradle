@@ -6,4 +6,9 @@ includeBuild('../node_modules/react-native-gradle-plugin')
 if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true") {
     include(":ReactAndroid")
     project(":ReactAndroid").projectDir = file('../node_modules/react-native/ReactAndroid')
+    include ':react-native-vector-icons'
+    project(':react-native-vector-icons').projectDir = file(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
 }
+
+apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
+useExpoModules()

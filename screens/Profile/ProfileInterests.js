@@ -1,32 +1,109 @@
 import * as React from 'react';
-import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,SafeAreaView} from 'react-native'
+import { Appbar, Title,Button,TextInput} from 'react-native-paper';
+import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
 
 import Header from '../Header'
 
 const ProfileInterests = ({navigation}) => {
 
+    var [ isPress, setIsPress ] = React.useState(false);
+
+    var touchProps = {
+        activeOpacity: 1,
+        underlayColor: '#ffffff',                               // <-- "backgroundColor" will be always overwritten by "underlayColor"
+        style: isPress ? styles.selected : styles.interests, // <-- but you can still apply other style changes
+        onHideUnderlay: () => setIsPress(true),
+        onShowUnderlay: () => setIsPress(false),
+        onPress: () => {}
+    };
 
     return (
         <>
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.goBack()} />
-        </Appbar.Header>
         <View style={{flex:1}}>
+            <SafeAreaView>
+                <Appbar.Header>
+                    <Appbar.BackAction onPress={() => navigation.goBack()} />
+                </Appbar.Header>
 
-            <Header name="Select up to 5 interests" />
-
-            <Button icon="content-save"
-            mode="contained"
-            style={{margin:20}}
-            onPress={() => navigation.navigate("Account")}>
-                Continue
-            </Button>
+                <Text style={styles.question}> What are your interests? </Text>
+                <View style={styles.interestsWrapper}>
+                    <TouchableHighlight {...touchProps}>
+                        <Text>Click here</Text>
+                    </TouchableHighlight>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                    <View style={styles.interests}/>
+                </View>
+            </SafeAreaView>
         </View>
+        <Button icon="content-save"
+        mode="contained"
+        style={styles.nextButton}
+        onPress={() => navigation.navigate("ProfileFavorites")}>
+            Continue
+        </Button>
+
         </>
-
-
       );
 }
+
+const styles = StyleSheet.create({
+    interests: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 100,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 24,
+        backgroundColor: '#ffffff',
+        borderWidth: 3,
+        borderColor: '#DDEDEA',
+    },
+    selected: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 100,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 24,
+        backgroundColor: '#DDEDEA',
+        borderWidth: 3,
+        borderColor: '#DDEDEA',
+    },
+    interestsWrapper: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    question: {
+        paddingTop: 20,
+        textAlign: 'center',
+        fontSize: 18,
+    },
+    nextButton: {
+        width: 150,
+        alignSelf: 'center',
+        marginBottom: '30%',
+    },
+})
 
 export default ProfileInterests;

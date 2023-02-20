@@ -13,14 +13,19 @@ const Browse = () => {
   return (
     <>
     <View style={{flex:1}}>
-        <Header name="Browse Screen"/>
-        <TextInput
-        label="name"
-        theme={{colors:{primary:"#00aaff"}}}
-        value={name}
-        onChangeText={(text)=>setName(text)}
+        <Header/>
+            <TextInput
+            label="name"
+            theme={{colors:{primary:"#00aaff"}}}
+            value={name}
+            onChangeText={(text)=>setName(text)}
         />
+<<<<<<< Updated upstream
         <Button icon="magnify"
+=======
+
+        <Button icon="content-save"
+>>>>>>> Stashed changes
         mode="contained"
         style={{margin:20}}
         onPress={() => console.log('Pressed')

@@ -4,7 +4,8 @@ import { Appbar, FAB, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Browse from './Browse'
 import Home from './Home'
@@ -22,18 +23,29 @@ const Toolbar = () => {
 
   return (
         <Tab.Navigator
-            screenOptions={({route})=>({
-                tabBarIcon:({color})=>{
-                    if(route.name === "home") {
-                        iconName = 'home-account'
-                    } else if (route.name === "browse") {
-                        iconName = "compass"
-                    } else if (route.name === "chat") {
-                        iconName = "chat"
-                    } else if (route.name === "account") {
-                        iconName = "account-circle"
+            screenOptions={({route}) => ({
+                tabBarShowLabel: false,
+                tabBarActiveTintColor: "#000000",
+                tabBarStyle: {
+                    position: 'absolute',
+                    bottom: '3%',
+                    left: '10%',
+                    right: '10%',
+                    elevation: 0,
+                    backgroundColor: '#BBCAEB',
+                    borderRadius: 20,
+                },
+                tabBarIcon: () => {
+                    if(route.name === "Home") {
+                        iconName = "home-account";
+                    } else if (route.name === "Browse") {
+                        iconName = "compass";
+                    } else if (route.name === "Chat") {
+                        iconName = "chat";
+                    } else if (route.name === "Account") {
+                        iconName = "account-circle";
                     }
-                    return <MaterialCommunityIcons name={iconName} size={25} color={color} />
+                    return <MaterialCommunityIcons name={iconName} size={25} color="#000000"/>
                 },
             })}
 
@@ -42,26 +54,12 @@ const Toolbar = () => {
             barStyle={{ backgroundColor: '#694fad' }}
             tabBarColor="#00aaff"
         >
-            <Tab.Screen name="home" component={Home}/>
-            <Tab.Screen name="browse" component={Browse} options={{ headerShown: false }}/>
-            <Tab.Screen name="chat" component={ChatScreen} />
-            <Tab.Screen name="account" component={ProfileRoot} options={{ headerShown: false }}/>
+            <Tab.Screen name="Home" component={Home} options={{ headerShown: false}} />
+            <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
+            <Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false}} />
+            <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  bottom: {
-    backgroundColor: 'aquamarine',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  fab: {
-    position: 'absolute',
-    right: 16,
-  },
-});
 
 export default Toolbar;

@@ -8,6 +8,15 @@
 
 import React from 'react';
 import type {Node} from 'react';
+<<<<<<< Updated upstream
+=======
+//import Amplify from "@aws-amplify/core";
+//import config from './app/src/main/res/raw/amplifyconfiguration';
+//import {withAuthenticator} from 'aws-amplify-react-native';
+
+//Amplify.configure(config);
+
+>>>>>>> Stashed changes
 import {
   SafeAreaView,
   ScrollView,
@@ -47,13 +56,11 @@ const App = () => {
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#00aaff" />
         <NavigationContainer>
-
             <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
                 />
-
             </Stack.Navigator>
         </NavigationContainer>
 
@@ -62,6 +69,7 @@ const App = () => {
     );
 };
 
+<<<<<<< Updated upstream
 //<NavigationContainer>
 //
 //            <Tab.Navigator
@@ -94,3 +102,7 @@ const App = () => {
 //          </NavigationContainer>
 
 export default App;
+=======
+export default App;
+//export default withAuthenticator(App);
+>>>>>>> Stashed changes

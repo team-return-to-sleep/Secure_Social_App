@@ -10,13 +10,13 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Account from '../Account'
 import ProfileGender from './ProfileGender'
 import ProfileInterests from './ProfileInterests'
+import ProfileFavorites from './ProfileFavorites'
 
 const Stack = createNativeStackNavigator()
 
 const ProfileRoot = () => {
 
   return (
-
 
             <Stack.Navigator initialRouteName="Account">
                 <Stack.Screen name="Account" component={Account}
@@ -26,6 +26,9 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileInterests" component={ProfileInterests}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileFavorites" component={ProfileFavorites}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>
