@@ -17,7 +17,6 @@ const Stack = createNativeStackNavigator()
 const ProfileRoot = () => {
 
   return (
-
             <Stack.Navigator initialRouteName="Account">
                 <Stack.Screen name="Account" component={Account}
                     options={{ headerShown: false }}
@@ -32,7 +31,6 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>
-
 
     );
 };

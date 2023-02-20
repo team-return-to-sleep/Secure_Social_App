@@ -36,8 +36,17 @@ const ProfileGender = ({navigation}) => {
                                  />
                                  <Text>Other</Text>
                             </View>
+            </View>
+            <Button icon="content-save"
+            mode="contained"
+            style={styles.nextButton}
+            onPress={() => navigation.navigate("ProfileInterests")}>
+                Continue
+            </Button>
+        </View>
+        </>
       );
-}
+};
 
 const styles = StyleSheet.create({
     genders: {
@@ -77,7 +86,7 @@ const styles = StyleSheet.create({
         width: 150,
         alignSelf: 'center',
         marginBottom: '30%',
-    }
-})
+    },
+});
 
 export default ProfileGender;

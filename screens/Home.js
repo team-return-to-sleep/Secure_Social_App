@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Appbar, Title } from 'react-native-paper';
-import {View,Text,SafeAreaView} from 'react-native'
+import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
