@@ -10,8 +10,8 @@ const ProfileInterests = ({navigation}) => {
 
     var touchProps = {
         activeOpacity: 1,
-        underlayColor: '#ffffff',                               // <-- "backgroundColor" will be always overwritten by "underlayColor"
-        style: isPress ? styles.selected : styles.interests, // <-- but you can still apply other style changes
+        underlayColor: '#ffffff',
+        style: isPress ? styles.selected : styles.interests,
         onHideUnderlay: () => setIsPress(true),
         onShowUnderlay: () => setIsPress(false),
         onPress: () => {}

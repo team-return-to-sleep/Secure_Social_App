@@ -2,93 +2,58 @@ import * as React from 'react';
 import { Appbar, Title } from 'react-native-paper';
 import {View,Text,SafeAreaView} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
-<<<<<<< Updated upstream
-=======
 import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
->>>>>>> Stashed changes
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
 
 const Home = () => {
-//  const profileName = props.route.params;
-//
-//  const getName = () => {
-//    let profileName;
-//    const {name} = props.route.params
-//    profileName = name
-//    return profileName;
-//  }
 
-<<<<<<< Updated upstream
-  return (
-    <>
-    <Appbar.Header
-    theme={{
-        colors:{
-            primary:"#00aaff"
-=======
-    return (
-        <ScrollView style={styles.container}>
-            <Header />
-            <SafeAreaView>
-                <View style={styles.headerWrapper}>
-                    <Image
-                        style={styles.profileImage}
-                        source={require('../assets/images/profpic.png')}
-                    />
-                    <Image
-                        style={styles.profileImage}
-                        source={require('../assets/images/profpic.png')}
-                    />
-                    <Image
-                        style={styles.profileImage}
-                        source={require('../assets/images/profpic.png')}
-                    />
-                    <Image
-                        style={styles.profileImage}
-                        source={require('../assets/images/profpic.png')}
-                    />
-                    <Image
-                        style={styles.profileImage}
-                        source={require('../assets/images/profpic.png')}
-                    />
+         return (
+            <ScrollView style={styles.container}>
+                <Header />
+                <SafeAreaView>
+                    <View style={styles.headerWrapper}>
+                        <Image
+                            style={styles.profileImage}
+                            source={require('../assets/images/profpic.png')}
+                        />
+                        <Image
+                            style={styles.profileImage}
+                            source={require('../assets/images/profpic.png')}
+                        />
+                        <Image
+                            style={styles.profileImage}
+                            source={require('../assets/images/profpic.png')}
+                        />
+                        <Image
+                            style={styles.profileImage}
+                            source={require('../assets/images/profpic.png')}
+                        />
+                        <Image
+                            style={styles.profileImage}
+                            source={require('../assets/images/profpic.png')}
+                        />
+                    </View>
+                </SafeAreaView>
+
+                <View style={styles.profileWrapper}>
+                    <View style={styles.profile}><Text>Match1</Text></View>
+                    <View style={styles.profile}><Text>Match2</Text></View>
+                    <View style={styles.profile}><Text>Match3</Text></View>
+                    <View style={styles.profile}><Text>Match4</Text></View>
+                    <View style={styles.profile}><Text>Match5</Text></View>
+                    <View style={styles.profile}><Text>Match6</Text></View>
+                    <View style={styles.profile}><Text>Match7</Text></View>
+                    <View style={styles.profile}><Text>Match8</Text></View>
+                    <View style={styles.profile}><Text>Match9</Text></View>
+                    <View style={styles.profile}><Text>Match10</Text></View>
                 </View>
-            </SafeAreaView>
-
-            <View style={styles.profileWrapper}>
-                <View style={styles.profile}><Text>Match1</Text></View>
-                <View style={styles.profile}><Text>Match2</Text></View>
-                <View style={styles.profile}><Text>Match3</Text></View>
-                <View style={styles.profile}><Text>Match4</Text></View>
-                <View style={styles.profile}><Text>Match5</Text></View>
-                <View style={styles.profile}><Text>Match6</Text></View>
-                <View style={styles.profile}><Text>Match7</Text></View>
-                <View style={styles.profile}><Text>Match8</Text></View>
-                <View style={styles.profile}><Text>Match9</Text></View>
-                <View style={styles.profile}><Text>Match10</Text></View>
-            </View>
-        </ScrollView>
->>>>>>> Stashed changes
-
-        }
-
-    }}
-    style={{flexDirection:"row", justifyContent:"center", backgroundColor:'#00aaff'}}
-
-    >
-        <Title>
-            <Text>Hello, user</Text>
-        </Title>
-    </Appbar.Header>
-
-    </>
+            </ScrollView>
   );
 };
 
-<<<<<<< Updated upstream
-=======
 const styles = StyleSheet.create({
     container: {
         flex:1,
@@ -133,5 +98,4 @@ const styles = StyleSheet.create({
     },
 });
 
->>>>>>> Stashed changes
 export default Home;

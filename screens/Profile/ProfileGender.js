@@ -1,12 +1,7 @@
 import * as React from 'react';
-<<<<<<< Updated upstream
-import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-=======
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView} from 'react-native'
->>>>>>> Stashed changes
 
 import Header from '../Header'
 
@@ -41,74 +36,10 @@ const ProfileGender = ({navigation}) => {
                                  />
                                  <Text>Other</Text>
                             </View>
-
-
-            </View>
-
-            <View style={styles.container}>
-
-                <Button icon="gender-male"
-                    mode="outlined"
-                    style={styles.button}
-                    onPress={() => {}}>
-                        Male
-                </Button>
-
-                <Button icon="gender-female"
-                    mode="outlined"
-                    style={styles.button}
-                    onPress={() => {}}>
-                        Female
-                </Button>
-
-
-            <Button icon="gender-male-female"
-                mode="outlined"
-                style={styles.button}
-                onPress={() => {}}>
-                    Other
-            </Button>
-            </View>
-
-            <Button icon="chevron-right"
-            mode="contained"
-            style={styles.nextButton}
-            onPress={() => navigation.navigate("ProfileInterests")}>
-                Continue
-            </Button>
-        </View>
-        </>
-
-
       );
 }
 
 const styles = StyleSheet.create({
-<<<<<<< Updated upstream
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    margin: 20
-  },
-  button: {
-    //backgroundColor: 'green',
-    width: '40%',
-    height: 100,
-    flex: 1,
-    flexDirection:"column",
-    justifyContent:"center"
-  },
-//  other: {
-//      flex:1,
-//      width: '40%',
-//      height: 100,
-//      flexDirection:"column",
-//      justifyContent:"center"
-//    }
-
-});
-=======
     genders: {
         marginTop: 10,
         marginBottom: 10,
@@ -148,6 +79,5 @@ const styles = StyleSheet.create({
         marginBottom: '30%',
     }
 })
->>>>>>> Stashed changes
 
 export default ProfileGender;

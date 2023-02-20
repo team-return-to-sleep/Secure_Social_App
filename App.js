@@ -8,15 +8,7 @@
 
 import React from 'react';
 import type {Node} from 'react';
-<<<<<<< Updated upstream
-=======
-//import Amplify from "@aws-amplify/core";
-//import config from './app/src/main/res/raw/amplifyconfiguration';
-//import {withAuthenticator} from 'aws-amplify-react-native';
 
-//Amplify.configure(config);
-
->>>>>>> Stashed changes
 import {
   SafeAreaView,
   ScrollView,
@@ -47,7 +39,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 
-//const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 
 const App = () => {
@@ -69,40 +60,4 @@ const App = () => {
     );
 };
 
-<<<<<<< Updated upstream
-//<NavigationContainer>
-//
-//            <Tab.Navigator
-//            screenOptions={({route})=>({
-//                tabBarIcon:({color})=>{
-//                    if(route.name === "home") {
-//                        iconName = 'home-account'
-//                   } else if (route.name === "browse") {
-//                        iconName = "compass"
-//                    } else if (route.name === "chat") {
-//                        iconName = "chat"
-//                    }
-//                    return <MaterialCommunityIcons name={iconName} size={25} color={color} />
-//                },
-//
-//                })
-//            }
-//            initialRouteName="Home"
-//            activeColor="#f0edf6"
-//            inactiveColor="#3e2465"
-//            barStyle={{ backgroundColor: '#694fad' }}
-//            tabBarColor="#00aaff"
-//            >
-//                <Tab.Screen name="home" component={Home}
-//                    initialParams={{name:"guest"}}
-//                />
-//                <Tab.Screen name="browse" component={Browse} />
-//                <Tab.Screen name="chat" component={ChatScreen} />
-//            </Tab.Navigator>
-//          </NavigationContainer>
-
 export default App;
-=======
-export default App;
-//export default withAuthenticator(App);
->>>>>>> Stashed changes
