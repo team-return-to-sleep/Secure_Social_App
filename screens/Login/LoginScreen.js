@@ -2,13 +2,27 @@ import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title, TextInput, Button} from 'react-native-paper';
 import {View,Text,SafeAreaView,Alert} from 'react-native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Amplify, {Auth} from '@aws-amplify/core'
 
 
-
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
     const [Username, setName] = useState('')
     const [Password, setPassword] = useState('')
+
+    // Not actually async, may need to restructure this as a class with functions
+    /********************* Async functions *********************/
+
+   const _loginAsync = () => {
+     if (Username == null || Username == '') {
+         Alert.alert("Login Error: Please enter a username")
+     } else if (Password == null || Password == '') {
+         Alert.alert("Login Error: Please enter a password")
+     } else {
+         // do authentication stuff
+         navigation.navigate("Toolbar", {screen:'Home'})
+     }
+   };
 
   return (
 
@@ -31,6 +45,8 @@ const LoginScreen = () => {
         <Button icon="content-save"
             mode="contained"
             style={{margin:20}}
+            onPress={_loginAsync}
+            //onPress={() => navigation.navigate("Toolbar", {screen:'Home'})}
             //onPress={Auth.signOut()}
         >
             Login
@@ -39,18 +55,7 @@ const LoginScreen = () => {
 
   );
 
-  /********************* Async functions *********************/
 
-  const _loginAsync = ({navigation}) => {
-    if (this.Username == null || this.Username == '') {
-        Alert.alert("Login Error: Please enter a username")
-    } else if (this.Password == null || this.Password == '') {
-        Alert.alert("Login Error: Please enter a password")
-    } else {
-        // do authentication stuff
-        navigation.navigate("home", {name:this.Username})
-    }
-  };
 
 };
 
