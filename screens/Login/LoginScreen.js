@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title, TextInput, Button} from 'react-native-paper';
 import {View,Text,SafeAreaView,Alert} from 'react-native'
-
+import Amplify, {Auth} from '@aws-amplify/core'
 
 
 
@@ -31,8 +31,8 @@ const LoginScreen = () => {
         <Button icon="content-save"
             mode="contained"
             style={{margin:20}}
-            //onPress={this._loginAsync}>
-            >
+            //onPress={Auth.signOut()}
+        >
             Login
         </Button>
     </View>

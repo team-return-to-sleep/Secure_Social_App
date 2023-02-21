@@ -30,7 +30,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context'
 import { NavigationContainer } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Amplify, {Auth} from '@aws-amplify/core'
+import Amplify from '@aws-amplify/core'
+import {Auth} from 'aws-amplify'
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
 import config from './src/aws-exports'
 
@@ -45,7 +46,7 @@ const Stack = createNativeStackNavigator()
 Amplify.configure(config)
 // Auth.signOut();
 const App = () => {
-
+ Auth.signOut();
   return (
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#00aaff" />
