@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-wallflower-staging-63629-authRole",
+      "UnauthRoleArn": "arn:aws:iam::040383021972:role/amplify-wallflower-staging-63629-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::040383021972:role/amplify-wallflower-staging-63629-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-wallflower-staging-63629-deployment",
+      "UnauthRoleName": "amplify-wallflower-staging-63629-unauthRole",
+      "StackName": "amplify-wallflower-staging-63629",
+      "StackId": "arn:aws:cloudformation:us-west-2:040383021972:stack/amplify-wallflower-staging-63629/be441100-b01f-11ed-884d-02b9b6e34b3d",
+      "AmplifyAppId": "d2fcfhdiz208en"
+    },
+    "categories": {
+      "auth": {
+        "Wallflower": {}
+      }
+    }
+  }
+}
