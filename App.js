@@ -46,14 +46,14 @@ import Toolbar from './screens/Toolbar'
 const Stack = createNativeStackNavigator()
 
 Amplify.configure(config)
-// Auth.signOut();
+
 const App = () => {
- Auth.signOut();
+ //Auth.signOut();
   return (
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#00aaff" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Toolbar">
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}

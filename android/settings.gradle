@@ -11,8 +11,8 @@ if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true")
 }
 
 
-apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
-useExpoModules()
+//apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
+//useExpoModules()
 
 //include ':@react-native-community_picker'
 //project(':@react-native-community_picker').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-community/picker/android')

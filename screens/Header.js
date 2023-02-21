@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Appbar, Title } from 'react-native-paper';
 import {View,Text,StyleSheet,SafeAreaView} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import {Auth} from 'aws-amplify'
 
 const Header = (props) => {
 
@@ -11,6 +13,7 @@ const Header = (props) => {
         <Title style={styles.name}>
             Wallflower
         </Title>
+        <Appbar.Action style={styles.logout} icon="logout" onPress={() => Auth.signOut()} />
     </Appbar.Header>
 
   );
@@ -23,6 +26,9 @@ const styles = StyleSheet.create({
     },
     name: {
         marginLeft: 10,
+    },
+    logout: {
+        marginLeft: 50,
     },
 });
 export default Header;
