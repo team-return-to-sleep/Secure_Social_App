@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 import Header from './Header'
+import UserProfile from './UserProfile'
 
 
 const Account = ({navigation}) => {
@@ -48,8 +49,9 @@ const Account = ({navigation}) => {
                     <Text>Edit Personal Details</Text>
                 </Button>
                 <Button mode="contained"
-                style={styles.accountButton}>
-                    <Text>???</Text>
+                style={styles.accountButton}
+                onPress={() => navigation.navigate("UserProfile")}>
+                    <Text>View Public Profile</Text>
                 </Button>
             </View>
     </View>

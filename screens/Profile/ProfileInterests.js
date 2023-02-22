@@ -27,7 +27,7 @@ const ProfileInterests = ({navigation}) => {
                 <Text style={styles.question}> What are your interests? </Text>
                 <View style={styles.interestsWrapper}>
                     <TouchableHighlight {...touchProps}>
-                        <Text>Anime</Text>
+                        <Text>Click Here</Text>
                     </TouchableHighlight>
                     <View style={styles.interests}/>
                     <View style={styles.interests}/>

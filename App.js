@@ -42,10 +42,11 @@ import {ChatScreen} from './screens/Chat/ChatScreen'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
+import Root from './screens/Root'
 
 const Stack = createNativeStackNavigator()
 
-Amplify.configure(config)
+//Amplify.configure(config)
 // Auth.signOut();
 const App = () => {
  Auth.signOut();
@@ -133,4 +134,5 @@ const customTheme = {...AmplifyTheme}
 //            </Tab.Navigator>
 //          </NavigationContainer>
 
-export default withAuthenticator(App, {signUpConfig});
+//export default withAuthenticator(App, {signUpConfig});
+export default App;

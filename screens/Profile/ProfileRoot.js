@@ -11,6 +11,7 @@ import Account from '../Account'
 import ProfileGender from './ProfileGender'
 import ProfileInterests from './ProfileInterests'
 import ProfileFavorites from './ProfileFavorites'
+import UserProfile from '../UserProfile'
 
 const Stack = createNativeStackNavigator()
 
@@ -28,6 +29,9 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileFavorites" component={ProfileFavorites}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="UserProfile" component={UserProfile}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>
