@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { Appbar, Title } from 'react-native-paper';
-import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet} from 'react-native'
+import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet, Pressable} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
+import UserProfile from './UserProfile'
+import Browse from './Account'
 
-const Home = () => {
-
+const Home = ({navigation}) => {
          return (
             <ScrollView style={styles.container}>
                 <Header />
@@ -39,19 +40,34 @@ const Home = () => {
                 </SafeAreaView>
 
                 <View style={styles.profileWrapper}>
-                    <View style={styles.profile}><Text>Match1</Text></View>
-                    <View style={styles.profile}><Text>Match2</Text></View>
-                    <View style={styles.profile}><Text>Match3</Text></View>
-                    <View style={styles.profile}><Text>Match4</Text></View>
-                    <View style={styles.profile}><Text>Match5</Text></View>
-                    <View style={styles.profile}><Text>Match6</Text></View>
-                    <View style={styles.profile}><Text>Match7</Text></View>
-                    <View style={styles.profile}><Text>Match8</Text></View>
-                    <View style={styles.profile}><Text>Match9</Text></View>
-                    <View style={styles.profile}><Text>Match10</Text></View>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
+                    <Pressable
+                      style={styles.profile}
+                      onPress={() => navigation.navigate("UserProfile")}/>
                 </View>
             </ScrollView>
-  );
+
+        );
 };
 
 const styles = StyleSheet.create({
@@ -74,6 +90,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
+        paddingBottom: 20,
     },
     profileImage: {
         width: 50,
@@ -81,10 +98,10 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
     profile: {
-        marginTop: 10,
-        marginBottom: 10,
         marginLeft: 10,
         marginRight: 10,
+        marginTop: 7,
+        marginBottom: 7,
         width: 170,
         height: 170,
         alignItems: 'center',

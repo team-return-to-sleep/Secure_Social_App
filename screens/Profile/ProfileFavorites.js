@@ -6,9 +6,8 @@ import Header from '../Header'
 
 const ProfileFavorites = ({navigation}) => {
     return (
-        <>
 
-        <View style={{flex:1}}>
+        <View style={styles.container}>
             <Appbar.Header>
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
             </Appbar.Header>
@@ -28,13 +27,15 @@ const ProfileFavorites = ({navigation}) => {
                 Continue
             </Button>
         </View>
-        </>
-
 
       );
-}
+};
 
 const styles = StyleSheet.create({
+    container: {
+            flex:1,
+            backgroundColor:'#FFFFFF',
+    },
     interests: {
         marginTop: 10,
         marginBottom: 10,
@@ -66,8 +67,9 @@ const styles = StyleSheet.create({
     nextButton: {
         width: 150,
         alignSelf: 'center',
-        marginBottom: '30%',
-    }
+        marginBottom: '35%',
+        backgroundColor: '#BBCAEB',
+    },
 })
 
 export default ProfileFavorites;

@@ -9,10 +9,11 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Browse from './Browse'
 import Home from './Home'
-import {ChatScreen} from './Chat/ChatScreen'
+import ChatRoot from './Chat/ChatRoot'
 import Account from './Account'
 import ProfileRoot from './Profile/ProfileRoot'
 import PointScreen from './PointScreen'
+import Root from './Root'
 
 const BOTTOM_APPBAR_HEIGHT = 80;
 const MEDIUM_FAB_HEIGHT = 56;
@@ -57,10 +58,11 @@ const Toolbar = () => {
             barStyle={{ backgroundColor: '#694fad' }}
             tabBarColor="#00aaff"
         >
-            <Tab.Screen name="Home" component={Home} options={{ headerShown: false}} />
+            <Tab.Screen name="Home" component={Root} options={{ headerShown: false}} />
             <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
-            <Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false}} />
+            //<Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false}} />
             <Tab.Screen name="PointScreen" component={PointScreen} options={{ headerShown: false}} />
+            <Tab.Screen name="Chats" component={ChatRoot} options={{ headerShown: false}} />
             <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
   );
