@@ -1,5 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { GiftedChat } from 'react-native-gifted-chat'
+import {GiftedChat, InputToolbar} from 'react-native-gifted-chat'
+import {View,Text,StyleSheet} from 'react-native'
+
+import Toolbar from '../Toolbar'
 
 export function ChatScreen() {
   const [messages, setMessages] = useState([]);
@@ -24,12 +27,30 @@ export function ChatScreen() {
   }, [])
 
   return (
-    <GiftedChat
-      messages={messages}
-      onSend={messages => onSend(messages)}
-      user={{
-        _id: 1,
-      }}
-    />
-  )
+        <GiftedChat
+          messages={messages}
+          onSend={messages => onSend(messages)}
+          /* renderInputToolbar={props => customInputToolbar(props)}*/
+          user={{
+            _id: 1,
+          }}
+        />
+  );
 }
+
+/* const customInputToolbar = props => {
+  return (
+    <InputToolbar {...props}
+      containerStyle={styles.toolbar}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+    toolbar: {
+        elevation: 0,
+        backgroundColor: '#BBCAEB',
+        borderRadius: 20,
+    }
+
+}); */

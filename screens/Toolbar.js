@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Browse from './Browse'
 import Home from './Home'
-import {ChatScreen} from './Chat/ChatScreen'
+import ChatRoot from './Chat/ChatRoot'
 import Account from './Account'
 import ProfileRoot from './Profile/ProfileRoot'
 
@@ -56,7 +56,7 @@ const Toolbar = () => {
         >
             <Tab.Screen name="Home" component={Home} options={{ headerShown: false}} />
             <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
-            <Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false}} />
+            <Tab.Screen name="ChatRoot" component={ChatRoot} options={{ headerShown: false}} />
             <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
   );

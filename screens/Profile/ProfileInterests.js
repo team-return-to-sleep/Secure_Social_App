@@ -18,9 +18,8 @@ const ProfileInterests = ({navigation}) => {
     };
 
     return (
-        <>
-        <View style={{flex:1}}>
-            <SafeAreaView>
+        <View style={styles.container}>
+
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                 </Appbar.Header>
@@ -28,7 +27,7 @@ const ProfileInterests = ({navigation}) => {
                 <Text style={styles.question}> What are your interests? </Text>
                 <View style={styles.interestsWrapper}>
                     <TouchableHighlight {...touchProps}>
-                        <Text>Click here</Text>
+                        <Text>Anime</Text>
                     </TouchableHighlight>
                     <View style={styles.interests}/>
                     <View style={styles.interests}/>
@@ -44,20 +43,21 @@ const ProfileInterests = ({navigation}) => {
                     <View style={styles.interests}/>
                     <View style={styles.interests}/>
                 </View>
-            </SafeAreaView>
+                <Button icon="content-save"
+                mode="contained"
+                style={styles.nextButton}
+                onPress={() => navigation.navigate("ProfileFavorites")}>
+                    Continue
+                </Button>
         </View>
-        <Button icon="content-save"
-        mode="contained"
-        style={styles.nextButton}
-        onPress={() => navigation.navigate("ProfileFavorites")}>
-            Continue
-        </Button>
-
-        </>
       );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        backgroundColor:'#FFFFFF',
+    },
     interests: {
         marginTop: 5,
         marginBottom: 5,
@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
     nextButton: {
         width: 150,
         alignSelf: 'center',
-        marginBottom: '30%',
+        marginBottom: '50%',
+        backgroundColor: '#BBCAEB',
     },
 })
 
