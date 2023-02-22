@@ -23,7 +23,7 @@ const PointScreen = () => {
 
   return (
 
-    <View style={{flex:1, flexDirection:'column', backgroundColor:'#7CFC00'}}>
+    <View style={{flex:1, flexDirection:'column', backgroundColor:'#AFE1AF'}}>
         <Header/>
         <Appbar.Header style={styles.head}>
             <Title style={styles.name}>

@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import {View,Text,StyleSheet} from 'react-native'
+import { Appbar,Title,Button,TextInput} from 'react-native-paper';
+
 
 import Toolbar from '../Toolbar'
 
-export function ChatScreen() {
+export function ChatScreen({navigation}) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -27,12 +29,26 @@ export function ChatScreen() {
   }, [])
 
   return (
+    <>
+        <Appbar.Header>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
+        </Appbar.Header>
+
         <GiftedChat
           messages={messages}
           onSend={messages => onSend(messages)}
           user={{
             _id: 1,
+            avatar: 'https://placeimg.com/150/150/any',
           }}
+          alignTop
+          scrollToBottom
+          showUserAvatar
+          bottomOffset={26}
         />
+        <View style={{marginBottom:26}}>
+            <Text>  {'\n\n'} </Text>
+        </View>
+    </>
   );
 }

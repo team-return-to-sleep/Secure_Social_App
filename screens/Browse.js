@@ -16,7 +16,7 @@ const Browse = () => {
         <Header/>
             <TextInput
             label="name"
-            theme={{colors:{primary:"#00aaff"}}}
+            theme={{colors:{primary:"#FC4C02"}}}
             value={name}
             onChangeText={(text)=>setName(text)}
         />

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,StyleSheet,Image,SafeAreaView} from 'react-native'
+import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
@@ -24,14 +24,14 @@ const Account = ({navigation}) => {
        </Text> */
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
 
         <Header name="Account Info" />
             <View style={styles.accountWrapper}>
-
+                <Text style={styles.username}>rqin</Text>
                 <Image
                     style={styles.accountPicture}
-                    source={require('../assets/images/profpic.png')}
+                    source={require('../assets/images/pfp_flower.jpg')}
                 />
                 <Button icon="content-save"
                 mode="contained"
@@ -54,7 +54,10 @@ const Account = ({navigation}) => {
                     <Text>View Public Profile</Text>
                 </Button>
             </View>
-    </View>
+            <View style={{marginBottom:26}}>
+                        <Text>  {'\n\n'} </Text>
+            </View>
+    </ScrollView>
   );
 }
 
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     },
     accountWrapper: {
         alignItems: 'center',
-        marginTop: '15%',
+        marginTop: '0%',
     },
     accountPicture: {
         width: 250,
@@ -89,6 +92,11 @@ const styles = StyleSheet.create({
     profPicText: {
         color: '#89A8D6',
         fontStyle: 'italic',
+    },
+    username: {
+            margin:15,
+            fontSize: 30,
+            fontWeight: 'bold',
     },
 });
 

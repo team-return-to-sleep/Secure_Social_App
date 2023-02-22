@@ -53,7 +53,7 @@ const App = () => {
  //Auth.signOut();
   return (
     <SafeAreaProvider>
-        <StatusBar barStyle="dark-content" backgroundColor="#00aaff" />
+        <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Toolbar">
                 <Stack.Screen name="Login" component={LoginScreen} />
@@ -135,5 +135,5 @@ const customTheme = {...AmplifyTheme}
 //            </Tab.Navigator>
 //          </NavigationContainer>
 
-//export default withAuthenticator(App, {signUpConfig});
-export default App;
+export default withAuthenticator(App, {signUpConfig});
+//export default App;

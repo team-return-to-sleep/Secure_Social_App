@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,StyleSheet,Image,SafeAreaView, ScrollView} from 'react-native'
+import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Header from './Header'
@@ -16,14 +16,17 @@ const UserProfile = ({navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
+        <Appbar.Header>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
 
         <Header name="User Profile Info" />
+        </Appbar.Header>
             <View style={styles.profileWrapper}>
 
                 <Text style={styles.username}>USERNAME</Text>
                 <Image
                     style={styles.profilePicture}
-                    source={require('../assets/images/profpic.png')}
+                    source={require('../assets/images/pfp5.jpg')}
                 />
                 <View style={styles.bioContainer}>
                     <Text style={styles.bio}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
@@ -70,6 +73,9 @@ const UserProfile = ({navigation}) => {
                             </View>
                         </View>
                 </View>
+            </View>
+            <View style={{marginBottom:26}}>
+                        <Text>  {'\n\n'} </Text>
             </View>
     </ScrollView>
   );

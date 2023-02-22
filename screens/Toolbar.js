@@ -27,7 +27,8 @@ const Toolbar = () => {
         <Tab.Navigator
             screenOptions={({route}) => ({
                 tabBarShowLabel: false,
-                tabBarActiveTintColor: "#000000",
+                tabBarActiveTintColor: "#FC4C02",
+                tabBarInactiveTintColor: "#000000",
                 tabBarStyle: {
                     position: 'absolute',
                     bottom: '3%',
@@ -37,32 +38,29 @@ const Toolbar = () => {
                     backgroundColor: '#BBCAEB',
                     borderRadius: 20,
                 },
-                tabBarIcon: () => {
+                tabBarIcon: ({focused, color}) => {
                     if(route.name === "Home") {
                         iconName = "home-account";
                     } else if (route.name === "Browse") {
                         iconName = "compass";
-                    } else if (route.name === "Chat") {
+                    } else if (route.name === "Chats") {
                         iconName = "chat";
                     } else if (route.name === "Account") {
                         iconName = "account-circle";
                     } else if (route.name === "PointScreen") {
                         iconName = "flower";
                     }
-                    return <MaterialCommunityIcons name={iconName} size={25} color="#000000"/>
+                    return <MaterialCommunityIcons name={iconName} size={25} color={focused?"#FC4C02":"#000000"}/>
                 },
             })}
 
-            activeColor="#f0edf6"
-            inactiveColor="#3e2465"
             barStyle={{ backgroundColor: '#694fad' }}
             tabBarColor="#00aaff"
         >
             <Tab.Screen name="Home" component={Root} options={{ headerShown: false}} />
             <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
-            //<Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false}} />
-            <Tab.Screen name="PointScreen" component={PointScreen} options={{ headerShown: false}} />
             <Tab.Screen name="Chats" component={ChatRoot} options={{ headerShown: false}} />
+            <Tab.Screen name="PointScreen" component={PointScreen} options={{ headerShown: false}} />
             <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
   );
