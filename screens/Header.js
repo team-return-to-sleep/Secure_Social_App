@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     logout: {
-        marginLeft: 50,
+        marginLeft: 'auto',
     },
 });
 export default Header;

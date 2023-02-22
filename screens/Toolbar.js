@@ -12,6 +12,7 @@ import Home from './Home'
 import {ChatScreen} from './Chat/ChatScreen'
 import Account from './Account'
 import ProfileRoot from './Profile/ProfileRoot'
+import PointScreen from './PointScreen'
 
 const BOTTOM_APPBAR_HEIGHT = 80;
 const MEDIUM_FAB_HEIGHT = 56;
@@ -44,6 +45,8 @@ const Toolbar = () => {
                         iconName = "chat";
                     } else if (route.name === "Account") {
                         iconName = "account-circle";
+                    } else if (route.name === "PointScreen") {
+                        iconName = "flower";
                     }
                     return <MaterialCommunityIcons name={iconName} size={25} color="#000000"/>
                 },
@@ -57,6 +60,7 @@ const Toolbar = () => {
             <Tab.Screen name="Home" component={Home} options={{ headerShown: false}} />
             <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
             <Tab.Screen name="Chat" component={ChatScreen} options={{ headerShown: false}} />
+            <Tab.Screen name="PointScreen" component={PointScreen} options={{ headerShown: false}} />
             <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
   );
