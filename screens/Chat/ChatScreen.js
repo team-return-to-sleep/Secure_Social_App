@@ -13,7 +13,7 @@ export function ChatScreen({navigation}) {
     setMessages([
       {
         _id: 1,
-        text: 'Hello developer',
+        text: 'Hey when do you want to meet up to work?',
         createdAt: new Date(),
         user: {
           _id: 2,
@@ -32,6 +32,9 @@ export function ChatScreen({navigation}) {
     <>
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
+            <Title>
+                Chat
+            </Title>
         </Appbar.Header>
 
         <GiftedChat

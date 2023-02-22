@@ -19,11 +19,11 @@ const Chats = ({navigation}) => {
                   <View style={styles.headerWrapper}>
                       <Image
                           style={styles.profileImage}
-                          source={require('../../assets/images/profpic.png')}
+                          source={require('../../assets/images/pfp1.jpg')}
                       />
                       <Image
                           style={styles.profileImage}
-                          source={require('../../assets/images/profpic.png')}
+                          source={require('../../assets/images/pfp2.jpg')}
                       />
                       <Image
                           style={styles.profileImage}
@@ -43,7 +43,15 @@ const Chats = ({navigation}) => {
               <View style={styles.chatWrapper}>
                   <Pressable
                   style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
+                  onPress={() => navigation.navigate("ChatScreen")}>
+                    <View style={styles.imageWrapper}>
+                    <Image
+                      style={styles.profileImage}
+                      source={require('../../assets/images/pfp2.jpg')}
+                    />
+                    <Text> Latest Message Here </Text>
+                    </View>
+                  </Pressable>
                   <Pressable
                   style={styles.chat}
                   onPress={() => navigation.navigate("ChatScreen")}/>
@@ -97,6 +105,8 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50,
+        justifyContent: 'flex-start',
+
     },
     chat: {
         margin: 7,
@@ -106,6 +116,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         backgroundColor: '#D9D9D9',
         borderRadius: 24,
+    },
+    imageWrapper: {
+            marginRight: 'auto',
+            marginLeft: 10,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            paddingTop: 20,
+            paddingBottom: 20,
     },
     chooseButton: {
         borderRadius: 50,

@@ -8,6 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 
 import Home from './Home'
 import UserProfile from './UserProfile'
+import OtherUserProfile from './OtherUserProfile'
 
 const Stack = createNativeStackNavigator()
 
@@ -18,6 +19,9 @@ const Root = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="UserProfile" component={UserProfile}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>

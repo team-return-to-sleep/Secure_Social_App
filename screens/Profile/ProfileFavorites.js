@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { Appbar,Title,Button,TextInput} from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet} from 'react-native'
+import {View,Text,SafeAreaView,StyleSheet,ScrollView} from 'react-native'
 
 import Header from '../Header'
 
 const ProfileFavorites = ({navigation}) => {
     return (
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Appbar.Header>
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
+                <Title>
+                    Edit Profile
+                </Title>
             </Appbar.Header>
 
             <Text style={styles.question}> What are your favorites? </Text>
@@ -26,7 +29,10 @@ const ProfileFavorites = ({navigation}) => {
             onPress={() => navigation.navigate("Account")}>
                 Continue
             </Button>
-        </View>
+            <View style={{marginBottom:26}}>
+               <Text>  {'\n\n'} </Text>
+            </View>
+        </ScrollView>
 
       );
 };
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
     nextButton: {
         width: 150,
         alignSelf: 'center',
-        marginBottom: '35%',
+        marginBottom: '15%',
         backgroundColor: '#BBCAEB',
     },
 })

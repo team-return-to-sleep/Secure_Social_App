@@ -42,7 +42,7 @@ const Home = ({navigation}) => {
                 <View style={styles.profileWrapper}>
                     <Pressable
                       style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
+                      onPress={() => navigation.navigate("OtherUserProfile")}>
                         <Image
                             style={styles.profile}
                             source={require('../assets/images/pfp5.jpg')}

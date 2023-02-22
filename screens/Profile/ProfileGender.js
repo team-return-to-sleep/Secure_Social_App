@@ -11,6 +11,9 @@ const ProfileGender = ({navigation}) => {
         <View style={styles.container}>
             <Appbar.Header>
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
+                <Title>
+                    Edit Profile
+                </Title>
             </Appbar.Header>
             <View style={{flex:1}}>
 
@@ -98,6 +101,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
+        marginBottom: 20,
     },
     question: {
         paddingTop: 20,
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
         width: 150,
         alignSelf: 'center',
         position: 'relative',
-        marginBottom: '50%',
+        marginBottom: '35%',
         backgroundColor: '#BBCAEB',
     },
 });

@@ -22,6 +22,9 @@ const ProfileInterests = ({navigation}) => {
 
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
+                    <Title>
+                        Edit Profile
+                    </Title>
                 </Appbar.Header>
 
                 <Text style={styles.question}> What are your interests? </Text>
@@ -93,6 +96,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 20,
+        marginBottom: 20,
     },
     question: {
         paddingTop: 20,
