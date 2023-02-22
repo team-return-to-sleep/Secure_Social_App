@@ -3,7 +3,7 @@ import {useState} from 'react'
 import { Appbar, Title, TextInput, Button} from 'react-native-paper';
 import {View,Text,SafeAreaView,Alert} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import Amplify, {Auth} from '@aws-amplify/core'
 
 
 const LoginScreen = ({navigation}) => {
@@ -47,7 +47,8 @@ const LoginScreen = ({navigation}) => {
             style={{margin:20}}
             onPress={_loginAsync}
             //onPress={() => navigation.navigate("Toolbar", {screen:'Home'})}
-            >
+            //onPress={Auth.signOut()}
+        >
             Login
         </Button>
     </View>

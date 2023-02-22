@@ -1,0 +1,63 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-wallflower-staging-63629-authRole",
+      "UnauthRoleArn": "arn:aws:iam::040383021972:role/amplify-wallflower-staging-63629-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::040383021972:role/amplify-wallflower-staging-63629-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-wallflower-staging-63629-deployment",
+      "UnauthRoleName": "amplify-wallflower-staging-63629-unauthRole",
+      "StackName": "amplify-wallflower-staging-63629",
+      "StackId": "arn:aws:cloudformation:us-west-2:040383021972:stack/amplify-wallflower-staging-63629/be441100-b01f-11ed-884d-02b9b6e34b3d",
+      "AmplifyAppId": "d2fcfhdiz208en"
+    }
+  },
+  "auth": {
+    "Wallflower": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 7,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "signupAttributes": [
+          "PREFERRED_USERNAME",
+          "EMAIL",
+          "NAME"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-west-2_1PvHjBYud",
+        "AppClientIDWeb": "vgksn5mo02vsh3o0kdl0dif95",
+        "AppClientID": "7rtnbb1ahshq0o8gmm0m022h7p",
+        "IdentityPoolId": "us-west-2:79405604-ec4a-4781-b492-b5ec5615a86a",
+        "UserPoolArn": "arn:aws:cognito-idp:us-west-2:040383021972:userpool/us-west-2_1PvHjBYud",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "Wallflower"
+      },
+      "lastPushTimeStamp": "2023-02-21T05:41:28.139Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-wallflower-staging-63629-deployment/amplify-cfn-templates/auth/Wallflower-cloudformation-template.json",
+        "logicalId": "authWallflower"
+      },
+      "lastPushDirHash": "Yc1CKf/qlnexZgfGth7UPTP+wJY="
+    }
+  }
+}
