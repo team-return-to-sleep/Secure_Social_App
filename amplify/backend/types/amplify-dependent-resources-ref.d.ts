@@ -1,4 +1,11 @@
 export type AmplifyDependentResourcesAttributes = {
+  "api": {
+    "wallflower": {
+      "GraphQLAPIEndpointOutput": "string",
+      "GraphQLAPIIdOutput": "string",
+      "GraphQLAPIKeyOutput": "string"
+    }
+  },
   "auth": {
     "Wallflower": {
       "AppClientID": "string",

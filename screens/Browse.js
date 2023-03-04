@@ -1,15 +1,38 @@
 import * as React from 'react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,SafeAreaView,Image,Pressable,StyleSheet,ScrollView,Alert} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import {listUsers} from '../src/graphql/queries'
+
+import {API, graphqlOperation} from '@aws-amplify/api'
+
 import Header from './Header'
 
 
-const Browse = () => {
+const Browse = ({navigation}) => {
     const [name, setName] = useState('')
+    const [users, setUsers] = useState([])
+
+    useEffect( ()=> {
+        const fetchUsers = async() => {
+            //try{
+                const usersData = await API.graphql(
+                    {
+                        query: listUsers,
+                        authMode: "API_KEY"
+                    }
+                )
+                setUsers(usersData.data.listUsers.items)
+                //console.log(usersData.data.listUsers.items)
+                console.log(users[0].imageUri)
+            //catch(e){console.log("error"}
+        }
+        fetchUsers();
+     }, []);
+
   return (
     <>
     <View style={{flex:1}}>
@@ -32,10 +55,11 @@ const Browse = () => {
             <View style={styles.profileWrapper}>
                     <Pressable
                       style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
+                      onPress={() => navigation.navigate("OtherUserProfile", {user: users[0]})}>
                     <Image
                       style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
+                      source={{uri: users[0].imageUri}}
+                     // source={require('../assets/images/profpic.png')}
                     />
                     </Pressable>
                     <Pressable

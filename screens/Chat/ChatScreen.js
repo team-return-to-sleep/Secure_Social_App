@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import {View,Text,StyleSheet} from 'react-native'
 import { Appbar,Title,Button,TextInput} from 'react-native-paper';
-
+import API, {graphqlOperation} from '@aws-amplify/api'
 
 import Toolbar from '../Toolbar'
 

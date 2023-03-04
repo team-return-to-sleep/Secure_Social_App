@@ -6,13 +6,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Header from './Header'
 
-const OtherUserProfile = ({navigation}) => {
+const OtherUserProfile = ({route, navigation}) => {
 
     const [info, setInfo] = useState({
         name:"loading",
         interests:"loading",
         age:"loading"
     })
+
+    const {user} = route.params;
 
   return (
     <ScrollView style={styles.container}>
@@ -23,10 +25,10 @@ const OtherUserProfile = ({navigation}) => {
         </Appbar.Header>
             <View style={styles.profileWrapper}>
 
-                <Text style={styles.username}>Catgrammer</Text>
+                <Text style={styles.username}>{user.name}</Text>
                 <Image
                     style={styles.profilePicture}
-                    source={require('../assets/images/pfp5.jpg')}
+                    source={{uri: user.imageUri}}
                 />
                 <View style={styles.bioContainer}>
                     <Text style={styles.bio}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>

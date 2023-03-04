@@ -1,4 +1,39 @@
 {
+  "api": {
+    "wallflower": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "Wallflower"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "apiKeyConfig": {
+                "apiKeyExpirationDate": "2024-02-27T05:07:26.529Z",
+                "apiKeyExpirationDays": 365,
+                "description": "global sandbox key"
+              },
+              "authenticationType": "API_KEY"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authWallflower"
+            }
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
   "auth": {
     "Wallflower": {
       "customAuth": false,

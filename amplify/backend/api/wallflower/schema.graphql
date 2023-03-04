@@ -1,0 +1,44 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type User @model {
+    id: ID!
+    name: String!
+    imageUri: String
+    status: String
+    chatRoomUser: [ChatRoomUser] @hasMany(indexName: "byUser", fields: ["id"])
+    message: [Message] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+type ChatRoomUser @model {
+    id: ID!
+    userID: ID! @index(name: "byUser", sortKeyFields: ["chatRoomID"])
+    chatRoomID: ID! @index(name: "byChatRoom", sortKeyFields: ["userID"])
+    user: User @belongsTo(fields: ["userID"])
+    chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
+}
+
+type ChatRoom @model {
+    id: ID!
+    chatRoomUsers: [ChatRoomUser] @hasMany(indexName: "byChatRoom",fields: ["id"])
+    messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
+}
+
+#@key(name: "byChatRoom", fields: ["chatRoomID", "createdAt"], queryField: "messagesByChatRoom")
+type Message @model {
+    id: ID!
+    createdAt: String!
+    userID: ID! @index(name: "byUser", sortKeyFields: ["createdAt"], queryField: "messagesByUser")
+    chatRoomID: ID! @index(name: "byChatRoom", sortKeyFields: ["createdAt"], queryField: "messagesByChatRoom")
+    content: String!
+    user: User @belongsTo(fields: ["userID"])
+    chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
+}
+
+#type Todo @model @aws_cognito_user_pools{
+#  id: ID!
+#  name: String!
+#  description: String
+#  completed: Boolean
+#}
