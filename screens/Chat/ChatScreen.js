@@ -6,12 +6,12 @@ import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'reac
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers} from '../../src/graphql/queries'
 import {createMessage} from '../../src/graphql/mutations'
-import API, {graphqlOperation} from '@aws-amplify/api'
+import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Toolbar from '../Toolbar'
 
 export function ChatScreen({route, navigation}) {
-  const myChatRoomID = route.params.id;
+  const myChatRoomID = route.params.chatRoomID;
   const myUserData = route.params.user;
   const otherUser = route.params.otherUser;
   const [messages, setMessages] = useState([]);
@@ -35,22 +35,27 @@ export function ChatScreen({route, navigation}) {
 //    loadPrevMessages();
   }, [])
 
-  async function onSend(newMessage = []) {
+  const onSend = async(newMessage = []) => {
     setMessages(GiftedChat.append(messages, newMessage));
     // const { _id, createdAt, text, user, } = messages[0]
-    API.graphql(
+
+    console.log(newMessage[0].text)
+    console.log(route.params.user.id)
+    console.log(route.params.chatRoomID)
+    await API.graphql(
         {
             query: createMessage,
             variables: {
                 input: {
                     content: newMessage[0].text,
                     userID: route.params.user.id,
-                    chatRoomID: route.params.id,
+                    chatRoomID: route.params.chatRoomID,
                 }
             },
             authMode: "API_KEY"
         }
     )
+    console.log("end")
   }
 
   const styles = StyleSheet.create({

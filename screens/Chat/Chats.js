@@ -99,7 +99,7 @@ const Chats = ({navigation}) => {
         )
 
         navigation.navigate("ChatScreen", {
-            id: newChatRoom.id,
+            chatRoomID: newChatRoom.id,
             user: myUserData,
             otherUser: otherUser,
         })
