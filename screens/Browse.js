@@ -18,7 +18,7 @@ const Browse = ({navigation}) => {
 
     useEffect( ()=> {
         const fetchUsers = async() => {
-            //try{
+            try{
                 const usersData = await API.graphql(
                     {
                         query: listUsers,
@@ -26,9 +26,10 @@ const Browse = ({navigation}) => {
                     }
                 )
                 setUsers(usersData.data.listUsers.items)
-                //console.log(usersData.data.listUsers.items)
-                console.log(users[0].imageUri)
-            //catch(e){console.log("error"}
+                console.log(usersData.data.listUsers.items)
+                //console.log(users[0].imageUri)
+            }
+            catch(e){console.log(e)}
         }
         fetchUsers();
      }, []);
@@ -53,47 +54,18 @@ const Browse = ({navigation}) => {
         </Button>
         <ScrollView style={styles.container}>
             <View style={styles.profileWrapper}>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("OtherUserProfile", {user: users[0]})}>
-                    <Image
-                      style={styles.profile}
-                      source={{uri: users[0].imageUri}}
-                     // source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                      <Image
-                         style={styles.profile}
-                         source={require('../assets/images/profpic.png')}
-                      />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
+                {users.map((user) => {
+                    return (
+                        <Pressable
+                          style={styles.profile}
+                          onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
+                        <Image
+                          style={styles.profile}
+                          source={{uri: user.imageUri}}
+                        />
+                        </Pressable>
+                    );
+                })}
             </View>
         </ScrollView>
     </View>

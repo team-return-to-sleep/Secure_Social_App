@@ -6,6 +6,7 @@ type User @model {
     id: ID!
     name: String!
     imageUri: String
+    region: String
     status: String
     chatRoomUser: [ChatRoomUser] @hasMany(indexName: "byUser", fields: ["id"])
     message: [Message] @hasMany(indexName: "byUser", fields: ["id"])
