@@ -18,7 +18,6 @@ const Browse = ({navigation}) => {
 
     useEffect( ()=> {
         const fetchUsers = async() => {
-            try{
                 const usersData = await API.graphql(
                     {
                         query: listUsers,
@@ -26,10 +25,7 @@ const Browse = ({navigation}) => {
                     }
                 )
                 setUsers(usersData.data.listUsers.items)
-                console.log(usersData.data.listUsers.items)
-                //console.log(users[0].imageUri)
-            }
-            catch(e){console.log(e)}
+                // console.log(usersData.data.listUsers.items)
         }
         fetchUsers();
      }, []);

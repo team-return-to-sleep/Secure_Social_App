@@ -1,78 +1,130 @@
 import * as React from 'react';
-import { Appbar, Title, Button } from 'react-native-paper';
-import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet, Pressable} from 'react-native'
+import {useState, useEffect} from 'react'
+import { Appbar, Title, TextInput, Button } from 'react-native-paper';
+import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet,Alert,Pressable} from 'react-native'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
 import Header from '../Header'
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Auth} from 'aws-amplify'
+import {getUser, listUsers} from '../../src/graphql/queries'
+import {createChatRoom, createChatRoomUser} from '../../src/graphql/mutations'
+import {API, graphqlOperation} from '@aws-amplify/api'
+
+import {createNativeStackNavigator } from '@react-navigation/native-stack';
 import {ChatScreen} from './ChatScreen'
 
 const Chats = ({navigation}) => {
 
-      const Stack = createNativeStackNavigator()
+    const Stack = createNativeStackNavigator()
+
+    const [myUserData, setMyUserData] = useState()
+    const [users, setUsers] = useState([])
+
+    useEffect( ()=> {
+        const fetchUsers = async() => {
+                const usersData = await API.graphql(
+                    {
+                        query: listUsers,
+                        authMode: "API_KEY"
+                    }
+                )
+                setUsers(usersData.data.listUsers.items)
+        }
+        fetchUsers();
+     }, []);
+
+    const onClickHandler = async (otherUser) => {
+        // if you already have a chat room with the other user, no need to create a new one! :)
+        // note that for now, we assume only 1:1 messaging
+        // this can be modified later
+
+        // create new chat room
+        const newChatRoomData = await API.graphql(
+            {
+                query: createChatRoom,
+                variables: {input: {}},
+                authMode: "API_KEY"
+            }
+        )
+
+        if (!newChatRoomData.data) {
+            console.log("Failed to create a chat room");
+            return;
+        }
+
+        const newChatRoom = newChatRoomData.data.createChatRoom;
+
+        // add self (authenticated user) to the chat room
+        const userInfo = await Auth.currentAuthenticatedUser();
+        await API.graphql(
+            {
+                query: createChatRoomUser,
+                variables: {
+                    input: {
+                        userID: userInfo.attributes.sub,
+                        chatRoomID: newChatRoom.id,
+                    }
+                },
+                authMode: "API_KEY"
+            }
+        )
+
+        // add other user to chat room
+        await API.graphql(
+            {
+                query: createChatRoomUser,
+                variables: {
+                    input: {
+                        userID: otherUser.id,
+                        chatRoomID: newChatRoom.id,
+                    }
+                },
+                authMode: "API_KEY"
+            }
+        )
+
+        console.log(newChatRoom.id)
+        console.log(otherUser.name)
+        navigation.navigate("ChatScreen", {
+            id: newChatRoom.id,
+            otherUser: otherUser,
+        })
+    }
 
       return (
           <ScrollView style={styles.container}>
               <Header />
               <SafeAreaView>
                   <View style={styles.headerWrapper}>
-                      <Image
-                          style={styles.profileImage}
-                          source={require('../../assets/images/pfp1.jpg')}
-                      />
-                      <Image
-                          style={styles.profileImage}
-                          source={require('../../assets/images/pfp2.jpg')}
-                      />
-                      <Image
-                          style={styles.profileImage}
-                          source={require('../../assets/images/profpic.png')}
-                      />
-                      <Image
-                          style={styles.profileImage}
-                          source={require('../../assets/images/profpic.png')}
-                      />
-                      <Image
-                          style={styles.profileImage}
-                          source={require('../../assets/images/profpic.png')}
-                      />
+                        {users.map((user) => {
+                            return (
+                                <Image
+                                  style={styles.profileImage}
+                                  source={{uri: user.imageUri}}
+                                />
+                            );
+                        })}
                   </View>
               </SafeAreaView>
 
               <View style={styles.chatWrapper}>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}>
-                    <View style={styles.imageWrapper}>
-                    <Image
-                      style={styles.profileImage}
-                      source={require('../../assets/images/pfp2.jpg')}
-                    />
-                    <Text> Latest Message Here </Text>
-                    </View>
-                  </Pressable>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
-                  <Pressable
-                  style={styles.chat}
-                  onPress={() => navigation.navigate("ChatScreen")}/>
+                    {users.map((user) => {
+                      return (
+                        <Pressable
+                        style={styles.chat}
+                        onPress={() => onClickHandler(user)}>
+                            <View style={styles.imageWrapper}>
+                            <Image
+                                style={styles.profileImage}
+                                source={{uri: user.imageUri}}
+                            />
+                            <Text> Latest Message Here </Text>
+                            </View>
+                        </Pressable>
+                        );
+                  })}
               </View>
           </ScrollView>
         );

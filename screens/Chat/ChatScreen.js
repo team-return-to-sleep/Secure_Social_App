@@ -6,10 +6,25 @@ import API, {graphqlOperation} from '@aws-amplify/api'
 
 import Toolbar from '../Toolbar'
 
-export function ChatScreen({navigation}) {
+export function ChatScreen({route, navigation}) {
+  const chatRoomID = route.params.id;
+  const otherUser = route.params.otherUser;
+  const [myUserData, setMyUserData] = useState()
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    const fetchUser = async() => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+      const userData = await API.graphql (
+        {
+          query: getUser,
+          variables: {id: userInfo.attributes.sub},
+          authMode: "API_KEY"
+         }
+       )
+       setMyUserData(userData)
+    }
+    fetchUser();
     setMessages([
       {
         _id: 1,
@@ -18,7 +33,7 @@ export function ChatScreen({navigation}) {
         user: {
           _id: 2,
           name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
+          avatar: otherUser.imageUri,
         },
       },
     ])
@@ -33,7 +48,7 @@ export function ChatScreen({navigation}) {
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Title>
-                Chat
+                {otherUser.name}
             </Title>
         </Appbar.Header>
 
