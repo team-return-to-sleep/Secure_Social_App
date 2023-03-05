@@ -23,6 +23,17 @@ const Chats = ({navigation}) => {
     const [users, setUsers] = useState([])
 
     useEffect( ()=> {
+        const fetchUser = async() => {
+          const userInfo = await Auth.currentAuthenticatedUser();
+          const userData = await API.graphql (
+            {
+              query: getUser,
+              variables: {id: userInfo.attributes.sub},
+              authMode: "API_KEY"
+             }
+           )
+           setMyUserData(userData.data.getUser)
+        }
         const fetchUsers = async() => {
                 const usersData = await API.graphql(
                     {
@@ -32,6 +43,7 @@ const Chats = ({navigation}) => {
                 )
                 setUsers(usersData.data.listUsers.items)
         }
+        fetchUser();
         fetchUsers();
      }, []);
 
@@ -58,7 +70,7 @@ const Chats = ({navigation}) => {
 
         // add self (authenticated user) to the chat room
         const userInfo = await Auth.currentAuthenticatedUser();
-        await API.graphql(
+        const userData = await API.graphql(
             {
                 query: createChatRoomUser,
                 variables: {
@@ -70,6 +82,7 @@ const Chats = ({navigation}) => {
                 authMode: "API_KEY"
             }
         )
+        // setMyUserData(userData)
 
         // add other user to chat room
         await API.graphql(
@@ -85,10 +98,9 @@ const Chats = ({navigation}) => {
             }
         )
 
-        console.log(newChatRoom.id)
-        console.log(otherUser.name)
         navigation.navigate("ChatScreen", {
             id: newChatRoom.id,
+            user: myUserData,
             otherUser: otherUser,
         })
     }
