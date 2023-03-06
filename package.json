@@ -20,6 +20,7 @@
     "amazon-cognito-identity-js": "^6.1.2",
     "aws-amplify": "^5.0.15",
     "aws-amplify-react-native": "^7.0.2",
+    "expo": "^47.0.13",
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-gifted-chat": "^1.1.1",
