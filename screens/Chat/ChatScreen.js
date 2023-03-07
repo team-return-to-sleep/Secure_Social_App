@@ -37,7 +37,8 @@ export function ChatScreen({route, navigation}) {
                 authMode: "API_KEY",
             }
         )
-        //console.log(messagesData.data.messagesByChatRoom.items)
+        console.log(myChatRoomID)
+        console.log(messagesData.data.messagesByChatRoom.items)
         const messagesDataArr = messagesData.data.messagesByChatRoom.items
         for(let i=0; i<messagesDataArr.length; i++) {
             const curr = messagesDataArr[i]

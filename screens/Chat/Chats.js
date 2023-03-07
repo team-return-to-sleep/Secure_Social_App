@@ -54,6 +54,7 @@ const Chats = ({navigation}) => {
         // if you already have a chat room with the other user, no need to create a new one! :)
         // note that for now, we assume only 1:1 messaging
         // this can be modified later
+        //console.log(otherUser)
         let myRooms = myUserData.chatRoomUser.items
         let exists = false
        // console.log(myRooms)
@@ -63,7 +64,8 @@ const Chats = ({navigation}) => {
             for (let i=0; i<myRooms.length; i++) {
 //                console.log(myRooms[i].chatRoom.chatRoomUsers.items[0].userID)
 //                console.log(otherUser.id)
-                if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id) {
+                if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id ||
+                 myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
                     // room with this person already exists!
                     console.log("room exists!")
                     navigation.navigate("ChatScreen", {
