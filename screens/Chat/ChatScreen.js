@@ -4,7 +4,7 @@ import {View,Text,StyleSheet} from 'react-native'
 import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'react-native-paper';
 
 import {Auth} from 'aws-amplify'
-import {getUser, listUsers} from '../../src/graphql/queries'
+import {getUser, listUsers, messagesByChatRoom} from '../../src/graphql/queries'
 import {createMessage} from '../../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
@@ -17,22 +17,45 @@ export function ChatScreen({route, navigation}) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: route.params.user.id,
-        text: 'Hey when do you want to meet up to work?',
-        createdAt: new Date(),
-        user: {
-          _id: otherUser.id,
-          name: 'React Native',
-          avatar: otherUser.imageUri,
-        },
-      },
-    ])
-//    const loadPrevMessages = async() => {
-//        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-//    }
-//    loadPrevMessages();
+//    setMessages([
+//      {
+//        _id: route.params.user.id,
+//        text: 'Hey when do you want to meet up to work?',
+//        createdAt: new Date(),
+//        user: {
+//          _id: otherUser.id,
+//          name: 'React Native',
+//          avatar: otherUser.imageUri,
+//        },
+//      },
+//    ])
+    const loadPrevMessages = async() => {
+        const messagesData = await API.graphql(
+            {
+                query: messagesByChatRoom,
+                variables: {chatRoomID: myChatRoomID, sortDirection: "DESC",},
+                authMode: "API_KEY",
+            }
+        )
+        //console.log(messagesData.data.messagesByChatRoom.items)
+        const messagesDataArr = messagesData.data.messagesByChatRoom.items
+        for(let i=0; i<messagesDataArr.length; i++) {
+            const curr = messagesDataArr[i]
+            const msg = {
+                _id: curr.id,
+                text: curr.content,
+                createdAt: curr.createdAt,
+                user: {
+                    _id: curr.user.id,
+                    name: curr.user.name,
+                    avatar: curr.user.imageUri,
+                },
+            }
+            setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
+        }
+        //setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    }
+    loadPrevMessages();
   }, [])
 
   const onSend = async(newMessage = []) => {
