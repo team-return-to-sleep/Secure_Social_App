@@ -8,21 +8,23 @@ import Feather from 'react-native-vector-icons/Feather'
 import Header from '../Header'
 
 import {Auth} from 'aws-amplify'
-import {getUser, listUsers} from '../../src/graphql/queries'
+import {getUser, listUsers, getChatRoomUser} from '../../src/graphql/queries'
 import {createChatRoom, createChatRoomUser} from '../../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
+import { useIsFocused } from "@react-navigation/native";
 import {createNativeStackNavigator } from '@react-navigation/native-stack';
 import {ChatScreen} from './ChatScreen'
 
 const Chats = ({navigation}) => {
-
+    const isFocused = useIsFocused()
     const Stack = createNativeStackNavigator()
 
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
 
     useEffect( ()=> {
+        if(isFocused){
         const fetchUser = async() => {
           const userInfo = await Auth.currentAuthenticatedUser();
           const userData = await API.graphql (
@@ -45,64 +47,88 @@ const Chats = ({navigation}) => {
         }
         fetchUser();
         fetchUsers();
-     }, []);
+        }
+     }, [isFocused]);
 
     const onClickHandler = async (otherUser) => {
         // if you already have a chat room with the other user, no need to create a new one! :)
         // note that for now, we assume only 1:1 messaging
         // this can be modified later
+        let myRooms = myUserData.chatRoomUser.items
+        let exists = false
+       // console.log(myRooms)
+       // console.log(myUserData.chatRoomUser.items[0].chatRoom.chatRoomUsers)
 
-        // create new chat room
-        const newChatRoomData = await API.graphql(
-            {
-                query: createChatRoom,
-                variables: {input: {}},
-                authMode: "API_KEY"
+        if (myRooms) {
+            for (let i=0; i<myRooms.length; i++) {
+//                console.log(myRooms[i].chatRoom.chatRoomUsers.items[0].userID)
+//                console.log(otherUser.id)
+                if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id) {
+                    // room with this person already exists!
+                    console.log("room exists!")
+                    navigation.navigate("ChatScreen", {
+                                chatRoomID: myRooms[i].chatRoomID,
+                                user: myUserData,
+                                otherUser: otherUser,
+                    })
+                    exists = true
+                }
             }
-        )
-
-        if (!newChatRoomData.data) {
-            console.log("Failed to create a chat room");
-            return;
         }
+        if (!exists) {
+            console.log("created new :/")
+            // create new chat room
+            const newChatRoomData = await API.graphql(
+                {
+                    query: createChatRoom,
+                    variables: {input: {}},
+                    authMode: "API_KEY"
+                }
+            )
 
-        const newChatRoom = newChatRoomData.data.createChatRoom;
-
-        // add self (authenticated user) to the chat room
-        const userInfo = await Auth.currentAuthenticatedUser();
-        const userData = await API.graphql(
-            {
-                query: createChatRoomUser,
-                variables: {
-                    input: {
-                        userID: userInfo.attributes.sub,
-                        chatRoomID: newChatRoom.id,
-                    }
-                },
-                authMode: "API_KEY"
+            if (!newChatRoomData.data) {
+                console.log("Failed to create a chat room");
+                return;
             }
-        )
-        // setMyUserData(userData)
 
-        // add other user to chat room
-        await API.graphql(
-            {
-                query: createChatRoomUser,
-                variables: {
-                    input: {
-                        userID: otherUser.id,
-                        chatRoomID: newChatRoom.id,
-                    }
-                },
-                authMode: "API_KEY"
-            }
-        )
+            const newChatRoom = newChatRoomData.data.createChatRoom;
 
-        navigation.navigate("ChatScreen", {
-            chatRoomID: newChatRoom.id,
-            user: myUserData,
-            otherUser: otherUser,
-        })
+            // add self (authenticated user) to the chat room
+            const userInfo = await Auth.currentAuthenticatedUser();
+            const userData = await API.graphql(
+                {
+                    query: createChatRoomUser,
+                    variables: {
+                        input: {
+                            userID: userInfo.attributes.sub,
+                            chatRoomID: newChatRoom.id,
+                        }
+                    },
+                    authMode: "API_KEY"
+                }
+            )
+            // setMyUserData(userData)
+
+            // add other user to chat room
+            await API.graphql(
+                {
+                    query: createChatRoomUser,
+                    variables: {
+                        input: {
+                            userID: otherUser.id,
+                            chatRoomID: newChatRoom.id,
+                        }
+                    },
+                    authMode: "API_KEY"
+                }
+            )
+
+            navigation.navigate("ChatScreen", {
+                chatRoomID: newChatRoom.id,
+                user: myUserData,
+                otherUser: otherUser,
+            })
+        }
     }
 
       return (
