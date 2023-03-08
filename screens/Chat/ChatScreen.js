@@ -6,6 +6,7 @@ import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'reac
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers, messagesByChatRoom} from '../../src/graphql/queries'
 import {createMessage} from '../../src/graphql/mutations'
+import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Toolbar from '../Toolbar'
@@ -33,12 +34,12 @@ export function ChatScreen({route, navigation}) {
         const messagesData = await API.graphql(
             {
                 query: messagesByChatRoom,
-                variables: {chatRoomID: myChatRoomID, sortDirection: "DESC",},
+                variables: {chatRoomID: myChatRoomID, sortDirection: "ASC",},
                 authMode: "API_KEY",
             }
         )
-        console.log(myChatRoomID)
-        console.log(messagesData.data.messagesByChatRoom.items)
+//        console.log(myChatRoomID)
+//        console.log(messagesData.data.messagesByChatRoom.items)
         const messagesDataArr = messagesData.data.messagesByChatRoom.items
         for(let i=0; i<messagesDataArr.length; i++) {
             const curr = messagesDataArr[i]
@@ -59,13 +60,43 @@ export function ChatScreen({route, navigation}) {
     loadPrevMessages();
   }, [])
 
+  useEffect(() => {
+    const subscription = API.graphql(
+        {
+            query: onCreateMessage,
+            authMode: "API_KEY",
+        }
+    ).subscribe({
+        next: ({provider, value}) => {
+            console.log(value.data.onCreateMessage)
+            const newMessage = value.data.onCreateMessage
+            if (newMessage.chatRoomID != myChatRoomID) {
+                return;
+            }
+            const msg = {
+                _id: newMessage.id,
+                text: newMessage.content,
+                createdAt: newMessage.createdAt,
+                user: {
+                    _id: newMessage.user.id,
+                    name: newMessage.user.name,
+                    avatar: newMessage.user.imageUri,
+                },
+            }
+            setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
+        },
+        error: error => console.warn(error.error.errors)
+    })
+        return () => subscription.unsubscribe();
+  }, [])
+
   const onSend = async(newMessage = []) => {
-    setMessages(GiftedChat.append(messages, newMessage));
+    //setMessages(GiftedChat.append(messages, newMessage));
     // const { _id, createdAt, text, user, } = messages[0]
 
-    console.log(newMessage[0].text)
-    console.log(route.params.user.id)
-    console.log(route.params.chatRoomID)
+//    console.log(newMessage[0].text)
+//    console.log(route.params.user.id)
+//    console.log(route.params.chatRoomID)
     await API.graphql(
         {
             query: createMessage,
@@ -169,7 +200,8 @@ export function ChatScreen({route, navigation}) {
             avatar: route.params.user.imageUri,
           }}
           renderBubble={renderBubble}
-          alignTop
+          
+          scrollToBottom
           scrollToBottomComponent={scrollToBottomComponent}
           placeholder='Type your message here...'
           showUserAvatar

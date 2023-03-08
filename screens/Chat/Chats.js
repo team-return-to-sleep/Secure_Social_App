@@ -63,17 +63,32 @@ const Chats = ({navigation}) => {
         if (myRooms) {
             for (let i=0; i<myRooms.length; i++) {
 //                console.log(myRooms[i].chatRoom.chatRoomUsers.items[0].userID)
+//                console.log("otheruser id:")
 //                console.log(otherUser.id)
-                if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id ||
-                 myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
-                    // room with this person already exists!
-                    console.log("room exists!")
-                    navigation.navigate("ChatScreen", {
-                                chatRoomID: myRooms[i].chatRoomID,
-                                user: myUserData,
-                                otherUser: otherUser,
-                    })
-                    exists = true
+                if (myUserData.id == otherUser.id) {
+                    if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id &&
+                        myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
+                        // room with this person already exists!
+                        console.log("room exists!")
+                        navigation.navigate("ChatScreen", {
+                            chatRoomID: myRooms[i].chatRoomID,
+                            user: myUserData,
+                            otherUser: otherUser,
+                        })
+                        exists = true
+                    }
+                } else {
+                    if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id ||
+                     myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
+                        // room with this person already exists!
+                        console.log("room exists!")
+                        navigation.navigate("ChatScreen", {
+                                    chatRoomID: myRooms[i].chatRoomID,
+                                    user: myUserData,
+                                    otherUser: otherUser,
+                        })
+                        exists = true
+                    }
                 }
             }
         }
