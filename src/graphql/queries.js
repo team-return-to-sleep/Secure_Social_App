@@ -13,6 +13,15 @@ export const getUser = /* GraphQL */ `
           id
           userID
           chatRoomID
+          chatRoom {
+            chatRoomUsers {
+              items {
+                id
+                chatRoomID
+                userID
+              }
+            }
+          }
           createdAt
           updatedAt
         }
