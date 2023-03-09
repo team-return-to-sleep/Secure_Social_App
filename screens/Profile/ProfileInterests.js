@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
+import {ScrollView,View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
 
 import Header from '../Header'
 
@@ -18,7 +18,7 @@ const ProfileInterests = ({navigation}) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
 
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
@@ -52,7 +52,7 @@ const ProfileInterests = ({navigation}) => {
                 onPress={() => navigation.navigate("ProfileFavorites")}>
                     Continue
                 </Button>
-        </View>
+        </ScrollView>
       );
 }
 

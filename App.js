@@ -6,7 +6,6 @@
  * @flow strict-local
  */
 
-import React, {useEffect} from 'react';
 import type {Node} from 'react';
 
 import {
@@ -17,6 +16,8 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
+  Platform
 } from 'react-native';
 
 import {
@@ -48,12 +49,106 @@ import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
 
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import React, { useState, useEffect, useRef } from 'react';
+import { CourierClient } from "@trycourier/courier";
+
+
 const Stack = createNativeStackNavigator()
-
-
 Amplify.configure(config)
 
+// NEW FOR PUSH NOTIF
+Notifications.setNotificationHandler({
+ handleNotification: async () => ({
+   shouldShowAlert: true,
+   shouldPlaySound: false,
+   shouldSetBadge: false,
+ }),
+});
+
+async function registerForPushNotificationsAsync() {
+ let token;
+ if (1) {
+   console.log("HERE")
+   const { status: existingStatus } = await Notifications.getPermissionsAsync();
+   let finalStatus = existingStatus;
+   if (existingStatus !== 'granted') {
+     const { status } = await Notifications.requestPermissionsAsync();
+     finalStatus = status;
+   }
+   if (finalStatus !== 'granted') {
+     alert('Failed to get push token');
+     return;
+   }
+   token = (await Notifications.getExpoPushTokenAsync()).data;
+   console.log("Expo push token:", token);
+ } else {
+   alert('Can not use this device (not physical)');
+ }
+
+ if (Platform.OS === 'android') {
+   Notifications.setNotificationChannelAsync('default', {
+     name: 'default',
+     importance: Notifications.AndroidImportance.MAX,
+     vibrationPattern: [0, 250, 250, 250],
+     lightColor: '#FF231F7C',
+   });
+ }
+
+ return token;
+}
+
+async function sendPushNotification(expoPushToken) {
+ const message = {
+   to: expoPushToken,
+   sound: 'default',
+   title: 'HI FROM WALLFLOWER',
+   body: 'Testing push',
+   data: { testData: 'test data' },
+ };
+
+ await fetch('https://exp.host/--/api/v2/push/send', {
+   method: 'POST',
+   headers: {
+     Accept: 'application/json',
+     'Accept-encoding': 'gzip, deflate',
+     'Content-Type': 'application/json',
+   },
+   body: JSON.stringify(message),
+ });
+}
+
+// END NEW
+
 const App = () => {
+
+// NEW FOR PUSH NOTIF
+const [expoPushToken, setExpoPushToken] = useState('');
+ const [notification, setNotification] = useState(false);
+ const notificationListener = useRef();
+ const responseListener = useRef();
+
+ useEffect(() => {
+   registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+     setNotification(notification);
+     console.log("Notification set")
+   });
+
+   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+     console.log(response);
+   });
+
+   return () => {
+     Notifications.removeNotificationSubscription(notificationListener.current);
+     Notifications.removeNotificationSubscription(responseListener.current);
+   };
+ }, []);
+ // END NEW
+
+
  //Auth.signOut();
  useEffect( ()=> {
     const fetchUser = async() => {
@@ -97,6 +192,20 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
+        <View
+             style={{
+               flex: 1,
+               alignItems: 'center',
+               justifyContent: 'space-around',
+             }}>
+             <Button
+               title="Press to Send Notification"
+               onPress={async () => {
+                 await sendPushNotification(expoPushToken);
+               }}
+             />
+           </View>
+
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Toolbar">

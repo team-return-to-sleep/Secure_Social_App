@@ -6,46 +6,42 @@ import {View,ScrollView,Text,StyleSheet,Image,SafeAreaView,TouchableHighlight} f
 import Header from '../Header'
 
 const ProfileGender = ({navigation}) => {
+    const [region, setRegion] = React.useState('')
 
     return (
         <ScrollView style={styles.container}>
-            <Appbar.Header>
-                <Appbar.BackAction onPress={() => navigation.goBack()} />
-                <Title>
-                    Edit Profile
-                </Title>
-            </Appbar.Header>
+            <Header/>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
             <View style={{flex:1}}>
 
-                <Text style={styles.question}> What is your gender? </Text>
-                <View style={styles.gendersWrapper}>
+                <Text style={styles.question}> What is your geographical region? </Text>
+                <View style={styles.regionWrapper}>
 
-                                <View style={styles.genders}>
-                                    <Image
-                                        style={styles.genderBubble}
-                                        source={require('../../assets/images/profpic.png')}
-                                    />
-                                    <Text>Male</Text>
-                                </View>
-                                <View style={styles.genders}>
-                                    <Image
-                                        style={styles.genderBubble}
-                                        source={require('../../assets/images/profpic.png')}
-                                    />
-                                    <Text>Female</Text>
-                                </View>
-                                <View style={styles.genders}>
-                                     <Image
-                                         style={styles.genderBubble}
-                                         source={require('../../assets/images/profpic.png')}
-                                     />
-                                     <Text>Other</Text>
-                                </View>
+                                <TouchableHighlight style={styles.genders}
+                                    onPress={(genders)=>setRegion("Northeast"), console.log(gender)}>
+                                    <Text>Northeast</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.genders}
+                                    onPress={(genders)=>setRegion("Southeast")}>
+                                    <Text>Southeast</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.genders}
+                                    onPress={(genders)=>setRegion("Southwest")}>
+                                    <Text>Southwest</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.genders}
+                                    onPress={(genders)=>setRegion("West")}>
+                                    <Text>West</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.genders}
+                                    onPress={(genders)=>setRegion("Midwest")}>
+                                    <Text>Midwest</Text>
+                                </TouchableHighlight>
                 </View>
                 <Button icon="content-save"
                 mode="contained"
                 style={styles.nextButton}
-                onPress={() => navigation.navigate("ProfileAge")}>
+                onPress={() => navigation.navigate("ProfileInterests")}>
                     Continue
                 </Button>
 
@@ -89,12 +85,7 @@ const styles = StyleSheet.create({
         borderColor: '#DDEDEA',
         alignItems: 'center',
     },
-    genderBubble: {
-        width: 50,
-        height: 50,
-        borderRadius: 50,
-    },
-    gendersWrapper: {
+    regionWrapper: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -104,7 +95,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     question: {
-        paddingTop: 20,
+        paddingTop: '3%',
         textAlign: 'center',
         fontSize: 18,
     },
