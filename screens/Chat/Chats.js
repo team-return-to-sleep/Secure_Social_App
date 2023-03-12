@@ -55,10 +55,21 @@ const Chats = ({navigation}) => {
         // note that for now, we assume only 1:1 messaging
         // this can be modified later
         //console.log(otherUser)
-        let myRooms = myUserData.chatRoomUser.items
+        // TODO: fetch most recent userData here
+        const userInfo = await Auth.currentAuthenticatedUser();
+                  const userData = await API.graphql (
+                    {
+                      query: getUser,
+                      variables: {id: userInfo.attributes.sub},
+                      authMode: "API_KEY"
+                     }
+                   )
+        const myData = userData.data.getUser
+        setMyUserData(myData)
+        let myRooms = myData.chatRoomUser.items
         let exists = false
        // console.log(myRooms)
-       // console.log(myUserData.chatRoomUser.items[0].chatRoom.chatRoomUsers)
+       // console.log(myUserData.chatRoomUser.items)
 
         if (myRooms) {
             for (let i=0; i<myRooms.length; i++) {
@@ -72,7 +83,7 @@ const Chats = ({navigation}) => {
                         console.log("room exists!")
                         navigation.navigate("ChatScreen", {
                             chatRoomID: myRooms[i].chatRoomID,
-                            user: myUserData,
+                            user: myData,
                             otherUser: otherUser,
                         })
                         exists = true
@@ -84,7 +95,7 @@ const Chats = ({navigation}) => {
                         console.log("room exists!")
                         navigation.navigate("ChatScreen", {
                                     chatRoomID: myRooms[i].chatRoomID,
-                                    user: myUserData,
+                                    user: myData,
                                     otherUser: otherUser,
                         })
                         exists = true

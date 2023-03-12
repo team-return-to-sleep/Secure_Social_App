@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat'
-import {View,Text,StyleSheet} from 'react-native'
+import {View,Text,StyleSheet,AsyncStorage} from 'react-native'
 import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'react-native-paper';
+import { useIsFocused } from "@react-navigation/native";
 
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers, messagesByChatRoom} from '../../src/graphql/queries'
@@ -12,24 +13,14 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Toolbar from '../Toolbar'
 
 export function ChatScreen({route, navigation}) {
+  const isFocused = useIsFocused()
   const myChatRoomID = route.params.chatRoomID;
   const myUserData = route.params.user;
   const otherUser = route.params.otherUser;
   const [messages, setMessages] = useState([]);
+  const [points, setPoints] = useState(0);
 
   useEffect(() => {
-//    setMessages([
-//      {
-//        _id: route.params.user.id,
-//        text: 'Hey when do you want to meet up to work?',
-//        createdAt: new Date(),
-//        user: {
-//          _id: otherUser.id,
-//          name: 'React Native',
-//          avatar: otherUser.imageUri,
-//        },
-//      },
-//    ])
     const loadPrevMessages = async() => {
         const messagesData = await API.graphql(
             {
@@ -57,10 +48,40 @@ export function ChatScreen({route, navigation}) {
         }
         //setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
     }
+
     loadPrevMessages();
+
   }, [])
 
   useEffect(() => {
+    if (isFocused) {
+    const loadPoints = async () => {
+                try {
+                    const val = await AsyncStorage.getItem('flowerPoints')
+                    if (val) {
+                        setPoints(parseInt(val))
+                    } else {
+                        await AsyncStorage.setItem('flowerPoints', '20')
+                        setPoints(20)
+                    }
+                } catch (error) {
+                    console.log("error retrieving flower data")
+                }
+    }
+    loadPoints();
+    }
+  }, [isFocused])
+
+  useEffect(() => {
+    const setFlowerPoints = async () => {
+
+        try {
+            console.log("prev points: ", points)
+            await AsyncStorage.setItem('flowerPoints', (points+10).toString())
+        } catch (error) {
+            console.log("error saving flower data")
+        }
+    }
     const subscription = API.graphql(
         {
             query: onCreateMessage,
@@ -68,11 +89,18 @@ export function ChatScreen({route, navigation}) {
         }
     ).subscribe({
         next: ({provider, value}) => {
-            console.log(value.data.onCreateMessage)
+//            console.log(value.data.onCreateMessage)
             const newMessage = value.data.onCreateMessage
             if (newMessage.chatRoomID != myChatRoomID) {
                 return;
             }
+
+            if (newMessage.id != myUserData.id) {
+                setFlowerPoints();
+                setPoints(points+10)
+
+            }
+
             const msg = {
                 _id: newMessage.id,
                 text: newMessage.content,
@@ -200,7 +228,7 @@ export function ChatScreen({route, navigation}) {
             avatar: route.params.user.imageUri,
           }}
           renderBubble={renderBubble}
-          
+
           scrollToBottom
           scrollToBottomComponent={scrollToBottomComponent}
           placeholder='Type your message here...'
