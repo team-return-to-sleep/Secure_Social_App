@@ -7,6 +7,8 @@ export const getUser = /* GraphQL */ `
       id
       name
       imageUri
+      age
+      region
       status
       chatRoomUser {
         items {
@@ -15,11 +17,11 @@ export const getUser = /* GraphQL */ `
           chatRoomID
           chatRoom {
             chatRoomUsers {
-              items {
-                id
-                chatRoomID
-                userID
-              }
+                items {
+                          id
+                          chatRoomID
+                          userID
+                }
             }
           }
           createdAt
@@ -54,6 +56,8 @@ export const listUsers = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -78,6 +82,8 @@ export const getChatRoomUser = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -119,6 +125,8 @@ export const listChatRoomUsers = /* GraphQL */ `
           id
           name
           imageUri
+          age
+          region
           status
           createdAt
           updatedAt
@@ -199,6 +207,8 @@ export const getMessage = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -241,6 +251,8 @@ export const listMessages = /* GraphQL */ `
           id
           name
           imageUri
+          age
+          region
           status
           createdAt
           updatedAt
@@ -281,6 +293,8 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
           id
           name
           imageUri
+          age
+          region
           status
           createdAt
           updatedAt
@@ -322,6 +336,8 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
           id
           name
           imageUri
+          age
+          region
           status
           createdAt
           updatedAt
@@ -365,6 +381,8 @@ export const messagesByUser = /* GraphQL */ `
           id
           name
           imageUri
+          age
+          region
           status
           createdAt
           updatedAt
@@ -407,6 +425,8 @@ export const messagesByChatRoom = /* GraphQL */ `
           id
           name
           imageUri
+          age
+          region
           status
           createdAt
           updatedAt
