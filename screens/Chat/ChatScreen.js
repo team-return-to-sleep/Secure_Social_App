@@ -59,6 +59,7 @@ export function ChatScreen({route, navigation}) {
                 try {
                     const val = await AsyncStorage.getItem('flowerPoints')
                     if (val) {
+                        console.log("val points: ", val)
                         setPoints(parseInt(val))
                     } else {
                         await AsyncStorage.setItem('flowerPoints', '20')
@@ -76,11 +77,25 @@ export function ChatScreen({route, navigation}) {
     const setFlowerPoints = async () => {
 
         try {
-            console.log("prev points: ", points)
-            await AsyncStorage.setItem('flowerPoints', (points+10).toString())
+            const val = await AsyncStorage.getItem('flowerPoints')
+            if (val) {
+                console.log("val points: ", val)
+                setPoints(parseInt(val))
+            } else {
+                await AsyncStorage.setItem('flowerPoints', '20')
+                setPoints(20)
+            }
+            try {
+                        console.log("prev (curr) points: ", parseInt(val))
+                        await AsyncStorage.setItem('flowerPoints', (parseInt(val)+10).toString())
+            } catch (error) {
+                        console.log("error saving flower data")
+            }
+
         } catch (error) {
-            console.log("error saving flower data")
+            console.log("error retrieving flower data")
         }
+
     }
     const subscription = API.graphql(
         {
@@ -97,6 +112,7 @@ export function ChatScreen({route, navigation}) {
 
             if (newMessage.id != myUserData.id) {
                 setFlowerPoints();
+                //console.log("prev points: ", points)
                 setPoints(points+10)
 
             }
