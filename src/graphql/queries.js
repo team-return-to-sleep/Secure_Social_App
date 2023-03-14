@@ -10,6 +10,7 @@ export const getUser = /* GraphQL */ `
       age
       region
       status
+      interests
       friends
       chatRoomUser {
         items {
@@ -19,9 +20,9 @@ export const getUser = /* GraphQL */ `
           chatRoom {
             chatRoomUsers {
                 items {
-                                              id
-                                              chatRoomID
-                                              userID
+                    id
+                    chatRoomID
+                    userID
                 }
             }
           }
@@ -60,6 +61,7 @@ export const listUsers = /* GraphQL */ `
         age
         region
         status
+        interests
         friends
         chatRoomUser {
           nextToken
@@ -87,6 +89,7 @@ export const getChatRoomUser = /* GraphQL */ `
         age
         region
         status
+        interests
         friends
         chatRoomUser {
           nextToken
@@ -131,6 +134,7 @@ export const listChatRoomUsers = /* GraphQL */ `
           age
           region
           status
+          interests
           friends
           createdAt
           updatedAt
@@ -214,6 +218,7 @@ export const getMessage = /* GraphQL */ `
         age
         region
         status
+        interests
         friends
         chatRoomUser {
           nextToken
@@ -259,6 +264,7 @@ export const listMessages = /* GraphQL */ `
           age
           region
           status
+          interests
           friends
           createdAt
           updatedAt
@@ -302,6 +308,7 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
           age
           region
           status
+          interests
           friends
           createdAt
           updatedAt
@@ -344,6 +351,7 @@ export const chatRoomUsersByUserID = /* GraphQL */ `
           age
           region
           status
+          interests
           friends
           createdAt
           updatedAt
@@ -388,6 +396,7 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
           age
           region
           status
+          interests
           friends
           createdAt
           updatedAt
@@ -434,6 +443,7 @@ export const messagesByUser = /* GraphQL */ `
           age
           region
           status
+          interests
           friends
           createdAt
           updatedAt
@@ -479,6 +489,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           age
           region
           status
+          interests
           friends
           createdAt
           updatedAt
