@@ -9,13 +9,14 @@ type User @model {
     age: Int
     region: String
     status: String
+    friends: [String]
     chatRoomUser: [ChatRoomUser] @hasMany(indexName: "byUser", fields: ["id"])
     message: [Message] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
 type ChatRoomUser @model {
     id: ID!
-    userID: ID! @index(name: "byUser", sortKeyFields: ["chatRoomID"])
+    userID: ID! @index(name: "byUser", sortKeyFields: ["chatRoomID"]) @index(name: "byUserID")
     chatRoomID: ID! @index(name: "byChatRoom", sortKeyFields: ["userID"])
     user: User @belongsTo(fields: ["userID"])
     chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
