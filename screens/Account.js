@@ -6,8 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers} from '../src/graphql/queries'
-import {createMessage} from '../src/graphql/mutations'
-import {onCreateMessage} from '../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from './Header'
@@ -62,11 +60,12 @@ const Account = ({route, navigation}) => {
                     </Button>
                     <Button mode="contained"
                     style={styles.accountButton}
-                    onPress={() => navigation.navigate("ProfileGender")}>
+                        onPress={() => navigation.navigate("ProfileGender")}>
                         <Text>Edit Interests Profile</Text>
                     </Button>
                     <Button mode="contained"
-                    style={styles.accountButton}>
+                    style={styles.accountButton}
+                        onPress={() => navigation.navigate("ProfileBasicInfo", {user: user})}>
                         <Text>Edit Personal Details</Text>
                     </Button>
                     <Button mode="contained"
