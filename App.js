@@ -48,10 +48,21 @@ import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
 
+import { EThree } from '@virgilsecurity/e3kit-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 const Stack = createNativeStackNavigator()
 
 
 Amplify.configure(config)
+
+const getTokenFactory = identity => {
+    return () =>
+        fetch(`${apiUrl}/virgil-jwt?identity=${encodeURIComponent(identity)}`)
+            .then(res => res.json())
+            .then(data => data.virgil_jwt);
+};
+
 
 const App = () => {
  //Auth.signOut();
@@ -59,6 +70,15 @@ const App = () => {
     const fetchUser = async() => {
         //get authenticated user
         const userInfo = await Auth.currentAuthenticatedUser();
+
+        const identity = Auth.currentAuthenticatedUser();
+        const getToken = getTokenFactory(identity);
+        const eThree = EThree.initialize(getToken, { AsyncStorage });
+
+        await eThree.register();
+
+
+
         //console.log(userInfo);
         if (userInfo) {
             const userData = await API.graphql (

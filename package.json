@@ -17,6 +17,8 @@
     "@react-navigation/material-bottom-tabs": "^6.2.12",
     "@react-navigation/native": "^6.1.3",
     "@react-navigation/native-stack": "^6.9.10",
+    "@virgilsecurity/e3kit-native": "^2.5.3",
+    "@virgilsecurity/e3kit-node": "^2.5.1",
     "amazon-cognito-identity-js": "^6.1.2",
     "aws-amplify": "^5.0.15",
     "aws-amplify-react-native": "^7.0.2",
