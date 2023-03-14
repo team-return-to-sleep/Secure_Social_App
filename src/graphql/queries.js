@@ -10,6 +10,7 @@ export const getUser = /* GraphQL */ `
       age
       region
       status
+      friends
       chatRoomUser {
         items {
           id
@@ -18,9 +19,9 @@ export const getUser = /* GraphQL */ `
           chatRoom {
             chatRoomUsers {
                 items {
-                          id
-                          chatRoomID
-                          userID
+                                              id
+                                              chatRoomID
+                                              userID
                 }
             }
           }
@@ -59,6 +60,7 @@ export const listUsers = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -85,6 +87,7 @@ export const getChatRoomUser = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -128,6 +131,7 @@ export const listChatRoomUsers = /* GraphQL */ `
           age
           region
           status
+          friends
           createdAt
           updatedAt
         }
@@ -210,6 +214,7 @@ export const getMessage = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -254,6 +259,7 @@ export const listMessages = /* GraphQL */ `
           age
           region
           status
+          friends
           createdAt
           updatedAt
         }
@@ -296,6 +302,49 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
           age
           region
           status
+          friends
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const chatRoomUsersByUserID = /* GraphQL */ `
+  query ChatRoomUsersByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelChatRoomUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    chatRoomUsersByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        chatRoomID
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
           createdAt
           updatedAt
         }
@@ -339,6 +388,7 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
           age
           region
           status
+          friends
           createdAt
           updatedAt
         }
@@ -384,6 +434,7 @@ export const messagesByUser = /* GraphQL */ `
           age
           region
           status
+          friends
           createdAt
           updatedAt
         }
@@ -428,6 +479,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           age
           region
           status
+          friends
           createdAt
           updatedAt
         }

@@ -13,6 +13,7 @@ export const createUser = /* GraphQL */ `
       age
       region
       status
+      friends
       chatRoomUser {
         items {
           id
@@ -51,6 +52,7 @@ export const updateUser = /* GraphQL */ `
       age
       region
       status
+      friends
       chatRoomUser {
         items {
           id
@@ -89,6 +91,7 @@ export const deleteUser = /* GraphQL */ `
       age
       region
       status
+      friends
       chatRoomUser {
         items {
           id
@@ -131,6 +134,7 @@ export const createChatRoomUser = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -172,6 +176,7 @@ export const updateChatRoomUser = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -213,6 +218,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -355,6 +361,7 @@ export const createMessage = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -397,6 +404,7 @@ export const updateMessage = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
@@ -439,6 +447,7 @@ export const deleteMessage = /* GraphQL */ `
         age
         region
         status
+        friends
         chatRoomUser {
           nextToken
         }
