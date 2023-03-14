@@ -192,20 +192,6 @@ const [expoPushToken, setExpoPushToken] = useState('');
 
   return (
     <SafeAreaProvider>
-        <View
-             style={{
-               flex: 1,
-               alignItems: 'center',
-               justifyContent: 'space-around',
-             }}>
-             <Button
-               title="Press to Send Notification"
-               onPress={async () => {
-                 await sendPushNotification(expoPushToken);
-               }}
-             />
-           </View>
-
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Toolbar">
@@ -290,3 +276,19 @@ const customTheme = {...AmplifyTheme}
 
 export default withAuthenticator(App, {signUpConfig});
 //export default App;
+
+
+
+/*<View
+   style={{
+     flex: 1,
+     alignItems: 'center',
+     justifyContent: 'space-around',
+   }}>
+   <Button
+     title="Press to Send Notification"
+     onPress={async () => {
+       await sendPushNotification(expoPushToken);
+     }}
+   />
+ </View>*/

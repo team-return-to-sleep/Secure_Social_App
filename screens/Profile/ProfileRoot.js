@@ -13,6 +13,7 @@ import ProfileAge from './ProfileAge'
 import ProfileRegion from './ProfileRegion'
 import ProfileInterests from './ProfileInterests'
 import ProfileFavorites from './ProfileFavorites'
+import ProfilePicture from './ProfilePicture'
 import UserProfile from '../UserProfile'
 
 const Stack = createNativeStackNavigator()
@@ -40,6 +41,9 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileRegion" component={ProfileRegion}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfilePicture" component={ProfilePicture}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>

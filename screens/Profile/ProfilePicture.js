@@ -5,7 +5,7 @@ import {View,ScrollView,Text,StyleSheet,Image,SafeAreaView,TouchableHighlight} f
 
 import Header from '../Header'
 
-const ProfileRegion = ({navigation}) => {
+const ProfilePicture = ({navigation}) => {
     const [region, setRegion] = React.useState('')
 
     return (
@@ -17,23 +17,23 @@ const ProfileRegion = ({navigation}) => {
                 <Text style={styles.question}> What is your geographical region? </Text>
                 <View style={styles.regionWrapper}>
 
-                                <TouchableHighlight style={styles.regions}
+                                <TouchableHighlight style={styles.region}
                                     onPress={(region)=>setRegion("Northeast"), console.log(region)}>
                                     <Text>Northeast</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
+                                <TouchableHighlight style={styles.region}
                                     onPress={(region)=>setRegion("Southeast")}>
                                     <Text>Southeast</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
+                                <TouchableHighlight style={styles.region}
                                     onPress={(region)=>setRegion("Southwest")}>
                                     <Text>Southwest</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
+                                <TouchableHighlight style={styles.region}
                                     onPress={(region)=>setRegion("West")}>
                                     <Text>West</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
+                                <TouchableHighlight style={styles.region}
                                     onPress={(region)=>setRegion("Midwest")}>
                                     <Text>Midwest</Text>
                                 </TouchableHighlight>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'#FFFFFF',
     },
-    regions: {
+    region: {
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 10,
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProfileRegion;
+export default ProfilePicture;

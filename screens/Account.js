@@ -33,9 +33,10 @@ const Account = ({navigation}) => {
                     style={styles.accountPicture}
                     source={require('../assets/images/pfp_flower.jpg')}
                 />
-                <Button icon="content-save"
-                mode="contained"
-                style={styles.profPicButton}>
+
+                <Button mode="contained"
+                style={styles.profPicButton}
+                onPress={() => navigation.navigate("ProfilePicture")}>
                     <Text style={styles.profPicText}>Change profile picture</Text>
                 </Button>
 
