@@ -1,18 +1,20 @@
 import * as React from 'react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Header from './Header'
 
-const UserProfile = ({navigation}) => {
+const UserProfile = ({route, navigation}) => {
 
     const [info, setInfo] = useState({
         name:"loading",
         interests:"loading",
         age:"loading"
     })
+
+    const {user} = route.params;
 
   return (
     <ScrollView style={styles.container}>
@@ -23,10 +25,10 @@ const UserProfile = ({navigation}) => {
         </Appbar.Header>
             <View style={styles.profileWrapper}>
 
-                <Text style={styles.username}>rqin</Text>
+                <Text style={styles.username}>{user.name}</Text>
                 <Image
                     style={styles.profilePicture}
-                    source={require('../assets/images/pfp_flower.jpg')}
+                    source={{uri: user.imageUri}}
                 />
                 <View style={styles.bioContainer}>
                     <Text style={styles.bio}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
