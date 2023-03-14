@@ -1,9 +1,13 @@
 import * as React from 'react';
+import {useState, useEffect} from 'react'
 import { Appbar, Title, Badge } from 'react-native-paper';
 import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet,Pressable,ImageBackground} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
+
+import {listUsers} from '../src/graphql/queries'
+import {API, graphqlOperation} from '@aws-amplify/api'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
@@ -11,106 +15,54 @@ import UserProfile from './UserProfile'
 import Browse from './Account'
 
 const Home = ({navigation}) => {
+    const [users, setUsers] = useState([])
+
+    useEffect( ()=> {
+        const fetchUsers = async() => {
+                const usersData = await API.graphql(
+                    {
+                        query: listUsers,
+                        authMode: "API_KEY"
+                    }
+                )
+                setUsers(usersData.data.listUsers.items)
+                // console.log(usersData.data.listUsers.items)
+        }
+        fetchUsers();
+     }, []);
+
          return (
             <ScrollView style={styles.container}>
                 <Header />
                 <SafeAreaView>
-                    <View style={styles.headerWrapper}>
-                        <Image
-                            style={styles.profileImage}
-                            source={require('../assets/images/pfp1.jpg')}
-                        />
-                        <Image
-                            style={styles.profileImage}
-                            source={require('../assets/images/pfp2.jpg')}
-                        />
-                        <Image
-                            style={styles.profileImage}
-                            source={require('../assets/images/pfp3.png')}
-                        />
-                        <Image
-                            style={styles.profileImage}
-                            source={require('../assets/images/pfp4.png')}
-                        />
-                        <Image
-                            style={styles.profileImage}
-                            source={require('../assets/images/pfp5.jpg')}
-                        />
-                    </View>
+                     <View style={styles.headerWrapper}>
+                         {users.map((user) => {
+                             return (
+                                 <Image
+                                   style={styles.profileImage}
+                                   source={{uri: user.imageUri}}
+                                 />
+                             );
+                         })}
+                     </View>
                 </SafeAreaView>
                 <Text style={styles.subtext}>Your Friends</Text>
                 <View style={styles.profileWrapper}>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("OtherUserProfile")}>
-                        <Image
-                            style={styles.profile}
-                            source={require('../assets/images/pfp5.jpg')}
-                        />
-                        <Text style={styles.nameIcon}> Catgrammer </Text>
-
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                        <Image
-                            style={styles.profile}
-                            source={require('../assets/images/pfp6.jpg')}
-                        />
-                        <Text style={styles.nameIcon}>   jscai   </Text>
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                      <Image
-                            style={styles.profile}
-                            source={require('../assets/images/pfp4.png')}
-                      />
-                      <Text style={styles.nameIcon}> rahulgrge </Text>
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                      <Image
-                         style={styles.profile}
-                         source={require('../assets/images/profpic.png')}
-                      />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
+                    {users.map((user) => {
+                        return (
+                            <Pressable
+                                style={styles.profile}
+                                onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
+                            <Image
+                                style={styles.profile}
+                                source={{uri: user.imageUri}}
+                            />
+                            <Text style={styles.nameIcon}>{user.name}</Text>
+                            </Pressable>
+                        );
+                    })}
                 </View>
             </ScrollView>
-
         );
 };
 

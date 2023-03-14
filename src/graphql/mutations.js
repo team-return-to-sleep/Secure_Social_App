@@ -10,6 +10,8 @@ export const createUser = /* GraphQL */ `
       id
       name
       imageUri
+      age
+      region
       status
       chatRoomUser {
         items {
@@ -46,6 +48,8 @@ export const updateUser = /* GraphQL */ `
       id
       name
       imageUri
+      age
+      region
       status
       chatRoomUser {
         items {
@@ -82,6 +86,8 @@ export const deleteUser = /* GraphQL */ `
       id
       name
       imageUri
+      age
+      region
       status
       chatRoomUser {
         items {
@@ -122,6 +128,8 @@ export const createChatRoomUser = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -161,6 +169,8 @@ export const updateChatRoomUser = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -200,6 +210,8 @@ export const deleteChatRoomUser = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -340,6 +352,8 @@ export const createMessage = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -380,6 +394,8 @@ export const updateMessage = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
@@ -420,6 +436,8 @@ export const deleteMessage = /* GraphQL */ `
         id
         name
         imageUri
+        age
+        region
         status
         chatRoomUser {
           nextToken
