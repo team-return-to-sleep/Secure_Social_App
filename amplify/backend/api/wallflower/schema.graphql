@@ -14,6 +14,7 @@ type User @model {
     friends: [String]
     chatRoomUser: [ChatRoomUser] @hasMany(indexName: "byUser", fields: ["id"])
     message: [Message] @hasMany(indexName: "byUser", fields: ["id"])
+    garden: Garden @hasOne(fields: ["id"])
 }
 
 type ChatRoomUser @model {
@@ -39,6 +40,14 @@ type Message @model {
     content: String!
     user: User @belongsTo(fields: ["userID"])
     chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
+}
+
+type Garden @model {
+    id: ID!
+    userID: ID!
+    points: Int
+    flowerSize: Int
+    user: User @belongsTo(fields: ["userID"])
 }
 
 #type Todo @model @aws_cognito_user_pools{

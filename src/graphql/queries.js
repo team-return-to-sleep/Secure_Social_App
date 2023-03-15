@@ -11,6 +11,7 @@ export const getUser = /* GraphQL */ `
       region
       status
       interests
+      favoriteInterests
       friends
       chatRoomUser {
         items {
@@ -42,6 +43,27 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
+      garden {
+        id
+        userID
+        points
+        flowerSize
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          interests
+          favoriteInterests
+          friends
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -62,12 +84,21 @@ export const listUsers = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -90,12 +121,21 @@ export const getChatRoomUser = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -135,6 +175,7 @@ export const listChatRoomUsers = /* GraphQL */ `
           region
           status
           interests
+          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -219,12 +260,21 @@ export const getMessage = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -265,6 +315,7 @@ export const listMessages = /* GraphQL */ `
           region
           status
           interests
+          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -274,6 +325,77 @@ export const listMessages = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getGarden = /* GraphQL */ `
+  query GetGarden($id: ID!) {
+    getGarden(id: $id) {
+      id
+      userID
+      points
+      flowerSize
+      user {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests
+        favoriteInterests
+        friends
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listGardens = /* GraphQL */ `
+  query ListGardens(
+    $filter: ModelGardenFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGardens(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        points
+        flowerSize
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          interests
+          favoriteInterests
+          friends
+          createdAt
+          updatedAt
+        }
+        createdAt
         updatedAt
       }
       nextToken
@@ -309,6 +431,7 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
           region
           status
           interests
+          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -352,6 +475,7 @@ export const chatRoomUsersByUserID = /* GraphQL */ `
           region
           status
           interests
+          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -397,6 +521,7 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
           region
           status
           interests
+          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -444,6 +569,7 @@ export const messagesByUser = /* GraphQL */ `
           region
           status
           interests
+          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -490,6 +616,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           region
           status
           interests
+          favoriteInterests
           friends
           createdAt
           updatedAt
