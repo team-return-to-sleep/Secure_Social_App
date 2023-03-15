@@ -202,7 +202,11 @@ const Chats = ({navigation}) => {
                                 style={styles.profileImage}
                                 source={{uri: user.imageUri}}
                             />
-                            <Text> Latest Message Here </Text>
+                            <View>
+                                <Text style={styles.subtext}> {user.name} </Text>
+                                <Text style={styles.msgtext}> Latest Message Here </Text>
+                            </View>
+
                             </View>
                         </Pressable>
                         );
@@ -273,10 +277,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     midtext: {
-            textAlign: 'center',
-            fontSize: 30,
-            fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 30,
+        fontWeight: 'bold',
 
+    },
+    msgtext: {
+        marginLeft:5,
+        color:'#FFFFFF',
+        fontWeight: 'bold',
     },
 });
 

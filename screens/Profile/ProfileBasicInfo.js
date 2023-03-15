@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
         width: 150,
         alignSelf: 'center',
         marginBottom: '50%',
+        marginTop: 20,
         backgroundColor: '#BBCAEB',
     },
 })
