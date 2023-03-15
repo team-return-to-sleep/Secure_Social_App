@@ -10,6 +10,7 @@ type User @model {
     region: String
     status: String
     interests: [String]
+    favoriteInterests: [String]
     friends: [String]
     chatRoomUser: [ChatRoomUser] @hasMany(indexName: "byUser", fields: ["id"])
     message: [Message] @hasMany(indexName: "byUser", fields: ["id"])
