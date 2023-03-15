@@ -179,19 +179,7 @@ const Chats = ({navigation}) => {
       return (
           <ScrollView style={styles.container}>
               <Header />
-              <SafeAreaView>
-                  <View style={styles.headerWrapper}>
-                        {users.map((user) => {
-                            return (
-                                <Image
-                                  style={styles.profileImage}
-                                  source={{uri: user.imageUri}}
-                                />
-                            );
-                        })}
-                  </View>
-              </SafeAreaView>
-
+              <Text style={styles.subtext}>Start chatting</Text>
               <View style={styles.chatWrapper}>
                     {users.map((user) => {
                       return (
@@ -265,6 +253,25 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         width: 20,
     },
+    subtext: {
+        marginLeft:15,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
 });
 
 export default Chats;
+
+/* Top horizontal bar of profiles
+    <SafeAreaView>
+     <View style={styles.headerWrapper}>
+           {users.map((user) => {
+               return (
+                   <Image
+                     style={styles.profileImage}
+                     source={{uri: user.imageUri}}
+                   />
+               );
+           })}
+     </View>
+    </SafeAreaView> */
