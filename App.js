@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useEffect} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import type {Node} from 'react';
 
 import {
@@ -47,6 +47,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
+import ProfileRoot from './screens/Profile/ProfileRoot'
 
 const Stack = createNativeStackNavigator()
 
@@ -55,6 +56,8 @@ Amplify.configure(config)
 
 const App = () => {
  //Auth.signOut();
+ const [exists, setExists] = useState(false);
+
  useEffect( ()=> {
     const fetchUser = async() => {
         //get authenticated user
@@ -70,6 +73,7 @@ const App = () => {
             )
             if (userData.data.getUser) {
                 console.log("User is already registered in database");
+                setExists(true)
                 return;
             }
             const newUser = {
@@ -94,15 +98,18 @@ const App = () => {
     }
     fetchUser();
  }, []);
-
+    console.log("exists ", exists)
   return (
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Toolbar">
+            <Stack.Navigator initialRouteName={!exists ? ("Toolbar") : ("ProfileRoot")}>
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileRoot" component={ProfileRoot}
+                    options={{ headerShown: false}}
                 />
             </Stack.Navigator>
         </NavigationContainer>
