@@ -1,15 +1,35 @@
 import * as React from 'react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,SafeAreaView,Image,Pressable,StyleSheet,ScrollView,Alert} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import {listUsers} from '../src/graphql/queries'
+
+import {API, graphqlOperation} from '@aws-amplify/api'
+
 import Header from './Header'
 
 
-const Browse = () => {
+const Browse = ({navigation}) => {
     const [name, setName] = useState('')
+    const [users, setUsers] = useState([])
+
+    useEffect( ()=> {
+        const fetchUsers = async() => {
+                const usersData = await API.graphql(
+                    {
+                        query: listUsers,
+                        authMode: "API_KEY"
+                    }
+                )
+                setUsers(usersData.data.listUsers.items)
+                // console.log(usersData.data.listUsers.items)
+        }
+        fetchUsers();
+     }, []);
+
   return (
     <>
     <View style={{flex:1}}>
@@ -30,46 +50,18 @@ const Browse = () => {
         </Button>
         <ScrollView style={styles.container}>
             <View style={styles.profileWrapper}>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                      <Image
-                         style={styles.profile}
-                         source={require('../assets/images/profpic.png')}
-                      />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
-                    <Pressable
-                      style={styles.profile}
-                      onPress={() => navigation.navigate("UserProfile")}>
-                    <Image
-                      style={styles.profile}
-                      source={require('../assets/images/profpic.png')}
-                    />
-                    </Pressable>
+                {users.map((user) => {
+                    return (
+                        <Pressable
+                          style={styles.profile}
+                          onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
+                        <Image
+                          style={styles.profile}
+                          source={{uri: user.imageUri}}
+                        />
+                        </Pressable>
+                    );
+                })}
             </View>
         </ScrollView>
     </View>

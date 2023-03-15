@@ -1,58 +1,75 @@
 import * as React from 'react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useIsFocused } from "@react-navigation/native";
 
+import {Auth} from 'aws-amplify'
+import {getUser, listUsers} from '../src/graphql/queries'
+import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from './Header'
 import UserProfile from './UserProfile'
 
+const Account = ({route, navigation}) => {
+  const isFocused = useIsFocused()
+  const [users, setUsers] = useState([])
 
-const Account = ({navigation}) => {
+        const fetchUser = async() => {
+          const userInfo = await Auth.currentAuthenticatedUser();
+          const userData = await API.graphql (
+            {
+              query: getUser,
+              variables: {id: userInfo.attributes.sub},
+              authMode: "API_KEY"
+             }
+           )
+           setUsers(Array(1).fill(userData.data.getUser))
+        }
 
-    const [info, setInfo] = useState({
-        name:"loading",
-        interests:"loading",
-        age:"loading"
-    })
-
-    /* <Text style={{margin:20, fontSize:25}}>
-           Display name: {info.name} {'\n'}
-           Interests: {info.interests} {'\n'}
-           Age: {info.age} {'\n'}
-       </Text> */
+     useEffect( ()=> {
+        if(isFocused) {
+            fetchUser();
+        }
+     }, [isFocused]);
 
   return (
     <ScrollView style={styles.container}>
-
-        <Header name="Account Info" />
             <View style={styles.accountWrapper}>
-                <Text style={styles.username}>rqin</Text>
-                <Image
-                    style={styles.accountPicture}
-                    source={require('../assets/images/pfp_flower.jpg')}
-                />
-                <Button icon="content-save"
-                mode="contained"
-                style={styles.profPicButton}>
-                    <Text style={styles.profPicText}>Change profile picture</Text>
-                </Button>
-
-                <Button mode="contained"
-                style={styles.accountButton}
-                onPress={() => navigation.navigate("ProfileGender")}>
-                    <Text>Edit Interests Profile</Text>
-                </Button>
-                <Button mode="contained"
-                style={styles.accountButton}>
-                    <Text>Edit Personal Details</Text>
-                </Button>
-                <Button mode="contained"
-                style={styles.accountButton}
-                onPress={() => navigation.navigate("UserProfile")}>
-                    <Text>View Public Profile</Text>
-                </Button>
+                  {users.map((user) => {
+                    return (
+                    <>
+                    <Text style={styles.username}>{user.name}</Text>
+                    <Image
+                        style={styles.accountPicture}
+                        source={{uri: user.imageUri}}
+                    />
+                    <Button icon="content-save"
+                    mode="contained"
+                    style={styles.profPicButton}>
+                        <Text style={styles.profPicText}>Change profile picture</Text>
+                    </Button>
+                    <Button mode="contained"
+                    style={styles.accountButton}
+                        onPress={() => {
+                            navigation.navigate("ProfileInterests", {user: user})}
+                        }>
+                        <Text>Edit Interests Profile</Text>
+                    </Button>
+                    <Button mode="contained"
+                    style={styles.accountButton}
+                        onPress={() => navigation.navigate("ProfileBasicInfo", {user: user})}>
+                        <Text>Edit Personal Details</Text>
+                    </Button>
+                    <Button mode="contained"
+                    style={styles.accountButton}
+                    onPress={() => navigation.navigate("UserProfile", {user: user})}>
+                        <Text>View Public Profile</Text>
+                    </Button>
+                    </>
+                    );
+                  })}
             </View>
             <View style={{marginBottom:26}}>
                         <Text>  {'\n\n'} </Text>

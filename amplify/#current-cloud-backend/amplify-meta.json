@@ -52,12 +52,56 @@
         "IdentityPoolName": "testAuthIdentityPool__staging",
         "UserPoolName": "Wallflower"
       },
-      "lastPushTimeStamp": "2023-02-19T11:32:02.952Z",
+      "lastPushTimeStamp": "2023-03-14T02:44:17.809Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-wallflower-staging-63629-deployment/amplify-cfn-templates/auth/Wallflower-cloudformation-template.json",
         "logicalId": "authWallflower"
       },
-      "lastPushDirHash": "Yc1CKf/qlnexZgfGth7UPTP+wJY="
+      "lastPushDirHash": "vbRe+W9PfJBmHVx0Jrj0RyfyqyI="
+    }
+  },
+  "api": {
+    "wallflower": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "Wallflower"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authWallflower"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2024-02-27T05:07:26.529Z",
+                "description": "global sandbox key"
+              }
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "pfbvktr2lnaarn7xrv27cvrhtm",
+        "GraphQLAPIEndpointOutput": "https://gqcty2xkxfcczpj2r3i53chopu.appsync-api.us-west-2.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-hi2ekwcfvfawzl3oziuhodlbzu"
+      },
+      "lastPushTimeStamp": "2023-03-14T02:44:24.081Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-wallflower-staging-63629-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiwallflower"
+      },
+      "lastPushDirHash": "PN9DUWM5YEhHRWqtBDQjVvh7s5U="
     }
   }
 }

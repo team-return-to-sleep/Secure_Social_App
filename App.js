@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import type {Node} from 'react';
 
 import {
@@ -36,6 +36,10 @@ import {Auth} from 'aws-amplify'
 import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
 import config from './src/aws-exports'
 
+import {getUser} from './src/graphql/queries'
+import {createUser} from './src/graphql/mutations'
+import {API, graphqlOperation} from '@aws-amplify/api'
+
 import Browse from './screens/Browse'
 import Home from './screens/Home'
 import {ChatScreen} from './screens/Chat/ChatScreen'
@@ -43,6 +47,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
+import ProfileRoot from './screens/Profile/ProfileRoot'
 
 const Stack = createNativeStackNavigator()
 
@@ -51,14 +56,60 @@ Amplify.configure(config)
 
 const App = () => {
  //Auth.signOut();
+ const [exists, setExists] = useState(false);
+
+ useEffect( ()=> {
+    const fetchUser = async() => {
+        //get authenticated user
+        const userInfo = await Auth.currentAuthenticatedUser();
+        //console.log(userInfo);
+        if (userInfo) {
+            const userData = await API.graphql (
+                {
+                    query: getUser,
+                    variables: {id: userInfo.attributes.sub},
+                    authMode: "API_KEY"
+                }
+            )
+            if (userData.data.getUser) {
+                console.log("User is already registered in database");
+                setExists(true)
+                return;
+            }
+            const newUser = {
+                id: userInfo.attributes.sub,
+                name: userInfo.username,
+                imageUri: "https://placeimg.com/140/140/any",
+                status: "just created my account",
+            }
+            await API.graphql(
+//                graphqlOperation(
+//                    createUser,
+//                    {input: newUser}
+//                )
+                {
+                    query: createUser,
+                    variables: {input: newUser},
+                    authMode: "API_KEY"
+                }
+            )
+            //console.log(userData)
+        }
+    }
+    fetchUser();
+ }, []);
+    console.log("exists ", exists)
   return (
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Toolbar">
+            <Stack.Navigator initialRouteName={!exists ? ("Toolbar") : ("ProfileRoot")}>
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileRoot" component={ProfileRoot}
+                    options={{ headerShown: false}}
                 />
             </Stack.Navigator>
         </NavigationContainer>

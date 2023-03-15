@@ -3,16 +3,62 @@ import {useState} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import {Auth} from 'aws-amplify'
+import {getUser} from '../src/graphql/queries'
+import {updateUser} from '../src/graphql/mutations'
+import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from './Header'
 
-const OtherUserProfile = ({navigation}) => {
+const OtherUserProfile = ({route, navigation}) => {
 
     const [info, setInfo] = useState({
         name:"loading",
         interests:"loading",
         age:"loading"
     })
+
+    const {user} = route.params;
+    //console.log("user: ", user)
+
+  const onClickHandler = async () => {
+    const userInfo = await Auth.currentAuthenticatedUser();
+    const userData = await API.graphql (
+        {
+                  query: getUser,
+                  variables: {id: userInfo.attributes.sub},
+                  authMode: "API_KEY"
+        }
+    )
+    let myFriends = userData.data.getUser.friends
+    //console.log(myFriends)
+    if (myFriends) {
+        for (let i=0; i<myFriends.length; i++) {
+            if (myFriends[i] == user.id.toString()) {
+                // already a friend, do nothing!
+                return;
+            }
+        }
+
+        myFriends.push(user.id.toString())
+    } else {
+        myFriends = [user.id.toString()]
+    }
+    const updatedUser = {
+        id: userData.data.getUser.id,
+        friends: myFriends,
+    };
+    const updated = await API.graphql (
+            {
+                      query: updateUser,
+                      variables: {input: updatedUser},
+                      authMode: "API_KEY"
+            }
+    )
+
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -23,10 +69,10 @@ const OtherUserProfile = ({navigation}) => {
         </Appbar.Header>
             <View style={styles.profileWrapper}>
 
-                <Text style={styles.username}>Catgrammer</Text>
+                <Text style={styles.username}>{user.name}</Text>
                 <Image
                     style={styles.profilePicture}
-                    source={require('../assets/images/pfp5.jpg')}
+                    source={{uri: user.imageUri}}
                 />
                 <View style={styles.bioContainer}>
                     <Text style={styles.bio}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
@@ -73,7 +119,15 @@ const OtherUserProfile = ({navigation}) => {
                             </View>
                         </View>
                 </View>
+
+            <Button icon="chat-plus"
+                            mode="contained"
+                            style={styles.accountButton}
+                            onPress={() => onClickHandler()}>
+                                Start Chatting!
+            </Button>
             </View>
+
             <View style={{marginBottom:26}}>
                         <Text>  {'\n\n'} </Text>
             </View>
