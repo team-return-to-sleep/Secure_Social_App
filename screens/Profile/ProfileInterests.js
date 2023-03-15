@@ -2,20 +2,60 @@ import * as React from 'react';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
 import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
 
+import {updateUser} from '../../src/graphql/mutations'
+import {API, graphqlOperation} from '@aws-amplify/api'
+
 import Header from '../Header'
 
-const ProfileInterests = ({navigation}) => {
+const ProfileInterests = ({route, navigation}) => {
+
+    const {user} = route.params;
+    const [curUser, setCurUser] = React.useState()
+    var interests = user.interests;
+    if (!interests) {
+        interests = [];
+    }
+
+    var [ userInterests , setUserInterests ] = React.useState(
+{
+        "Books & Literature": interests.includes("Books & Literature"),
+        "Business": interests.includes("Business"),
+        "Career": interests.includes("Career"),
+        "Movies & TV": interests.includes("Movies & TV"),
+        "Education": interests.includes("Education"),
+        "Health": interests.includes("Health"),
+        "Home & Garden": interests.includes("Home & Garden"),
+        "Music & Radio": interests.includes("Music & Radio"),
+        "Comedy": interests.includes("Comedy"),
+        "Animals": interests.includes("Animals"),
+        "Food & Drink": interests.includes("Food & Drink"),
+        "Gaming": interests.includes("Gaming"),
+        "Travel": interests.includes("Travel"),
+        "DIY": interests.includes("DIY"),
+        "Sports": interests.includes("Sports"),
+        "Beauty & Style": interests.includes("Beauty & Style"),
+        "Art": interests.includes("Art"),
+        "Tech": interests.includes("Tech"),
+        "Automotive": interests.includes("Automotive"),
+        "Dance": interests.includes("Dance")
+    });
 
     var [ isPress, setIsPress ] = React.useState(false);
 
-    var touchProps = {
-        activeOpacity: 1,
-        underlayColor: '#ffffff',
-        style: isPress ? styles.selected : styles.interests,
-        onHideUnderlay: () => setIsPress(true),
-        onShowUnderlay: () => setIsPress(false),
-        onPress: () => {}
-    };
+   const saveUpdates = async() => {
+    var updatedInterests = Object.keys(userInterests).filter(interest => userInterests[interest] === true)
+    await API.graphql (
+    {
+        query: updateUser,
+        variables: {
+            input: {
+                id: user.id,
+                interests: updatedInterests
+            }
+        },
+        authMode: "API_KEY"
+    })
+    }
 
     return (
         <View style={styles.container}>
@@ -23,34 +63,39 @@ const ProfileInterests = ({navigation}) => {
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Title>
-                        Edit Profile
+                        Account
                     </Title>
                 </Appbar.Header>
 
                 <Text style={styles.question}> What are your interests? </Text>
                 <View style={styles.interestsWrapper}>
-                    <TouchableHighlight {...touchProps}>
-                        <Text>Click Here</Text>
-                    </TouchableHighlight>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
-                    <View style={styles.interests}/>
+                    {Object.keys(userInterests).map((interest) => {
+                        return (
+                            <TouchableHighlight
+                              activeOpacity = {1}
+                              underlayColor = {'#ffffff'}
+                              // style = {getStyle(possibleInterests[interest])}
+                              style = {userInterests[interest] ? styles.selected : styles.interests}
+                              onPress={() => {
+                                var temp = {...userInterests}
+                                if(userInterests[interest]) {
+                                    temp[interest] = false;
+                                } else {
+                                    temp[interest] = true;
+                                }
+                                setUserInterests(temp)
+                              }}
+                              >
+                              <Text>{interest}</Text>
+                            </TouchableHighlight>
+                        );
+                    })}
                 </View>
                 <Button icon="content-save"
                 mode="contained"
                 style={styles.nextButton}
-                onPress={() => navigation.navigate("ProfileFavorites")}>
-                    Continue
+                onPress={() => saveUpdates()}>
+                    Save
                 </Button>
         </View>
       );
@@ -106,7 +151,7 @@ const styles = StyleSheet.create({
     nextButton: {
         width: 150,
         alignSelf: 'center',
-        marginBottom: '50%',
+        marginBottom: '25%',
         backgroundColor: '#BBCAEB',
     },
 })
