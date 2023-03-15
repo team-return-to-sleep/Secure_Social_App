@@ -8,7 +8,6 @@ import { useIsFocused } from "@react-navigation/native";
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
-import { useIsFocused } from "@react-navigation/native";
 
 import Header from './Header'
 import UserProfile from './UserProfile'

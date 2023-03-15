@@ -104,7 +104,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 />
 
                 <Text style={styles.username}>Age</Text>
-                <TextInput placeholder={user.age.toString()}
+                <TextInput placeholder={user.age ? (user.age.toString()) : ("Add your age")}
                      numeric value
                      keyboardType={'numeric'}
                      onChangeText={(text) => {
@@ -117,7 +117,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 />
 
                 <Text style={styles.username}>Region</Text>
-                <TextInput placeholder={user.region}
+                <TextInput placeholder={user.region ? (user.region) : ("Add your region")}
                      onChangeText={(text) =>
                         setRegion(text)
                      }
