@@ -8,6 +8,7 @@ import { useIsFocused } from "@react-navigation/native";
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
+import { useIsFocused } from "@react-navigation/native";
 
 import Header from './Header'
 import UserProfile from './UserProfile'
@@ -36,6 +37,7 @@ const Account = ({route, navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
+            <Header name="Account Info" />
             <View style={styles.accountWrapper}>
                   {users.map((user) => {
                     return (
@@ -47,7 +49,8 @@ const Account = ({route, navigation}) => {
                     />
                     <Button icon="content-save"
                     mode="contained"
-                    style={styles.profPicButton}>
+                    style={styles.profPicButton}
+                    onPress={() => navigation.navigate("ProfilePicture", {user: user})}>
                         <Text style={styles.profPicText}>Change profile picture</Text>
                     </Button>
                     <Button mode="contained"

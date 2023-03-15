@@ -281,3 +281,17 @@ const styles = StyleSheet.create({
 });
 
 export default Chats;
+
+/* Top horizontal bar of profiles
+    <SafeAreaView>
+     <View style={styles.headerWrapper}>
+           {users.map((user) => {
+               return (
+                   <Image
+                     style={styles.profileImage}
+                     source={{uri: user.imageUri}}
+                   />
+               );
+           })}
+     </View>
+    </SafeAreaView> */
