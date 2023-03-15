@@ -33,10 +33,27 @@ const Chats = ({navigation}) => {
               variables: {id: userInfo.attributes.sub},
               authMode: "API_KEY"
              }
-           )
+          )
            setMyUserData(userData.data.getUser)
+           const myFriends = userData.data.getUser.friends
+           const friendUsers = []
+           if (myFriends) {
+                for (let i=0; i<myFriends.length; i++) {
+                    const friendData = await API.graphql (
+                                {
+                                  query: getUser,
+                                  variables: {id: myFriends[i]},
+                                  authMode: "API_KEY"
+                                 }
+                    )
+                    friendUsers.push(friendData.data.getUser)
+                }
+                //console.log("friends: ", friendUsers)
+                setUsers(friendUsers)
+           }
         }
         const fetchUsers = async() => {
+
                 const usersData = await API.graphql(
                     {
                         query: listUsers,
@@ -46,7 +63,7 @@ const Chats = ({navigation}) => {
                 setUsers(usersData.data.listUsers.items)
         }
         fetchUser();
-        fetchUsers();
+        //fetchUsers();
         }
      }, [isFocused]);
 
