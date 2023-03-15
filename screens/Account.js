@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useIsFocused } from "@react-navigation/native";
 
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers} from '../src/graphql/queries'
@@ -13,37 +14,26 @@ import Header from './Header'
 import UserProfile from './UserProfile'
 
 const Account = ({route, navigation}) => {
-
-    const isFocused = useIsFocused()
-    const [info, setInfo] = useState({
-        name:"loading",
-        interests:"loading",
-        age:"loading"
-    })
-
+  const isFocused = useIsFocused()
   const [users, setUsers] = useState([])
-    useEffect( ()=> {
-        if(isFocused){
-            const fetchUser = async() => {
-              const userInfo = await Auth.currentAuthenticatedUser();
-              const userData = await API.graphql (
-                {
-                  query: getUser,
-                  variables: {id: userInfo.attributes.sub},
-                  authMode: "API_KEY"
-                 }
-               )
-               setUsers(Array(1).fill(userData.data.getUser))
-            }
+
+        const fetchUser = async() => {
+          const userInfo = await Auth.currentAuthenticatedUser();
+          const userData = await API.graphql (
+            {
+              query: getUser,
+              variables: {id: userInfo.attributes.sub},
+              authMode: "API_KEY"
+             }
+           )
+           setUsers(Array(1).fill(userData.data.getUser))
+        }
+
+     useEffect( ()=> {
+        if(isFocused) {
             fetchUser();
         }
      }, [isFocused]);
-
-    /* <Text style={{margin:20, fontSize:25}}>
-           Display name: {info.name} {'\n'}
-           Interests: {info.interests} {'\n'}
-           Age: {info.age} {'\n'}
-       </Text> */
 
   return (
     <ScrollView style={styles.container}>
@@ -65,7 +55,9 @@ const Account = ({route, navigation}) => {
                     </Button>
                     <Button mode="contained"
                     style={styles.accountButton}
-                        onPress={() => navigation.navigate("ProfileGender")}>
+                        onPress={() => {
+                            navigation.navigate("ProfileInterests", {user: user})}
+                        }>
                         <Text>Edit Interests Profile</Text>
                     </Button>
                     <Button mode="contained"
