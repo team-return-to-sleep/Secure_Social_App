@@ -19,11 +19,6 @@ const ProfileBasicInfo = ({route, navigation}) => {
     const [status, setStatus] = useState("")
 
    const saveUpdates = async() => {
-    console.log(name);
-    console.log(age);
-    console.log(region);
-    console.log(status);
-
     if(name != "") {
        await API.graphql (
        {
@@ -97,7 +92,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Title>
-                        Edit Profile CHANGE LATER!
+                        Account
                     </Title>
                 </Appbar.Header>
 
@@ -116,7 +111,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                          if (!isNaN(+(text)) && +((text) > -1)) {
                             setAge(+(text))
                          } else {
-                            console.warn("Age must be a positive integer")
+                            alert("Age must be a positive integer")
                          }
                      }}
                 />
