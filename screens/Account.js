@@ -7,12 +7,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
+import { useIsFocused } from "@react-navigation/native";
 
 import Header from './Header'
 import UserProfile from './UserProfile'
 
 const Account = ({route, navigation}) => {
 
+    const isFocused = useIsFocused()
     const [info, setInfo] = useState({
         name:"loading",
         interests:"loading",
@@ -20,21 +22,22 @@ const Account = ({route, navigation}) => {
     })
 
   const [users, setUsers] = useState([])
-
     useEffect( ()=> {
-        const fetchUser = async() => {
-          const userInfo = await Auth.currentAuthenticatedUser();
-          const userData = await API.graphql (
-            {
-              query: getUser,
-              variables: {id: userInfo.attributes.sub},
-              authMode: "API_KEY"
-             }
-           )
-           setUsers(Array(1).fill(userData.data.getUser))
+        if(isFocused){
+            const fetchUser = async() => {
+              const userInfo = await Auth.currentAuthenticatedUser();
+              const userData = await API.graphql (
+                {
+                  query: getUser,
+                  variables: {id: userInfo.attributes.sub},
+                  authMode: "API_KEY"
+                 }
+               )
+               setUsers(Array(1).fill(userData.data.getUser))
+            }
+            fetchUser();
         }
-        fetchUser();
-     }, []);
+     }, [isFocused]);
 
     /* <Text style={{margin:20, fontSize:25}}>
            Display name: {info.name} {'\n'}

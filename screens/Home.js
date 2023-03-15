@@ -8,6 +8,7 @@ import Header from './Header'
 
 import {listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
+import { useIsFocused } from "@react-navigation/native";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
@@ -16,20 +17,23 @@ import Browse from './Account'
 
 const Home = ({navigation}) => {
     const [users, setUsers] = useState([])
+    const isFocused = useIsFocused()
 
     useEffect( ()=> {
-        const fetchUsers = async() => {
-                const usersData = await API.graphql(
-                    {
-                        query: listUsers,
-                        authMode: "API_KEY"
-                    }
-                )
-                setUsers(usersData.data.listUsers.items)
-                // console.log(usersData.data.listUsers.items)
+        if(isFocused){
+            const fetchUsers = async() => {
+                    const usersData = await API.graphql(
+                        {
+                            query: listUsers,
+                            authMode: "API_KEY"
+                        }
+                    )
+                    setUsers(usersData.data.listUsers.items)
+                    // console.log(usersData.data.listUsers.items)
+            }
+            fetchUsers();
         }
-        fetchUsers();
-     }, []);
+     }, [isFocused]);
 
          return (
             <ScrollView style={styles.container}>

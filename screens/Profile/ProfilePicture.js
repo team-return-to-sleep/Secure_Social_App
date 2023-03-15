@@ -73,27 +73,27 @@ const ProfilePicture = ({route, navigation}) => {
             </View>
 
             <View style={styles.picturesWrapper}>
-                <Pressable onPress={() => setImageUri('https://media.istockphoto.com/id/173696178/photo/musical-notebook.jpg?s=170667a&w=0&k=20&c=Yd5FNeI9h7wckh_t0VdR0HIzuK_lmSoDbkhFHBjZf8Q=')}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.interest1)}>
                     <Image style={styles.pictures}
                         source={{uri: Pictures.pfps.interest1}}/>
                 </Pressable>
-                <Pressable onPress={() => setImageUri('https://t4.ftcdn.net/jpg/00/62/65/29/360_F_62652907_dZgAPIdcVKu8DPCeUPvLRCb9JdHrnpVG.jpg')}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.interest2)}>
                         <Image style={styles.pictures}
                         source={{uri: Pictures.pfps.interest2}}/>
                 </Pressable>
-                <Pressable onPress={() => console.log("pressed!")}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.interest3)}>
                     <Image style={styles.pictures}
                         source={{uri: Pictures.pfps.interest3}}/>
                 </Pressable>
-                <Pressable onPress={() => console.log("pressed!")}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.interest4)}>
                     <Image style={styles.pictures}
                         source={{uri: Pictures.pfps.interest4}}/>
                 </Pressable>
-                <Pressable onPress={() => console.log("pressed!")}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.interest5)}>
                     <Image style={styles.pictures}
                         source={{uri: Pictures.pfps.interest5}}/>
                 </Pressable>
-                <Pressable onPress={() => console.log("pressed!")}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.interest6)}>
                     <Image style={styles.pictures}
                         source={{uri: Pictures.pfps.interest6}}/>
                 </Pressable>
