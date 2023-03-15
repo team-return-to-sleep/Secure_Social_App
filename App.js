@@ -49,12 +49,16 @@ import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator()
 
 
 Amplify.configure(config)
+
+const apiUrl = `http://${
+    Platform.OS === 'android' ? '10.0.2.2' : 'localhost'
+}:8080`;
 
 const getTokenFactory = identity => {
     return () =>
@@ -63,21 +67,24 @@ const getTokenFactory = identity => {
             .then(data => data.virgil_jwt);
 };
 
+const getRandomString = (prefix = '') =>
+    `${prefix}${Math.random()
+        .toString(36)
+        .substr(2)}`;
+
 
 const App = () => {
  //Auth.signOut();
  useEffect( ()=> {
     const fetchUser = async() => {
         //get authenticated user
+
+
         const userInfo = await Auth.currentAuthenticatedUser();
 
-        const identity = Auth.currentAuthenticatedUser();
-        const getToken = getTokenFactory(identity);
-        const eThree = EThree.initialize(getToken, { AsyncStorage });
-
-        await eThree.register();
-
-
+        const Identity = getRandomString('E3kitReactNativeTestIdenity');
+        const getToken = getTokenFactory(Identity);
+        const eeThree = EThree.initialize(getToken, { AsyncStorage });
 
         //console.log(userInfo);
         if (userInfo) {
@@ -97,7 +104,10 @@ const App = () => {
                 name: userInfo.username,
                 imageUri: "https://placeimg.com/140/140/any",
                 status: "just created my account",
+                identity: Identity,
+                eThree: eeThree,
             }
+            await eeThree.register();
             await API.graphql(
 //                graphqlOperation(
 //                    createUser,
