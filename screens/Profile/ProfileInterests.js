@@ -8,6 +8,7 @@ const ProfileInterests = ({navigation}) => {
 
     var [ isPress, setIsPress ] = React.useState(false);
 
+    /* TODO: modify in the future to allow clicking animation for multiple bubbles */
     var touchProps = {
         activeOpacity: 1,
         underlayColor: '#ffffff',

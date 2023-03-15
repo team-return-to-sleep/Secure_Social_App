@@ -44,6 +44,7 @@ const Account = ({route, navigation}) => {
 
   return (
     <ScrollView style={styles.container}>
+            <Header name="Account Info" />
             <View style={styles.accountWrapper}>
                   {users.map((user) => {
                     return (
@@ -55,7 +56,8 @@ const Account = ({route, navigation}) => {
                     />
                     <Button icon="content-save"
                     mode="contained"
-                    style={styles.profPicButton}>
+                    style={styles.profPicButton}
+                    onPress={() => navigation.navigate("ProfilePicture", {user: user})}>
                         <Text style={styles.profPicText}>Change profile picture</Text>
                     </Button>
                     <Button mode="contained"
