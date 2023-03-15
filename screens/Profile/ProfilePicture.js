@@ -93,7 +93,7 @@ const ProfilePicture = ({route, navigation}) => {
                     <Image style={styles.pictures}
                     source={{uri: Pictures.pfps.sports}}/>
                 </Pressable>
-                <Pressable onPress={() => setImageUri(Pictures.pfps.reading6)}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.reading)}>
                     <Image style={styles.pictures}
                     source={{uri: Pictures.pfps.reading}}/>
                 </Pressable>
