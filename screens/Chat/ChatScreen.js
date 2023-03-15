@@ -170,7 +170,7 @@ export function ChatScreen({route, navigation}) {
     },
     sendingContainer: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     bottomComponentContainer: {
         justifyContent: 'center',
@@ -179,7 +179,7 @@ export function ChatScreen({route, navigation}) {
     loadingContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     }
   });
 

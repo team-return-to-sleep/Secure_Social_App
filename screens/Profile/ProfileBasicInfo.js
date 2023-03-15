@@ -82,8 +82,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
        )
        user.status = status
     }
-
-
+    navigation.navigate("Account");
    }
 
     return (

@@ -55,6 +55,7 @@ const ProfileInterests = ({route, navigation}) => {
         },
         authMode: "API_KEY"
     })
+    navigation.navigate("Account");
     }
 
     return (
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderWidth: 3,
         borderColor: '#DDEDEA',
+        color: 'black',
     },
     selected: {
         marginTop: 5,

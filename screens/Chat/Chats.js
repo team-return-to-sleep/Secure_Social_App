@@ -275,12 +275,13 @@ const styles = StyleSheet.create({
         marginLeft:5,
         fontSize: 20,
         fontWeight: 'bold',
+        color: 'black',
     },
     midtext: {
         textAlign: 'center',
         fontSize: 30,
         fontWeight: 'bold',
-
+        color: 'black',
     },
     msgtext: {
         marginLeft:5,
