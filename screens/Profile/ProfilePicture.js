@@ -73,43 +73,95 @@ const ProfilePicture = ({route, navigation}) => {
             </View>
 
             <View style={styles.picturesWrapper}>
-                <Pressable onPress={() => setImageUri(Pictures.pfps.interest1)}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.music)}>
                     <Image style={styles.pictures}
-                        source={{uri: Pictures.pfps.interest1}}/>
+                    source={{uri: Pictures.pfps.music}}/>
                 </Pressable>
-                <Pressable onPress={() => setImageUri(Pictures.pfps.interest2)}>
-                        <Image style={styles.pictures}
-                        source={{uri: Pictures.pfps.interest2}}/>
-                </Pressable>
-                <Pressable onPress={() => setImageUri(Pictures.pfps.interest3)}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.art)}>
                     <Image style={styles.pictures}
-                        source={{uri: Pictures.pfps.interest3}}/>
+                    source={{uri: Pictures.pfps.art}}/>
                 </Pressable>
-                <Pressable onPress={() => setImageUri(Pictures.pfps.interest4)}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.games)}>
                     <Image style={styles.pictures}
-                        source={{uri: Pictures.pfps.interest4}}/>
+                    source={{uri: Pictures.pfps.games}}/>
                 </Pressable>
-                <Pressable onPress={() => setImageUri(Pictures.pfps.interest5)}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.animals)}>
                     <Image style={styles.pictures}
-                        source={{uri: Pictures.pfps.interest5}}/>
+                    source={{uri: Pictures.pfps.animals}}/>
                 </Pressable>
-                <Pressable onPress={() => setImageUri(Pictures.pfps.interest6)}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.sports)}>
                     <Image style={styles.pictures}
-                        source={{uri: Pictures.pfps.interest6}}/>
+                    source={{uri: Pictures.pfps.sports}}/>
                 </Pressable>
-                <View style={styles.pictures}/>
-                <View style={styles.pictures}/>
-                <View style={styles.pictures}/>
-                <View style={styles.pictures}/>
-                <View style={styles.pictures}/>
-                <View style={styles.pictures}/>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.reading6)}>
+                    <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.reading}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.business)}>
+                    <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.business}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.career)}>
+                    <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.career}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.movies)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.movies}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.education)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.education}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.health)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.health}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.home)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.home}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.comedy)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.comedy}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.food)}>
+                    <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.food}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.travel)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.travel}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.DIY)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.DIY}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.beauty)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.beauty}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.tech)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.tech}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.auto)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.auto}}/>
+                </Pressable>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.dance)}>
+                <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.dance}}/>
+                </Pressable>
+
+
             </View>
             <Button icon="content-save"
                 mode="contained"
                 style={styles.nextButton}
                 onPress={() => { navigation.navigate("Account");
                     updatePicture();
-                    console.log("success")}}>
+                    console.log("successfully changed profile picture")}}>
                     Save
             </Button>
 
@@ -148,8 +200,8 @@ const styles = StyleSheet.create({
     },
     pictures: {
         margin: 7,
-        width: 100,
-        height: 100,
+        width: 80,
+        height: 80,
         borderRadius: 80,
         borderWidth: 3,
         borderColor: '#DDEDEA',
