@@ -10,6 +10,7 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Header from '../Header'
 import Pictures from '../../assets/images/Pictures';
 
+
 const ProfilePicture = ({route, navigation}) => {
     const {user} = route.params;
     /*const [users, setUsers] = useState([])*/
@@ -44,6 +45,22 @@ const ProfilePicture = ({route, navigation}) => {
   useEffect(()=>{
     setImageUri(user.imageUri)
   }, [])
+
+  const updatePicture = async () => {
+    await API.graphql (
+       {
+            query: updateUser,
+            variables: {
+                input: {
+                    id: user.id,
+                    imageUri: imageUri
+                }
+            },
+            authMode: "API_KEY"
+       }
+       )
+       user.imageUri = imageUri
+}
 
   return (
     <ScrollView style={styles.container}>
@@ -91,8 +108,9 @@ const ProfilePicture = ({route, navigation}) => {
                 mode="contained"
                 style={styles.nextButton}
                 onPress={() => { navigation.navigate("Account");
+                    updatePicture();
                     console.log("success")}}>
-                    Continue
+                    Save
             </Button>
 
 
