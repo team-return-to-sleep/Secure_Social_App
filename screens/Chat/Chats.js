@@ -23,6 +23,7 @@ const Chats = ({navigation}) => {
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
 
+    // fetch my user data
     useEffect( ()=> {
         if(isFocused){
         const fetchUser = async() => {
@@ -72,7 +73,6 @@ const Chats = ({navigation}) => {
         // note that for now, we assume only 1:1 messaging
         // this can be modified later
         //console.log(otherUser)
-        // TODO: fetch most recent userData here
         const userInfo = await Auth.currentAuthenticatedUser();
                   const userData = await API.graphql (
                     {
@@ -179,16 +179,15 @@ const Chats = ({navigation}) => {
       return (
           <ScrollView style={styles.container}>
               <Header />
+
               <SafeAreaView>
                   <View style={styles.headerWrapper}>
-                        {users.map((user) => {
-                            return (
-                                <Image
-                                  style={styles.profileImage}
-                                  source={{uri: user.imageUri}}
-                                />
-                            );
-                        })}
+                        {users.length > 0 ? (
+                            <Text style={styles.subtext}>Messages</Text>
+                        ) : (
+                            <Text style={styles.midtext}>Start chatting with someone by clicking on their profile!</Text>
+
+                        )}
                   </View>
               </SafeAreaView>
 
@@ -209,6 +208,9 @@ const Chats = ({navigation}) => {
                         );
                   })}
               </View>
+              <View style={{marginBottom:26}}>
+                    <Text>  {'\n\n'} </Text>
+              </View>
           </ScrollView>
         );
 
@@ -224,7 +226,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 20,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 0,
         alignItems: 'center',
     },
     chatWrapper: {
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
         height: 70,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        backgroundColor: '#D9D9D9',
+        backgroundColor: '#BBCAEB',
         borderRadius: 24,
     },
     imageWrapper: {
@@ -264,6 +266,17 @@ const styles = StyleSheet.create({
     chooseButton: {
         borderRadius: 50,
         width: 20,
+    },
+    subtext: {
+        marginLeft:5,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    midtext: {
+            textAlign: 'center',
+            fontSize: 30,
+            fontWeight: 'bold',
+
     },
 });
 
