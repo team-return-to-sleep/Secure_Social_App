@@ -1,33 +1,43 @@
 const express = require('express');
-const { initCrypto, VirgilCrypto, VirgilAccessTokenSigner } = require('virgil-crypto');
-const { JwtGenerator } = require('virgil-sdk');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { initCrypto, JwtGenerator, KeyPairType, VirgilCrypto } = require('virgil-crypto');
+const { Jwt } = require('virgil-sdk');
 
-async function getJwtGenerator() {
+(async () => {
+  // Initialize the crypto library
+  const nodeFetch = await import('node-fetch');
+  globalThis.fetch = nodeFetch.default;
   await initCrypto();
 
   const virgilCrypto = new VirgilCrypto();
-  // initialize JWT generator with your App ID and App Key ID you got in
-  // Virgil Dashboard.
-  return new JwtGenerator({
-    appId: edc8a6762fc0461186c6c83aef48b3e3,
-    apiKeyId: 13195c9d6dce22b5066c373ceb4c3e82,
-    // import your App Key that you got in Virgil Dashboard from string.
-    apiKey: virgilCrypto.importPrivateKey(MC4CAQAwBQYDK2VwBCIEIC4ZQOCq5pYszicaLq8kTLF+TDw5TRnFQX3AX+QvfQeE),
-    // initialize accessTokenSigner that signs users JWTs
-    accessTokenSigner: new VirgilAccessTokenSigner(virgilCrypto),
-    // JWT lifetime - 20 minutes (default)
-    millisecondsToLive:  20 * 60 * 1000
+  const privateKey = virgilCrypto.importPrivateKey("MC4CAQAwBQYDK2VwBCIEIFDm7Nh2x0fduX8wDMxMIC3DP66+3DYw34gbv6xu8lv0");
+  const apiKeyId = "28b3087b904249c64be92f79a9e05805";
+  const appId = "edc8a6762fc0461186c6c83aef48b3e3";
+  const jwtGenerator = new JwtGenerator({
+    appId,
+    apiKeyId,
+    privateKey,
+    millisecondsToLive: 60 * 60 * 1000, // 1 hour
   });
-}
 
-const generatorPromise = getJwtGenerator();
+  function generateVirgilJwt(identity) {
+    return jwtGenerator.generateToken(identity).toString();
+  }
 
-app.get('/virgil-jwt', (req, res) => {
-  const generator = await generatorPromise;
-  // Get the identity of the user making the request (this assumes the request
-  // is authenticated and there is middleware in place that populates the
-  // `req.user` property with the user record).
-  const virgilJwtToken = generator.generateToken(req.user.identity);
-  // Send it to the authorized user
-  res.json({ virgilToken: virgilJwtToken.toString() });
-});
+  const app = express();
+  app.use(cors());
+  app.use(bodyParser.json());
+
+  // Create an endpoint for generating Virgil JWT tokens
+  app.post('/virgil-jwt', (req, res) => {
+    const identity = req.body.identity;
+    const virgilJwt = generateVirgilJwt(identity);
+    res.json({ virgil_jwt: virgilJwt });
+  });
+
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+})();
