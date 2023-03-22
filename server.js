@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { initCrypto, JwtGenerator, KeyPairType, VirgilCrypto } = require('virgil-crypto');
-const { Jwt } = require('virgil-sdk');
+const { initCrypto, VirgilCrypto, VirgilAccessTokenSigner } = require('virgil-crypto');
+const { Jwt, JwtGenerator} = require('virgil-sdk');
 
 (async () => {
   // Initialize the crypto library
@@ -11,13 +11,16 @@ const { Jwt } = require('virgil-sdk');
   await initCrypto();
 
   const virgilCrypto = new VirgilCrypto();
-  const privateKey = virgilCrypto.importPrivateKey("MC4CAQAwBQYDK2VwBCIEIFDm7Nh2x0fduX8wDMxMIC3DP66+3DYw34gbv6xu8lv0");
+  const privateKeyData = "MC4CAQAwBQYDK2VwBCIEIFDm7Nh2x0fduX8wDMxMIC3DP66+3DYw34gbv6xu8lv0";
+  const privateKey = virgilCrypto.importPrivateKey(privateKeyData);
   const apiKeyId = "28b3087b904249c64be92f79a9e05805";
   const appId = "edc8a6762fc0461186c6c83aef48b3e3";
+  const accessTokenSigner = new VirgilAccessTokenSigner(virgilCrypto);
   const jwtGenerator = new JwtGenerator({
     appId,
     apiKeyId,
-    privateKey,
+    apiKey: privateKey,
+    accessTokenSigner,
     millisecondsToLive: 60 * 60 * 1000, // 1 hour
   });
 

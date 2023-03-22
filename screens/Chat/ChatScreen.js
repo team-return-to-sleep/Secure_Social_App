@@ -13,7 +13,7 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Toolbar from '../Toolbar'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function ChatScreen({route, navigation}) {
   const isFocused = useIsFocused()
