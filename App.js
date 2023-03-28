@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import type {Node} from 'react';
 
 import {
@@ -50,6 +50,7 @@ import Root from './screens/Root'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EThreeContext from './src/EThreeContext';
 
 const Stack = createNativeStackNavigator()
 
@@ -69,37 +70,9 @@ const App = () => {
         //get authenticated user
         userInfo = await Auth.currentAuthenticatedUser();
 
-        /*const initE3kit = async (username) => {
-            try {
-                const ethree = await EThree.initialize(async () => {
-                    const response = await fetch('<SERVER_URL>/virgil-jwt', {
-                        method: 'POST',
-                        body: JSON.stringify({ identity: username }),
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-
-                    const { virgil_jwt } = await response.json();
-                    return virgil_jwt;
-                });
-
-                if (!(await ethree.hasLocalPrivateKey())) {
-                    const registered = await ethree.register();
-                    if (!registered) {
-                        await ethree.createPrivateKeyBackup('<YOUR_BACKUP_PASSWORD>');
-                    }
-                }
-
-                console.log('E3kit initialized successfully');
-            } catch (err) {
-                console.error('E3kit initialization error:', err);
-            }
-        };*/
-
         const apiUrl = `http://${
             Platform.OS === 'android' ? '10.0.2.2' : 'localhost'
-        }:3000`;
+        }:8082`;
 
         const getTokenFactory = identity => {
             return () =>
@@ -110,7 +83,8 @@ const App = () => {
 
         const identity = userInfo.username;
         const getToken = getTokenFactory(identity);
-        const eThree = await EThree.initialize(getToken, { AsyncStorage });
+        const eThreeInstance = await EThree.initialize(getToken, { AsyncStorage });
+        setEThree(eThreeInstance);
 
         //console.log(userInfo);
         if (userInfo) {
@@ -132,10 +106,6 @@ const App = () => {
                 status: "just created my account",
             }
             await API.graphql(
-//                graphqlOperation(
-//                    createUser,
-//                    {input: newUser}
-//                )
                 {
                     query: createUser,
                     variables: {input: newUser},
@@ -144,8 +114,6 @@ const App = () => {
             )
             //console.log(userData)
         }
-
-        // initE3kit();
 
         await eThree.register();
     }

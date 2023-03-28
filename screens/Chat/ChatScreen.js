@@ -14,6 +14,7 @@ import Toolbar from '../Toolbar'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
 const { initCrypto, VirgilCrypto } = require('virgil-crypto');
+import EThreeContext from '../../src/EThreeContext';
 
 
 export function ChatScreen({route, navigation}) {
@@ -23,6 +24,7 @@ export function ChatScreen({route, navigation}) {
   const otherUser = route.params.otherUser;
   const [messages, setMessages] = useState([]);
   const [points, setPoints] = useState(0);
+  const eThree = useContext(EThreeContext);
 
   useEffect(() => {
     const loadPrevMessages = async() => {
