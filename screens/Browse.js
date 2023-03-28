@@ -21,15 +21,15 @@ const Browse = ({navigation}) => {
 
     useEffect( ()=> {
         const fetchUsers = async() => {
-                const usersData = await API.graphql(
-                    {
-                        query: listUsers,
-                        authMode: "API_KEY"
-                    }
-                )
-                setUsers(usersData.data.listUsers.items)
-                setCurr(usersData.data.listUsers.items)
-                // console.log(usersData.data.listUsers.items)
+            const usersData = await API.graphql(
+                {
+                    query: listUsers,
+                    authMode: "API_KEY"
+                }
+            )
+            setUsers(usersData.data.listUsers.items)
+            setCurr(usersData.data.listUsers.items)
+            // console.log(usersData.data.listUsers.items)
         }
         fetchUsers();
     }, []);
@@ -43,12 +43,13 @@ const Browse = ({navigation}) => {
             let results = []
             for (let i=0; i<users.length; i++) {
                 if (users[i].name == name) {
+                    // TODO: change to add names which are superstrings of search
                     results.push(users[i])
                 }
             }
 //            setSearched(users)
 //            setUsers(results)
-            //setHasSearched(true)
+//            setHasSearched(true)
             if (results.length < 1) {
                 Alert.alert("Sorry, cannot find user " + name)
             } else {
@@ -63,46 +64,47 @@ const Browse = ({navigation}) => {
         //setHasSearched(false)
     }
 
-  return (
-    <>
-    <View style={{flex:1}}>
-        <Header/>
-            <TextInput
-            label="search for a username"
-            theme={{colors:{primary:"#000000"}}}
-            value={name}
-            onChangeText={(text)=>setName(text)}
-        />
+    return (
+        <>
+            <View style={{flex:1}}>
+                <Header/>
 
-        <Button icon="magnify"
-        mode="contained"
-        style={{margin:20, backgroundColor: '#BBCAEB'}}
-        onPress={() => onClickHandler()
-        }>
-            Find User
-        </Button>
-        <ScrollView style={styles.container}>
-            <View style={styles.profileWrapper}>
-                {
-                currUsers.map((user) => {
-                                    return (
-                                        <Pressable
-                                          style={styles.profile}
-                                          onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
-                                        <Image
-                                          style={styles.profile}
-                                          source={{uri: user.imageUri}}
-                                        />
-                                        </Pressable>
-                                    );
-                                })}
+                <TextInput
+                    label="search for a username"
+                    theme={{colors:{primary:"#000000"}}}
+                    value={name}
+                    onChangeText={(text)=>setName(text)}
+                />
+
+                <Button icon="magnify"
+                    mode="contained"
+                    style={{margin:20, backgroundColor: '#BBCAEB'}}
+                    onPress={() => onClickHandler()
+                }>
+                    Find User
+                </Button>
+
+                <ScrollView style={styles.container}>
+                    <View style={styles.profileWrapper}>
+                        {
+                        currUsers.map((user) => {
+                            return (
+                                <Pressable
+                                    style={styles.profile}
+                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
+                                >
+                                    <Image
+                                        style={styles.profile}
+                                        source={{uri: user.imageUri}}
+                                    />
+                                </Pressable>
+                            );
+                        })}
+                    </View>
+                </ScrollView>
             </View>
-        </ScrollView>
-    </View>
-
-
-    </>
-  );
+        </>
+    );
 };
 
 const styles = StyleSheet.create({
@@ -111,25 +113,25 @@ const styles = StyleSheet.create({
         backgroundColor:'#FFFFFF',
     },
     profile: {
-            marginLeft: 10,
-            marginRight: 10,
-            marginTop: 7,
-            marginBottom: 7,
-            width: 170,
-            height: 170,
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            backgroundColor: '#AFE1AF',
-            borderRadius: 24,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 7,
+        marginBottom: 7,
+        width: 170,
+        height: 170,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        backgroundColor: '#AFE1AF',
+        borderRadius: 24,
     },
     profileWrapper: {
-            flex: 1,
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: 20,
-            paddingBottom: 20,
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 20,
+        paddingBottom: 20,
     },
 });
 
