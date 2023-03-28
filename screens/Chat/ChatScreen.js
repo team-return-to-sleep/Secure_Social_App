@@ -13,7 +13,8 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Toolbar from '../Toolbar'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+const { initCrypto, VirgilCrypto } = require('virgil-crypto');
+
 
 export function ChatScreen({route, navigation}) {
   const isFocused = useIsFocused()
@@ -35,13 +36,17 @@ export function ChatScreen({route, navigation}) {
 //        console.log(myChatRoomID)
 //        console.log(messagesData.data.messagesByChatRoom.items)
 
-        const ethree = EThree.getInstance();
         const messagesDataArr = messagesData.data.messagesByChatRoom.items
         for(let i=0; i<messagesDataArr.length; i++) {
 
+            //const curr = messagesDataArr[i];
+            //const senderPublicKey = await ethree.findUsers(curr.user.id);
+            //const decryptedText = await ethree.decrypt(curr.content, senderPublicKey[curr.user.id]);
+
             const curr = messagesDataArr[i];
-            const senderPublicKey = await ethree.findUsers(curr.user.id);
-            const decryptedText = await ethree.decrypt(curr.content, senderPublicKey[curr.user.id]);
+            const sender = curr.id;
+            const senderCard = await eThree.findUsers(sender);
+            const decryptedText = await eThree.authDecrypt(curr.content, senderCard);
 
             const msg = {
                 _id: curr.id,
@@ -58,20 +63,6 @@ export function ChatScreen({route, navigation}) {
 
     }
 
-    const initE3kit = async () => {
-      try {
-        const authToken = await AsyncStorage.getItem('virgil-identity');
-        const ethree = new EThree(authToken);
-        await ethree.initialize();
-
-        // Find public keys for the sender and receiver
-        const userPublicKeys = await ethree.findUsers([myUserData.id, otherUser.id]);
-      } catch (err) {
-        console.error('E3kit initialization error:', err);
-      }
-    };
-
-    initE3kit();
     loadPrevMessages();
 
   }, [])
@@ -160,10 +151,14 @@ export function ChatScreen({route, navigation}) {
   }, [])
 
   const onSend = async(newMessage = []) => {
-  try {
-    const ethree = EThree.getInstance();
-    const userPublicKeys = await ethree.findUsers([otherUser.id]);
-    const encryptedText = await ethree.encrypt(newMessage[0].text, userPublicKeys[otherUser.id]);
+    const identities = otherUser.id;
+
+    // Find users cards with public keys
+    const findUsersResult = await eThree.findUsers(identities);
+
+    // Encrypt text string
+    const encryptedText = await eThree.authEncrypt(newMessage[0].text, findUsersResult);
+
 
     await API.graphql({
       query: createMessage,
@@ -177,9 +172,7 @@ export function ChatScreen({route, navigation}) {
       authMode: 'API_KEY',
     });
     console.log('end');
-  } catch (err) {
-    console.error('Error sending encrypted message:', err);
-  }
+
 };
 
   const styles = StyleSheet.create({

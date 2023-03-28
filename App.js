@@ -49,7 +49,7 @@ import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator()
 
@@ -67,12 +67,50 @@ const App = () => {
  useEffect( ()=> {
     const fetchUser = async() => {
         //get authenticated user
+        userInfo = await Auth.currentAuthenticatedUser();
 
+        /*const initE3kit = async (username) => {
+            try {
+                const ethree = await EThree.initialize(async () => {
+                    const response = await fetch('<SERVER_URL>/virgil-jwt', {
+                        method: 'POST',
+                        body: JSON.stringify({ identity: username }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
 
+                    const { virgil_jwt } = await response.json();
+                    return virgil_jwt;
+                });
 
+                if (!(await ethree.hasLocalPrivateKey())) {
+                    const registered = await ethree.register();
+                    if (!registered) {
+                        await ethree.createPrivateKeyBackup('<YOUR_BACKUP_PASSWORD>');
+                    }
+                }
 
-        const userInfo = await Auth.currentAuthenticatedUser();
+                console.log('E3kit initialized successfully');
+            } catch (err) {
+                console.error('E3kit initialization error:', err);
+            }
+        };*/
 
+        const apiUrl = `http://${
+            Platform.OS === 'android' ? '10.0.2.2' : 'localhost'
+        }:3000`;
+
+        const getTokenFactory = identity => {
+            return () =>
+                fetch(`${apiUrl}/virgil-jwt?identity=${encodeURIComponent(identity)}`)
+                    .then(res => res.json())
+                    .then(data => data.virgil_jwt);
+        };
+
+        const identity = userInfo.username;
+        const getToken = getTokenFactory(identity);
+        const eThree = await EThree.initialize(getToken, { AsyncStorage });
 
         //console.log(userInfo);
         if (userInfo) {
@@ -93,7 +131,6 @@ const App = () => {
                 imageUri: "https://placeimg.com/140/140/any",
                 status: "just created my account",
             }
-            await eeThree.register();
             await API.graphql(
 //                graphqlOperation(
 //                    createUser,
@@ -107,38 +144,14 @@ const App = () => {
             )
             //console.log(userData)
         }
+
+        // initE3kit();
+
+        await eThree.register();
     }
 
-            const initE3kit = async () => {
-                try {
-                    const ethree = await EThree.initialize(async () => {
-                        const response = await fetch('<SERVER_URL>/virgil-jwt', {
-                            method: 'POST',
-                            body: JSON.stringify({ identity: userInfo.username }),
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                        });
-
-                        const { virgil_jwt } = await response.json();
-                        return virgil_jwt;
-                    });
-
-                    if (!(await ethree.hasLocalPrivateKey())) {
-                        const registered = await ethree.register();
-                        if (!registered) {
-                            await ethree.createPrivateKeyBackup('<YOUR_BACKUP_PASSWORD>');
-                        }
-                    }
-
-                    console.log('E3kit initialized successfully');
-                } catch (err) {
-                    console.error('E3kit initialization error:', err);
-                }
-            };
-
     fetchUser();
-    initE3kit();
+
  }, []);
 
   return (
