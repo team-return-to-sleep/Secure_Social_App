@@ -3,6 +3,12 @@ import {useState} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import {Auth} from 'aws-amplify'
+import {getUser} from '../src/graphql/queries'
+import {updateUser} from '../src/graphql/mutations'
+import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from './Header'
 
@@ -15,6 +21,44 @@ const OtherUserProfile = ({route, navigation}) => {
     })
 
     const {user} = route.params;
+    //console.log("user: ", user)
+
+  const onClickHandler = async () => {
+    const userInfo = await Auth.currentAuthenticatedUser();
+    const userData = await API.graphql (
+        {
+                  query: getUser,
+                  variables: {id: userInfo.attributes.sub},
+                  authMode: "API_KEY"
+        }
+    )
+    let myFriends = userData.data.getUser.friends
+    //console.log(myFriends)
+    if (myFriends) {
+        for (let i=0; i<myFriends.length; i++) {
+            if (myFriends[i] == user.id.toString()) {
+                // already a friend, do nothing!
+                return;
+            }
+        }
+
+        myFriends.push(user.id.toString())
+    } else {
+        myFriends = [user.id.toString()]
+    }
+    const updatedUser = {
+        id: userData.data.getUser.id,
+        friends: myFriends,
+    };
+    const updated = await API.graphql (
+            {
+                      query: updateUser,
+                      variables: {input: updatedUser},
+                      authMode: "API_KEY"
+            }
+    )
+
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -75,7 +119,15 @@ const OtherUserProfile = ({route, navigation}) => {
                             </View>
                         </View>
                 </View>
+
+            <Button icon="chat-plus"
+                            mode="contained"
+                            style={styles.accountButton}
+                            onPress={() => onClickHandler()}>
+                                Start Chatting!
+            </Button>
             </View>
+
             <View style={{marginBottom:26}}>
                         <Text>  {'\n\n'} </Text>
             </View>
