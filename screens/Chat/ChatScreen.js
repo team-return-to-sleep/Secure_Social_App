@@ -54,8 +54,8 @@ export function ChatScreen({route, navigation}) {
       let getToken = getTokenFactory(identity);
       const eThree_user = await EThree.initialize(getToken, { AsyncStorage });
 
-      let isRegistered = await eThree_user.hasLocalPrivateKey();
-      if (!isRegistered) {
+      let isRegistered_user = await eThree_user.hasLocalPrivateKey();
+      if (!isRegistered_user) {
         await eThree_user.register();
       }
 
@@ -63,8 +63,8 @@ export function ChatScreen({route, navigation}) {
       getToken = getTokenFactory(identity);
       const eThree_otherUser = await EThree.initialize(getToken, { AsyncStorage });
 
-      isRegistered = await eThree_otherUser.hasLocalPrivateKey();
-      if (!isRegistered) {
+      let isRegistered_otherUser = await eThree_otherUser.hasLocalPrivateKey();
+      if (!isRegistered_otherUser) {
         await eThree_otherUser.register();
       }
 
@@ -80,7 +80,11 @@ export function ChatScreen({route, navigation}) {
       setEThreeOtherUser(eThree_otherUser);
       console.log("CHeck 1");
 
-      setEThreeInitialized(true);
+      isRegistered_otherUser = await eThree_otherUser.hasLocalPrivateKey();
+      isRegistered_user = await eThree_user.hasLocalPrivateKey();
+      if (isRegistered_user && isRegistered_otherUser) {
+        setEThreeInitialized(true);
+      }
     };
 
     initEThree();
@@ -129,7 +133,7 @@ export function ChatScreen({route, navigation}) {
 
     loadPrevMessages();
 
-  }, [])
+  }, [eThreeUser])
 
   useEffect(() => {
     if (isFocused) {
@@ -184,7 +188,6 @@ export function ChatScreen({route, navigation}) {
        // next: ({provider, value}) => {
 
         next: async (data) => { // Added 'async' here
-
             const { provider, value } = data;
             const newMessage = value.data.onCreateMessage
             if (newMessage.chatRoomID != myChatRoomID) {
@@ -236,7 +239,7 @@ export function ChatScreen({route, navigation}) {
         error: error => console.warn(error.error.errors)
     })
         return () => subscription.unsubscribe();
-  }, [])
+  }, [eThreeUser])
 
   const onSend = async(newMessage = []) => {
 
@@ -245,10 +248,13 @@ export function ChatScreen({route, navigation}) {
     // console.log('Identities:', identities);
 
     // Find users cards with public keys
-    const findUsersResult = await eThreeUser.findUsers(identities);
 
-    // Encrypt text string with the recipient's public key and sign with sender's private key
-    const encryptedText = await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
+    if (eThreeUser) {
+     const findUsersResult = await eThreeUser.findUsers(identities);
+
+     // Encrypt text string with the recipient's public key and sign with sender's private key
+     const encryptedText = await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
+
 
     await API.graphql({
       query: createMessage,
@@ -262,6 +268,8 @@ export function ChatScreen({route, navigation}) {
       authMode: 'API_KEY',
     });
     console.log('end');
+
+    }
 
   };
 
