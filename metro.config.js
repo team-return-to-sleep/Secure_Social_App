@@ -5,6 +5,7 @@
  * @format
  */
 
+
 module.exports = {
   transformer: {
     getTransformOptions: async () => ({
@@ -14,7 +15,12 @@ module.exports = {
       },
     }),
   },
-  server: {
-     port: 8082, // Change this to the desired port number.
-  },
 };
+
+
+const path = require('path');
+const blacklist = require('metro-config/src/defaults/exclusionList');
+
+const watchFolders = [
+  // Add any additional watch folders if needed
+];

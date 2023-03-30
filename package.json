@@ -5,9 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "start": "concurrently \"react-native start\" \"npm run start:server\"",
     "start:server": "node server.js",
-    "start:both": "concurrently \"yarn start\" \"npm run start:server\"",
     "test": "jest",
     "lint": "eslint ."
   },

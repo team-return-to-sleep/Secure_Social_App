@@ -39,6 +39,7 @@ const Home = ({navigation}) => {
                          {users.map((user) => {
                              return (
                                  <Image
+                                   key={user.id}
                                    style={styles.profileImage}
                                    source={{uri: user.imageUri}}
                                  />
@@ -51,6 +52,7 @@ const Home = ({navigation}) => {
                     {users.map((user) => {
                         return (
                             <Pressable
+                                key={user.id}
                                 style={styles.profile}
                                 onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
                             <Image
