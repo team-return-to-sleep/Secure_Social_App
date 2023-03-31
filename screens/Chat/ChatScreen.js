@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react'
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat'
+import { GiftedChat, Bubble, Send, SystemMessage } from 'react-native-gifted-chat'
 import {View,Text,StyleSheet,AsyncStorage} from 'react-native'
 import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'react-native-paper';
 import { useIsFocused } from "@react-navigation/native";
@@ -14,11 +14,10 @@ import Toolbar from '../Toolbar'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
 
-const express = require('express');
 
 const getTokenFactory = (identity) => {
   return async () => {
-    const apiUrl = 'http://10.0.2.2:3000';
+    const apiUrl = 'http://10.0.2.2:3000'; // Works with android. Slight adjustment needed for ios devices
     const response = await fetch(`${apiUrl}/virgil-jwt`, {
       method: 'POST',
       headers: {
@@ -33,8 +32,13 @@ const getTokenFactory = (identity) => {
   };
 };
 
-
-
+function isBase64(str) {
+  try {
+    return btoa(atob(str)) === str;
+  } catch (err) {
+    return false;
+  }
+}
 
 export function ChatScreen({route, navigation}) {
     const isFocused = useIsFocused()
@@ -47,6 +51,7 @@ export function ChatScreen({route, navigation}) {
     const [eThreeUser, setEThreeUser] = useState(null);
     const [eThreeOtherUser, setEThreeOtherUser] = useState(null);
     const [eThreeInitialized, setEThreeInitialized] = useState(false);
+    const [showEncryptionMessage, setShowEncryptionMessage] = useState(true);
 
   useEffect(() => {
     const initEThree = async () => {
@@ -78,7 +83,6 @@ export function ChatScreen({route, navigation}) {
 
       setEThreeUser(eThree_user);
       setEThreeOtherUser(eThree_otherUser);
-      console.log("CHeck 1");
 
       isRegistered_otherUser = await eThree_otherUser.hasLocalPrivateKey();
       isRegistered_user = await eThree_user.hasLocalPrivateKey();
@@ -103,18 +107,24 @@ export function ChatScreen({route, navigation}) {
 //        console.log(messagesData.data.messagesByChatRoom.items)
 
         const messagesDataArr = messagesData.data.messagesByChatRoom.items
+
         for(let i=0; i<messagesDataArr.length; i++) {
 
-            const curr = messagesDataArr[i];
-            const sender = curr.id;
-            //let getToken = getTokenFactory(sender);
-            //const eThree_curr = await EThree.initialize(getToken, { AsyncStorage });
 
-            // Get sender card with public key
-            const senderCard = await eThreeUser.findUsers(sender);
+           const curr = messagesDataArr[i];
+           const sender = curr.user.id;
 
-            // Decrypt text with the recipient private key and ensure it was written by sender
-            const decryptedText = await eThreeUser.authDecrypt(curr.content, senderCard);
+           // Get sender card with public key
+           const senderCard = await eThreeUser.findUsers(sender);
+
+           let decryptedText;
+           // Decrypt text with the recipient private key and ensure it was written by sender
+           try {
+            decryptedText = await eThreeUser.authDecrypt(curr.content, senderCard);
+           } catch (err) {
+            // This might happen if the messages didn't undergo encryption because it was sent before the set up
+            decryptedText = curr.content;
+           }
 
             const msg = {
                 _id: curr.id,
@@ -126,12 +136,32 @@ export function ChatScreen({route, navigation}) {
                     avatar: curr.user.imageUri,
                 },
             }
+
+
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
+        }
+
+
+        if (messages.length === 0 && showEncryptionMessage) {
+          const encryptionMessage = {
+            _id: Date.now(), // Unique ID
+            text: 'Your messages are end-to-end encrypted',
+            createdAt: new Date(),
+            system: true,
+            textStyle: {
+                  color: '#777', // Change this to a darker color
+            },
+          };
+          setMessages(previousMessages => GiftedChat.append(previousMessages, encryptionMessage));
+          setShowEncryptionMessage(false);
         }
 
     }
 
-        loadPrevMessages();
+    if(eThreeUser) {
+     loadPrevMessages();
+    }
+
 
   }, [eThreeUser])
 
@@ -198,6 +228,7 @@ export function ChatScreen({route, navigation}) {
                     setPoints(points+10)
                 }
 
+
             const sender = newMessage.user.id;
 
             // Get sender card with public key
@@ -236,7 +267,7 @@ export function ChatScreen({route, navigation}) {
         error: error => console.warn(error.error.errors)
     })
         return () => subscription.unsubscribe();
-  }, [eThreeUser])
+  }, [eThreeUser, eThreeOtherUser])
 
   const onSend = async(newMessage = []) => {
 
@@ -267,6 +298,24 @@ export function ChatScreen({route, navigation}) {
      console.log('end');
     }
 
+  }
+
+
+
+  function SystemMessage(props) {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          left: { backgroundColor: '#6646ee' },
+          right: { backgroundColor: '#6646ee' },
+        }}
+        textStyle={{
+          left: { color: '#fff' },
+          right: { color: '#fff' },
+        }}
+      />
+    );
   }
 
     const styles = StyleSheet.create({
@@ -357,7 +406,6 @@ export function ChatScreen({route, navigation}) {
             avatar: route.params.user.imageUri,
           }}
           renderBubble={renderBubble}
-
           scrollToBottom
           scrollToBottomComponent={scrollToBottomComponent}
           placeholder='Type your message here...'
