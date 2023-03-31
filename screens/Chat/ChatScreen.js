@@ -185,7 +185,7 @@ export function ChatScreen({route, navigation}) {
                 authMode: "API_KEY",
             }
         ).subscribe({
-            next: ({provider, value}) => {
+            next: async ({provider, value}) => {
     //            console.log(value.data.onCreateMessage)
                 const newMessage = value.data.onCreateMessage
                 if (newMessage.chatRoomID != myChatRoomID) {
