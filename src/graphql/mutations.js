@@ -14,6 +14,7 @@ export const createUser = /* GraphQL */ `
       region
       status
       interests
+      favoriteInterests
       friends
       chatRoomUser {
         items {
@@ -35,6 +36,27 @@ export const createUser = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      garden {
+        id
+        userID
+        points
+        flowerSize
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          interests
+          favoriteInterests
+          friends
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -54,6 +76,7 @@ export const updateUser = /* GraphQL */ `
       region
       status
       interests
+      favoriteInterests
       friends
       chatRoomUser {
         items {
@@ -75,6 +98,27 @@ export const updateUser = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      garden {
+        id
+        userID
+        points
+        flowerSize
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          interests
+          favoriteInterests
+          friends
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -94,6 +138,7 @@ export const deleteUser = /* GraphQL */ `
       region
       status
       interests
+      favoriteInterests
       friends
       chatRoomUser {
         items {
@@ -115,6 +160,27 @@ export const deleteUser = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      garden {
+        id
+        userID
+        points
+        flowerSize
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          interests
+          favoriteInterests
+          friends
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
@@ -138,12 +204,21 @@ export const createChatRoomUser = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -181,12 +256,21 @@ export const updateChatRoomUser = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -224,12 +308,21 @@ export const deleteChatRoomUser = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -368,12 +461,21 @@ export const createMessage = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -412,12 +514,21 @@ export const updateMessage = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -456,12 +567,21 @@ export const deleteMessage = /* GraphQL */ `
         region
         status
         interests
+        favoriteInterests
         friends
         chatRoomUser {
           nextToken
         }
         message {
           nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
         }
         createdAt
         updatedAt
@@ -477,6 +597,132 @@ export const deleteMessage = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      updatedAt
+    }
+  }
+`;
+export const createGarden = /* GraphQL */ `
+  mutation CreateGarden(
+    $input: CreateGardenInput!
+    $condition: ModelGardenConditionInput
+  ) {
+    createGarden(input: $input, condition: $condition) {
+      id
+      userID
+      points
+      flowerSize
+      user {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests
+        favoriteInterests
+        friends
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateGarden = /* GraphQL */ `
+  mutation UpdateGarden(
+    $input: UpdateGardenInput!
+    $condition: ModelGardenConditionInput
+  ) {
+    updateGarden(input: $input, condition: $condition) {
+      id
+      userID
+      points
+      flowerSize
+      user {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests
+        favoriteInterests
+        friends
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteGarden = /* GraphQL */ `
+  mutation DeleteGarden(
+    $input: DeleteGardenInput!
+    $condition: ModelGardenConditionInput
+  ) {
+    deleteGarden(input: $input, condition: $condition) {
+      id
+      userID
+      points
+      flowerSize
+      user {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests
+        favoriteInterests
+        friends
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
       updatedAt
     }
   }

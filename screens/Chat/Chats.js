@@ -23,37 +23,40 @@ const Chats = ({navigation}) => {
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
 
-    useEffect( ()=> {
+    // fetch user data
+    useEffect(() => {
         if(isFocused){
-        const fetchUser = async() => {
-          const userInfo = await Auth.currentAuthenticatedUser();
-          const userData = await API.graphql (
-            {
-              query: getUser,
-              variables: {id: userInfo.attributes.sub},
-              authMode: "API_KEY"
-             }
-          )
-           setMyUserData(userData.data.getUser)
-           const myFriends = userData.data.getUser.friends
-           const friendUsers = []
-           if (myFriends) {
-                for (let i=0; i<myFriends.length; i++) {
-                    const friendData = await API.graphql (
-                                {
-                                  query: getUser,
-                                  variables: {id: myFriends[i]},
-                                  authMode: "API_KEY"
-                                 }
-                    )
-                    friendUsers.push(friendData.data.getUser)
+            // fetch my user data
+            const fetchUser = async() => {
+                const userInfo = await Auth.currentAuthenticatedUser();
+                const userData = await API.graphql (
+                    {
+                        query: getUser,
+                        variables: {id: userInfo.attributes.sub},
+                        authMode: "API_KEY"
+                    }
+                )
+                setMyUserData(userData.data.getUser)
+                const myFriends = userData.data.getUser.friends
+                const friendUsers = []
+                if (myFriends) {
+                    for (let i=0; i<myFriends.length; i++) {
+                        const friendData = await API.graphql (
+                            {
+                                query: getUser,
+                                variables: {id: myFriends[i]},
+                                authMode: "API_KEY"
+                            }
+                        )
+                        friendUsers.push(friendData.data.getUser)
+                    }
+                    //console.log("friends: ", friendUsers)
+                    setUsers(friendUsers)
                 }
-                //console.log("friends: ", friendUsers)
-                setUsers(friendUsers)
-           }
-        }
-        const fetchUsers = async() => {
+            }
 
+            // fetch data for all users
+            const fetchUsers = async() => {
                 const usersData = await API.graphql(
                     {
                         query: listUsers,
@@ -61,38 +64,37 @@ const Chats = ({navigation}) => {
                     }
                 )
                 setUsers(usersData.data.listUsers.items)
+            }
+            fetchUser();
+            //fetchUsers();
         }
-        fetchUser();
-        //fetchUsers();
-        }
-     }, [isFocused]);
+    }, [isFocused]);
 
     const onClickHandler = async (otherUser) => {
         // if you already have a chat room with the other user, no need to create a new one! :)
         // note that for now, we assume only 1:1 messaging
         // this can be modified later
-        //console.log(otherUser)
-        // TODO: fetch most recent userData here
+        // console.log(otherUser)
+        // TODO: I think this was here to get most updated user? see if necessary
         const userInfo = await Auth.currentAuthenticatedUser();
-                  const userData = await API.graphql (
-                    {
-                      query: getUser,
-                      variables: {id: userInfo.attributes.sub},
-                      authMode: "API_KEY"
-                     }
-                   )
+            const userData = await API.graphql (
+                {
+                    query: getUser,
+                    variables: {id: userInfo.attributes.sub},
+                    authMode: "API_KEY"
+                }
+            )
         const myData = userData.data.getUser
         setMyUserData(myData)
         let myRooms = myData.chatRoomUser.items
         let exists = false
-       // console.log(myRooms)
-       // console.log(myUserData.chatRoomUser.items)
+        // console.log(myRooms)
+        // console.log(myUserData.chatRoomUser.items)
 
         if (myRooms) {
             for (let i=0; i<myRooms.length; i++) {
-//                console.log(myRooms[i].chatRoom.chatRoomUsers.items[0].userID)
-//                console.log("otheruser id:")
-//                console.log(otherUser.id)
+                // TODO: room with yourself; do we still want this since you can't create a room
+                // TODO: with yourself with the current UI
                 if (myUserData.id == otherUser.id) {
                     if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id &&
                         myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
@@ -107,19 +109,20 @@ const Chats = ({navigation}) => {
                     }
                 } else {
                     if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id ||
-                     myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
+                        myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
                         // room with this person already exists!
                         console.log("room exists!")
                         navigation.navigate("ChatScreen", {
-                                    chatRoomID: myRooms[i].chatRoomID,
-                                    user: myData,
-                                    otherUser: otherUser,
+                            chatRoomID: myRooms[i].chatRoomID,
+                            user: myData,
+                            otherUser: otherUser,
                         })
                         exists = true
                     }
                 }
             }
         }
+
         if (!exists) {
             console.log("created new :/")
             // create new chat room
@@ -176,41 +179,47 @@ const Chats = ({navigation}) => {
         }
     }
 
-      return (
-          <ScrollView style={styles.container}>
-              <Header />
-              <SafeAreaView>
-                  <View style={styles.headerWrapper}>
-                        {users.map((user) => {
-                            return (
-                                <Image
-                                  style={styles.profileImage}
-                                  source={{uri: user.imageUri}}
-                                />
-                            );
-                        })}
-                  </View>
-              </SafeAreaView>
+    return (
+        <ScrollView style={styles.container}>
+            <Header />
 
-              <View style={styles.chatWrapper}>
-                    {users.map((user) => {
-                      return (
+            <SafeAreaView>
+                <View style={styles.headerWrapper}>
+                    {users.length > 0 ? (
+                        <Text style={styles.subtext}>Messages</Text>
+                    ) : (
+                        <Text style={styles.midtext}>Start chatting with someone by clicking on their profile!</Text>
+                    )}
+                </View>
+            </SafeAreaView>
+
+            <View style={styles.chatWrapper}>
+                {users.map((user) => {
+                    return (
                         <Pressable
                         style={styles.chat}
                         onPress={() => onClickHandler(user)}>
                             <View style={styles.imageWrapper}>
-                            <Image
-                                style={styles.profileImage}
-                                source={{uri: user.imageUri}}
-                            />
-                            <Text> Latest Message Here </Text>
+                                <Image
+                                    style={styles.profileImage}
+                                    source={{uri: user.imageUri}}
+                                />
+                                <View>
+                                    <Text style={styles.subtext}> {user.name} </Text>
+                                    <Text style={styles.msgtext}> Latest Message Here </Text>
+                                </View>
+
                             </View>
                         </Pressable>
-                        );
-                  })}
-              </View>
-          </ScrollView>
-        );
+                    );
+                })}
+            </View>
+
+            <View style={{marginBottom:26}}>
+                <Text> {'\n\n'} </Text>
+            </View>
+        </ScrollView>
+    );
 
 };
 
@@ -224,7 +233,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 20,
         paddingTop: 15,
-        paddingBottom: 15,
+        paddingBottom: 0,
         alignItems: 'center',
     },
     chatWrapper: {
@@ -249,22 +258,53 @@ const styles = StyleSheet.create({
         height: 70,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        backgroundColor: '#D9D9D9',
+        backgroundColor: '#BBCAEB',
         borderRadius: 24,
     },
     imageWrapper: {
-            marginRight: 'auto',
-            marginLeft: 10,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            paddingTop: 20,
-            paddingBottom: 20,
+        marginRight: 'auto',
+        marginLeft: 10,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingTop: 20,
+        paddingBottom: 20,
     },
     chooseButton: {
         borderRadius: 50,
         width: 20,
     },
+    subtext: {
+        marginLeft:5,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'black',
+    },
+    midtext: {
+        textAlign: 'center',
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'black',
+    },
+    msgtext: {
+        marginLeft:5,
+        color:'#FFFFFF',
+        fontWeight: 'bold',
+    },
 });
 
 export default Chats;
+
+/* Top horizontal bar of profiles
+    <SafeAreaView>
+     <View style={styles.headerWrapper}>
+           {users.map((user) => {
+               return (
+                   <Image
+                     style={styles.profileImage}
+                     source={{uri: user.imageUri}}
+                   />
+               );
+           })}
+     </View>
+    </SafeAreaView> */

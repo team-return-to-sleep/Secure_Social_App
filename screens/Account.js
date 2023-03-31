@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useIsFocused } from "@react-navigation/native";
 
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers} from '../src/graphql/queries'
@@ -12,16 +13,9 @@ import Header from './Header'
 import UserProfile from './UserProfile'
 
 const Account = ({route, navigation}) => {
-
-    const [info, setInfo] = useState({
-        name:"loading",
-        interests:"loading",
-        age:"loading"
-    })
-
+  const isFocused = useIsFocused()
   const [users, setUsers] = useState([])
 
-    useEffect( ()=> {
         const fetchUser = async() => {
           const userInfo = await Auth.currentAuthenticatedUser();
           const userData = await API.graphql (
@@ -33,17 +27,16 @@ const Account = ({route, navigation}) => {
            )
            setUsers(Array(1).fill(userData.data.getUser))
         }
-        fetchUser();
-     }, []);
 
-    /* <Text style={{margin:20, fontSize:25}}>
-           Display name: {info.name} {'\n'}
-           Interests: {info.interests} {'\n'}
-           Age: {info.age} {'\n'}
-       </Text> */
+     useEffect( ()=> {
+        if(isFocused) {
+            fetchUser();
+        }
+     }, [isFocused]);
 
   return (
     <ScrollView style={styles.container}>
+            <Header name="Account Info" />
             <View style={styles.accountWrapper}>
                   {users.map((user) => {
                     return (
@@ -55,12 +48,15 @@ const Account = ({route, navigation}) => {
                     />
                     <Button icon="content-save"
                     mode="contained"
-                    style={styles.profPicButton}>
+                    style={styles.profPicButton}
+                    onPress={() => navigation.navigate("ProfilePicture", {user: user})}>
                         <Text style={styles.profPicText}>Change profile picture</Text>
                     </Button>
                     <Button mode="contained"
                     style={styles.accountButton}
-                        onPress={() => navigation.navigate("ProfileGender")}>
+                        onPress={() => {
+                            navigation.navigate("ProfileInterests", {user: user})}
+                        }>
                         <Text>Edit Interests Profile</Text>
                     </Button>
                     <Button mode="contained"
@@ -120,6 +116,7 @@ const styles = StyleSheet.create({
             margin:15,
             fontSize: 30,
             fontWeight: 'bold',
+            color: 'black',
     },
 });
 

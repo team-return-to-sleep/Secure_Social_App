@@ -37,16 +37,16 @@ const getTokenFactory = (identity) => {
 
 
 export function ChatScreen({route, navigation}) {
-  const isFocused = useIsFocused()
-  const myChatRoomID = route.params.chatRoomID;
-  const myUserData = route.params.user;
-  const otherUser = route.params.otherUser;
-  const [messages, setMessages] = useState([]);
-  const [points, setPoints] = useState(0);
+    const isFocused = useIsFocused()
+    const myChatRoomID = route.params.chatRoomID;
+    const myUserData = route.params.user;
+    const otherUser = route.params.otherUser;
+    const [messages, setMessages] = useState([]);
+    const [points, setPoints] = useState(0);
 
-  const [eThreeUser, setEThreeUser] = useState(null);
-  const [eThreeOtherUser, setEThreeOtherUser] = useState(null);
-  const [eThreeInitialized, setEThreeInitialized] = useState(false);
+    const [eThreeUser, setEThreeUser] = useState(null);
+    const [eThreeOtherUser, setEThreeOtherUser] = useState(null);
+    const [eThreeInitialized, setEThreeInitialized] = useState(false);
 
   useEffect(() => {
     const initEThree = async () => {
@@ -131,75 +131,72 @@ export function ChatScreen({route, navigation}) {
 
     }
 
-    loadPrevMessages();
+        loadPrevMessages();
 
   }, [eThreeUser])
 
-  useEffect(() => {
-    if (isFocused) {
-    const loadPoints = async () => {
+    useEffect(() => {
+        // TODO: is this necessary? same thing covered by subscription useEffect
+        if (isFocused) {
+            const loadPoints = async () => {
                 try {
                     const val = await AsyncStorage.getItem('flowerPoints')
                     if (val) {
                         console.log("val points: ", val)
                         setPoints(parseInt(val))
                     } else {
+                        // default points
                         await AsyncStorage.setItem('flowerPoints', '20')
                         setPoints(20)
                     }
                 } catch (error) {
                     console.log("error retrieving flower data")
                 }
-    }
-    loadPoints();
-    }
-  }, [isFocused])
-
-  useEffect(() => {
-    const setFlowerPoints = async () => {
-
-        try {
-            const val = await AsyncStorage.getItem('flowerPoints')
-            if (val) {
-                console.log("val points: ", val)
-                setPoints(parseInt(val))
-            } else {
-                await AsyncStorage.setItem('flowerPoints', '20')
-                setPoints(20)
             }
+            loadPoints();
+        }
+    }, [isFocused])
+
+    useEffect(() => {
+        const setFlowerPoints = async () => {
             try {
-                        console.log("prev (curr) points: ", parseInt(val))
-                        await AsyncStorage.setItem('flowerPoints', (parseInt(val)+10).toString())
+                const val = await AsyncStorage.getItem('flowerPoints')
+                if (val) {
+                    console.log("val points: ", val)
+                    setPoints(parseInt(val))
+                } else {
+                    await AsyncStorage.setItem('flowerPoints', '20')
+                    setPoints(20)
+                }
+                try {
+                    console.log("prev (curr) points: ", parseInt(val))
+                    await AsyncStorage.setItem('flowerPoints', (parseInt(val)+10).toString())
+                } catch (error) {
+                    console.log("error saving flower data")
+                }
             } catch (error) {
-                        console.log("error saving flower data")
+                console.log("error retrieving flower data")
             }
-
-        } catch (error) {
-            console.log("error retrieving flower data")
         }
 
-    }
-    const subscription = API.graphql(
-        {
-            query: onCreateMessage,
-            authMode: "API_KEY",
-        }
-    ).subscribe({
-       // next: ({provider, value}) => {
-
-        next: async (data) => { // Added 'async' here
-            const { provider, value } = data;
-            const newMessage = value.data.onCreateMessage
-            if (newMessage.chatRoomID != myChatRoomID) {
-                return;
+        const subscription = API.graphql(
+            {
+                query: onCreateMessage,
+                authMode: "API_KEY",
             }
+        ).subscribe({
+            next: ({provider, value}) => {
+    //            console.log(value.data.onCreateMessage)
+                const newMessage = value.data.onCreateMessage
+                if (newMessage.chatRoomID != myChatRoomID) {
+                    return;
+                }
 
-            if (newMessage.id != myUserData.id) {
-                setFlowerPoints();
-                //console.log("prev points: ", points)
-                setPoints(points+10)
-
-            }
+                if (newMessage.id != myUserData.id) {
+                    setFlowerPoints();
+                    //console.log("prev points: ", points)
+                    setPoints(points+10)
+                }
 
             const sender = newMessage.user.id;
 
@@ -256,66 +253,65 @@ export function ChatScreen({route, navigation}) {
      const encryptedText = await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
 
 
-    await API.graphql({
-      query: createMessage,
-      variables: {
-        input: {
-          content: encryptedText,
-          userID: route.params.user.id,
-          chatRoomID: route.params.chatRoomID,
-        },
-      },
-      authMode: 'API_KEY',
-    });
-    console.log('end');
-
+     await API.graphql({
+       query: createMessage,
+       variables: {
+         input: {
+           content: encryptedText,
+           userID: route.params.user.id,
+           chatRoomID: route.params.chatRoomID,
+         },
+       },
+       authMode: 'API_KEY',
+     });
+     console.log('end');
     }
 
-  };
-
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: '#f5f5f5',
-      flex: 1
-    },
-    listTitle: {
-      fontSize: 22
-    },
-    listDescription: {
-      fontSize: 16
-    },
-    sendingContainer: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    bottomComponentContainer: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    loadingContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-  });
-
-  function renderBubble(props) {
-    return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          right: {
-            backgroundColor: '#6646ee'
-          }
-        }}
-        textStyle={{
-          right: {
-            color: '#fff'
-          }
-        }}
-      />
-    );
   }
+
+    const styles = StyleSheet.create({
+        container: {
+            backgroundColor: '#f5f5f5',
+            flex: 1
+        },
+        listTitle: {
+            fontSize: 22
+        },
+        listDescription: {
+            fontSize: 16
+        },
+        sendingContainer: {
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        bottomComponentContainer: {
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        loadingContainer: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        }
+    });
+
+    function renderBubble(props) {
+        return (
+            <Bubble
+                {...props}
+                wrapperStyle={{
+                    right: {
+                        backgroundColor: '#6646ee'
+                    }
+                }}
+                textStyle={{
+                    right: {
+                        color: '#fff'
+                    }
+                }}
+            />
+        );
+    }
 
   function renderSend(props) {
     return (
@@ -382,4 +378,5 @@ export function ChatScreen({route, navigation}) {
           </View>
     </>
   );
+
 }

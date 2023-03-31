@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     nextButton: {
+        marginTop: '5%',
         width: 150,
         alignSelf: 'center',
         marginBottom: '15%',

@@ -42,7 +42,7 @@ const PointScreen = () => {
                 console.log("error saving flower data")
             }
             setPoints(points-10)
-            setSize(size+50)
+            setSize(size+25)
             {styles.image.width = size}
 
         } else {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     button: {
         float: 'right',
-        backgroundColor:'#D9D9D9',
+        backgroundColor:'#BBCAEB',
     },
     imageBox: {
         width: '100%',

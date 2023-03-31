@@ -6,7 +6,9 @@
  * @flow strict-local
  */
 
-import React, {useEffect, useState} from 'react';
+
+import React, {useState, useCallback, useEffect} from 'react';
+
 import type {Node} from 'react';
 
 import {
@@ -49,6 +51,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
+import ProfileRoot from './screens/Profile/ProfileRoot'
 
 const Stack = createNativeStackNavigator()
 
@@ -56,6 +59,9 @@ Amplify.configure(config)
 
 const App = () => {
  //Auth.signOut();
+
+ const [exists, setExists] = useState(false);
+
 
  useEffect( ()=> {
     const fetchUser = async() => {
@@ -65,23 +71,25 @@ const App = () => {
 
         //console.log(userInfo);
         if (userInfo) {
-          const userData = await API.graphql (
-              {
-                  query: getUser,
-                  variables: {id: userInfo.attributes.sub},
-                  authMode: "API_KEY"
-              }
-          )
-          if (userData.data.getUser) {
-              console.log("User is already registered in database");
-              return;
-          }
-          const newUser = {
-              id: userInfo.attributes.sub,
-              name: userInfo.username,
-              imageUri: "https://placeimg.com/140/140/any",
-              status: "just created my account",
-          }
+
+            const userData = await API.graphql (
+                {
+                    query: getUser,
+                    variables: {id: userInfo.attributes.sub},
+                    authMode: "API_KEY"
+                }
+            )
+            if (userData.data.getUser) {
+                console.log("User is already registered in database");
+                setExists(true)
+                return;
+            }
+            const newUser = {
+                id: userInfo.attributes.sub,
+                name: userInfo.username,
+                imageUri: "https://placeimg.com/140/140/any",
+                status: "just created my account",
+            }
             await API.graphql(
               {
                   query: createUser,
@@ -97,15 +105,18 @@ const App = () => {
     fetchUser();
 
  }, []);
-
+    console.log("exists ", exists)
   return (
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Toolbar">
+            <Stack.Navigator initialRouteName={!exists ? ("Toolbar") : ("ProfileRoot")}>
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileRoot" component={ProfileRoot}
+                    options={{ headerShown: false}}
                 />
             </Stack.Navigator>
         </NavigationContainer>

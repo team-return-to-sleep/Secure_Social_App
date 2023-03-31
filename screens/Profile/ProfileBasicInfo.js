@@ -19,11 +19,6 @@ const ProfileBasicInfo = ({route, navigation}) => {
     const [status, setStatus] = useState("")
 
    const saveUpdates = async() => {
-    console.log(name);
-    console.log(age);
-    console.log(region);
-    console.log(status);
-
     if(name != "") {
        await API.graphql (
        {
@@ -87,8 +82,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
        )
        user.status = status
     }
-
-
+    navigation.navigate("Account");
    }
 
     return (
@@ -97,7 +91,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Title>
-                        Edit Profile CHANGE LATER!
+                        Account
                     </Title>
                 </Appbar.Header>
 
@@ -109,20 +103,20 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 />
 
                 <Text style={styles.username}>Age</Text>
-                <TextInput placeholder={user.age.toString()}
+                <TextInput placeholder={user.age ? (user.age.toString()) : ("Add your age")}
                      numeric value
                      keyboardType={'numeric'}
                      onChangeText={(text) => {
                          if (!isNaN(+(text)) && +((text) > -1)) {
                             setAge(+(text))
                          } else {
-                            console.warn("Age must be a positive integer")
+                            alert("Age must be a positive integer")
                          }
                      }}
                 />
 
                 <Text style={styles.username}>Region</Text>
-                <TextInput placeholder={user.region}
+                <TextInput placeholder={user.region ? (user.region) : ("Add your region")}
                      onChangeText={(text) =>
                         setRegion(text)
                      }
@@ -169,6 +163,7 @@ const styles = StyleSheet.create({
         width: 150,
         alignSelf: 'center',
         marginBottom: '50%',
+        marginTop: 20,
         backgroundColor: '#BBCAEB',
     },
 })
