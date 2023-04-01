@@ -33,41 +33,45 @@ const Home = ({navigation}) => {
             }
             fetchUsers();
         }
-     }, [isFocused]);
+    }, [isFocused]);
 
-         return (
-            <ScrollView style={styles.container}>
-                <Header />
-                <SafeAreaView>
-                     <View style={styles.headerWrapper}>
-                         {users.map((user) => {
-                             return (
-                                 <Image
-                                   style={styles.profileImage}
-                                   source={{uri: user.imageUri}}
-                                 />
-                             );
-                         })}
-                     </View>
-                </SafeAreaView>
-                <Text style={styles.subtext}>Your Friends</Text>
-                <View style={styles.profileWrapper}>
+    return (
+        <ScrollView style={styles.container}>
+            <Header />
+
+            <SafeAreaView>
+                <View style={styles.headerWrapper}>
                     {users.map((user) => {
                         return (
-                            <Pressable
-                                style={styles.profile}
-                                onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
+                            <Image
+                                style={styles.profileImage}
+                                source={{uri: user.imageUri}}
+                            />
+                        );
+                    })}
+                </View>
+            </SafeAreaView>
+
+            <Text style={styles.subtext}>Your Friends</Text>
+
+            <View style={styles.profileWrapper}>
+                {users.map((user) => {
+                    return (
+                        <Pressable
+                            style={styles.profile}
+                            onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
+                        >
                             <Image
                                 style={styles.profile}
                                 source={{uri: user.imageUri}}
                             />
                             <Text style={styles.nameIcon}>{user.name}</Text>
-                            </Pressable>
-                        );
-                    })}
-                </View>
-            </ScrollView>
-        );
+                        </Pressable>
+                    );
+                })}
+            </View>
+        </ScrollView>
+    );
 };
 
 const styles = StyleSheet.create({
@@ -114,17 +118,17 @@ const styles = StyleSheet.create({
         width: 20,
     },
     imageIcon: {
-            marginLeft: 10,
-            marginRight: 10,
-            marginTop: 7,
-            marginBottom: 7,
-            width: 170,
-            height: 170,
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            backgroundColor: '#AFE1AF',
-            borderRadius: 24,
-            position: 'absolute',
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 7,
+        marginBottom: 7,
+        width: 170,
+        height: 170,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        backgroundColor: '#AFE1AF',
+        borderRadius: 24,
+        position: 'absolute',
     },
     nameIcon: {
         marginTop: 50,

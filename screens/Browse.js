@@ -42,7 +42,7 @@ const Browse = ({navigation}) => {
         if (name != '') {
             let results = []
             for (let i=0; i<users.length; i++) {
-                if (users[i].name == name) {
+                if (users[i].name == name || users[i].name.includes(name)) {
                     // TODO: change to add names which are superstrings of search
                     results.push(users[i])
                 }

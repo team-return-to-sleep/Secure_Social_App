@@ -7,20 +7,18 @@ import {Auth} from 'aws-amplify'
 
 const Header = (props) => {
 
-  return (
-
-    <Appbar.Header style={styles.head}>
-        <Image
-            style={styles.profileImage}
-            source={require('../assets/images/smile_flower.png')}
-        />
-        <Title style={styles.name}>
-            Wallflower
-        </Title>
-        <Appbar.Action style={styles.logout} icon="logout" onPress={() => Auth.signOut()} />
-    </Appbar.Header>
-
-  );
+    return (
+        <Appbar.Header style={styles.head}>
+            <Image
+                style={styles.profileImage}
+                source={require('../assets/images/smile_flower.png')}
+            />
+            <Title style={styles.name}>
+                Wallflower
+            </Title>
+            <Appbar.Action style={styles.logout} icon="logout" onPress={() => Auth.signOut()} />
+        </Appbar.Header>
+    );
 };
 
 const styles = StyleSheet.create({

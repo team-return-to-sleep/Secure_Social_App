@@ -50,26 +50,22 @@ const PointScreen = () => {
         }
     }
 
-  return (
-
-    <View style={{flex:1, flexDirection:'column', backgroundColor:'#AFE1AF'}}>
-        <Header/>
-        <Appbar.Header style={styles.head}>
-            <Title style={styles.name}>
-                    Points: {points}
-            </Title>
-            <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
-        </Appbar.Header>
-        <View style={styles.imageBox}>
-            <Image style={{width:size, height:size}}
-                source={require('../assets/images/smile_flower.png')}
-            />
+    return (
+        <View style={{flex:1, flexDirection:'column', backgroundColor:'#AFE1AF'}}>
+            <Header/>
+            <Appbar.Header style={styles.head}>
+                <Title style={styles.name}>
+                        Points: {points}
+                </Title>
+                <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
+            </Appbar.Header>
+            <View style={styles.imageBox}>
+                <Image style={{width:size, height:size}}
+                    source={require('../assets/images/smile_flower.png')}
+                />
+            </View>
         </View>
-    </View>
-
-
-
-  );
+    );
 };
 
 const styles = StyleSheet.create({
