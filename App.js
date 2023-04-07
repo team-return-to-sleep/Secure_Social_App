@@ -6,7 +6,9 @@
  * @flow strict-local
  */
 
+
 import React, {useState, useCallback, useEffect} from 'react';
+
 import type {Node} from 'react';
 
 import {
@@ -17,6 +19,7 @@ import {
   Text,
   useColorScheme,
   View,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -37,6 +40,7 @@ import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
 import config from './src/aws-exports'
 
 import {getUser} from './src/graphql/queries'
+import {listUsers} from './src/graphql/queries'
 import {createUser} from './src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
@@ -51,19 +55,23 @@ import ProfileRoot from './screens/Profile/ProfileRoot'
 
 const Stack = createNativeStackNavigator()
 
-
 Amplify.configure(config)
 
 const App = () => {
  //Auth.signOut();
+
  const [exists, setExists] = useState(false);
+
 
  useEffect( ()=> {
     const fetchUser = async() => {
+
         //get authenticated user
-        const userInfo = await Auth.currentAuthenticatedUser();
+        userInfo = await Auth.currentAuthenticatedUser();
+
         //console.log(userInfo);
         if (userInfo) {
+
             const userData = await API.graphql (
                 {
                     query: getUser,
@@ -83,20 +91,19 @@ const App = () => {
                 status: "just created my account",
             }
             await API.graphql(
-//                graphqlOperation(
-//                    createUser,
-//                    {input: newUser}
-//                )
-                {
-                    query: createUser,
-                    variables: {input: newUser},
-                    authMode: "API_KEY"
-                }
+              {
+                  query: createUser,
+                  variables: {input: newUser},
+                  authMode: "API_KEY"
+              }
             )
             //console.log(userData)
         }
+
     }
+
     fetchUser();
+
  }, []);
     console.log("exists ", exists)
   return (
@@ -113,11 +120,11 @@ const App = () => {
                 />
             </Stack.Navigator>
         </NavigationContainer>
-
     </SafeAreaProvider>
-
     );
+
 };
+
 
 
 const signUpConfig = {
@@ -156,35 +163,6 @@ const signUpConfig = {
 }
 
 const customTheme = {...AmplifyTheme}
-
-//<NavigationContainer>
-//
-//            <Tab.Navigator
-//            screenOptions={({route})=>({
-//                tabBarIcon:({color})=>{
-//                    let iconName;
-//                    if(route.name === "home") {
-//                        iconName = ''
-//                    } else if (route.name === "search") {
-//                        iconName = ""
-//                    }
-//                },
-//
-//                })
-//            }
-//            initialRouteName="Home"
-//            activeColor="#f0edf6"
-//            inactiveColor="#3e2465"
-//            barStyle={{ backgroundColor: '#694fad' }}
-//            tabBarColor="#00aaff"
-//            >
-//                <Tab.Screen name="home" component={Home}
-//                    initialParams={{name:"guest"}}
-//                />
-//                <Tab.Screen name="browse" component={Browse} />
-//                <Tab.Screen name="chat" component={ChatScreen} />
-//            </Tab.Navigator>
-//          </NavigationContainer>
 
 export default withAuthenticator(App, {signUpConfig});
 //export default App;
