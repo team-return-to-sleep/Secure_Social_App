@@ -40,7 +40,11 @@ const Home = ({navigation}) => {
             <Header />
 
             <SafeAreaView>
-                <View style={styles.headerWrapper}>
+                <ScrollView
+                    contentContainerStyle={styles.headerWrapper}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                >
                     {users.map((user) => {
                         return (
                             <Image
@@ -49,7 +53,7 @@ const Home = ({navigation}) => {
                             />
                         );
                     })}
-                </View>
+                </ScrollView>
             </SafeAreaView>
 
             <Text style={styles.subtext}>Your Friends</Text>
@@ -69,6 +73,9 @@ const Home = ({navigation}) => {
                         </Pressable>
                     );
                 })}
+            </View>
+            <View style={{marginBottom:26}}>
+                <Text> {'\n\n'} </Text>
             </View>
         </ScrollView>
     );
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50,
+        marginHorizontal: 12,
     },
     profile: {
         marginLeft: 10,
@@ -131,14 +139,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     nameIcon: {
-        marginTop: 50,
+        marginTop: 120,
         color: 'white',
         fontSize: 20,
         lineHeight: 54,
-        lineWidth: 100,
+        lineWidth: 170,
         fontWeight: 'bold',
-        textAlign: 'center',
-        justifyContent: 'center',
+        //textAlign: 'center',
+        //textAlignVertical: 'bottom', // android only
+        //justifyContent: 'center',
         backgroundColor: '#000000c0',
         borderRadius: 20,
         position: 'absolute',
