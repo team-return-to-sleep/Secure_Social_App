@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     },
     chat: {
         margin: '1%',
-        width: '83%',
+        width: '95%',
         height: 70,
         alignItems: 'center',
         justifyContent: 'space-evenly',
