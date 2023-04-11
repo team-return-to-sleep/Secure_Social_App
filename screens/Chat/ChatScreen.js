@@ -55,15 +55,24 @@ export function ChatScreen({route, navigation}) {
 
   useEffect(() => {
     const setFlowerPoints = async () => {
+
         let garden;
         try {
+            let userGarden = await API.graphql(
+                {
+                    query: getGarden,
+                    variables: {id: myUserData.id},
+                    authMode: "API_KEY",
+                }
+            )
+            console.log("CHATSCREEN USERGARDEN: ", userGarden)
             //const val = await AsyncStorage.getItem('flowerPoints')
-            if (myUserData.garden) {
+            if (userGarden) {
                 garden = {
-                    flowerSize: myUserData.garden.flowerSize,
-                    id: myUserData.garden.id,
-                    userID: myUserData.garden.userID,
-                    points: myUserData.garden.points,
+                    flowerSize: userGarden.data.getGarden.flowerSize,
+                    id: userGarden.data.getGarden.id,
+                    userID: userGarden.data.getGarden.userID,
+                    points: userGarden.data.getGarden.points,
                 }
                 console.log("flower points: ", garden.points)
                 //setPoints(parseInt(val))
@@ -87,6 +96,7 @@ export function ChatScreen({route, navigation}) {
             try {
                 console.log("prev (curr) points: ", garden.points)
                 garden.points = garden.points + 10
+                console.log("CHATSCREEN garden: ", garden)
                 await API.graphql(
                     {
                         query: updateGarden,
@@ -117,12 +127,12 @@ export function ChatScreen({route, navigation}) {
             if (newMessage.chatRoomID != myChatRoomID) {
                 return;
             }
-
-            if (newMessage.id != myUserData.id) {
+            console.log("NewMessage: ", newMessage)
+            if (newMessage.user.id != myUserData.id) {
                 setFlowerPoints();
                 //console.log("prev points: ", points)
                 //setPoints(points+10)
-
+                console.log("I did not send that message")
             }
 
             const msg = {

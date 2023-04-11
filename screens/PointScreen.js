@@ -39,7 +39,7 @@ const PointScreen = () => {
                     }
                 )
                 setUserGarden(userData.data.getUser.garden)
-                //console.log("POINTSCREEN GARDEN: ", userData.data.getUser.garden)
+                console.log("POINTSCREEN GARDEN: ", userData.data.getUser.garden)
                 setPoints(userData.data.getUser.garden.points)
             }
             fetchUser()
