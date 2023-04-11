@@ -17,6 +17,7 @@ import {
   Text,
   useColorScheme,
   View,
+  LogBox,
 } from 'react-native';
 
 import {
@@ -37,7 +38,7 @@ import {withAuthenticator, AmplifyTheme} from 'aws-amplify-react-native'
 import config from './src/aws-exports'
 
 import {getUser} from './src/graphql/queries'
-import {createUser} from './src/graphql/mutations'
+import {createUser, createGarden} from './src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Browse from './screens/Browse'
@@ -51,6 +52,7 @@ import ProfileRoot from './screens/Profile/ProfileRoot'
 
 const Stack = createNativeStackNavigator()
 
+LogBox.ignoreAllLogs() // removes warnings from phone screen
 
 Amplify.configure(config)
 
@@ -74,6 +76,24 @@ const App = () => {
             if (userData.data.getUser) {
                 console.log("User is already registered in database");
                 setExists(true)
+
+                if (!userData.data.getUser.garden) {
+                    await API.graphql(
+                        {
+                            query: createGarden,
+                            variables: {
+                                input: {
+                                    userID: userData.data.getUser.id,
+                                    id: userData.data.getUser.id,
+                                    flowerSize: 120,
+                                    points: 10
+                                }
+                            },
+                            authMode: "API_KEY"
+                        }
+                    )
+                }
+
                 return;
             }
             const newUser = {
@@ -83,13 +103,23 @@ const App = () => {
                 status: "just created my account",
             }
             await API.graphql(
-//                graphqlOperation(
-//                    createUser,
-//                    {input: newUser}
-//                )
                 {
                     query: createUser,
                     variables: {input: newUser},
+                    authMode: "API_KEY"
+                }
+            )
+            await API.graphql(
+                {
+                    query: createGarden,
+                    variables: {
+                        input: {
+                            userID: newUser.id,
+                            id: newUser.id,
+                            flowerSize: 120,
+                            points: 10
+                        }
+                    },
                     authMode: "API_KEY"
                 }
             )

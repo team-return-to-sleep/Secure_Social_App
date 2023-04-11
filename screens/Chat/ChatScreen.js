@@ -5,8 +5,8 @@ import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'reac
 import { useIsFocused } from "@react-navigation/native";
 
 import {Auth} from 'aws-amplify'
-import {getUser, listUsers, messagesByChatRoom} from '../../src/graphql/queries'
-import {createMessage} from '../../src/graphql/mutations'
+import {getUser, getGarden, listUsers, messagesByChatRoom} from '../../src/graphql/queries'
+import {createMessage, createGarden, updateGarden} from '../../src/graphql/mutations'
 import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
@@ -54,40 +54,48 @@ export function ChatScreen({route, navigation}) {
   }, [])
 
   useEffect(() => {
-    if (isFocused) {
-    const loadPoints = async () => {
-                try {
-                    const val = await AsyncStorage.getItem('flowerPoints')
-                    if (val) {
-                        console.log("val points: ", val)
-                        setPoints(parseInt(val))
-                    } else {
-                        await AsyncStorage.setItem('flowerPoints', '20')
-                        setPoints(20)
-                    }
-                } catch (error) {
-                    console.log("error retrieving flower data")
-                }
-    }
-    loadPoints();
-    }
-  }, [isFocused])
-
-  useEffect(() => {
     const setFlowerPoints = async () => {
-
+        let garden;
         try {
-            const val = await AsyncStorage.getItem('flowerPoints')
-            if (val) {
-                console.log("val points: ", val)
-                setPoints(parseInt(val))
+            //const val = await AsyncStorage.getItem('flowerPoints')
+            if (myUserData.garden) {
+                garden = {
+                    flowerSize: myUserData.garden.flowerSize,
+                    id: myUserData.garden.id,
+                    userID: myUserData.garden.userID,
+                    points: myUserData.garden.points,
+                }
+                console.log("flower points: ", garden.points)
+                //setPoints(parseInt(val))
             } else {
-                await AsyncStorage.setItem('flowerPoints', '20')
-                setPoints(20)
+//                await AsyncStorage.setItem('flowerPoints', '20')
+//                setPoints(20)
+                garden = {
+                    userID: myUserData.id,
+                    id: myUserData.id,
+                    flowerSize: 120,
+                    points: 10
+                }
+                await API.graphql(
+                    {
+                        query: createGarden,
+                        variables: {input: garden},
+                        authMode: "API_KEY"
+                    }
+                )
             }
             try {
-                        console.log("prev (curr) points: ", parseInt(val))
-                        await AsyncStorage.setItem('flowerPoints', (parseInt(val)+10).toString())
+                console.log("prev (curr) points: ", garden.points)
+                garden.points = garden.points + 10
+                await API.graphql(
+                    {
+                        query: updateGarden,
+                        variables: {input: garden},
+                        authMode: "API_KEY"
+                    }
+                )
+                        //console.log("prev (curr) points: ", parseInt(val))
+                        //await AsyncStorage.setItem('flowerPoints', (parseInt(val)+10).toString())
             } catch (error) {
                         console.log("error saving flower data")
             }
@@ -113,7 +121,7 @@ export function ChatScreen({route, navigation}) {
             if (newMessage.id != myUserData.id) {
                 setFlowerPoints();
                 //console.log("prev points: ", points)
-                setPoints(points+10)
+                //setPoints(points+10)
 
             }
 

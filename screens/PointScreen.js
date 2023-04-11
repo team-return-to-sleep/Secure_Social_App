@@ -6,44 +6,71 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useIsFocused } from "@react-navigation/native";
 
+import {Auth} from 'aws-amplify'
+import {API, graphqlOperation} from '@aws-amplify/api'
+
+import {getUser, getGarden} from '../src/graphql/queries'
+import {createGarden, updateGarden} from '../src/graphql/mutations'
+
 import Header from './Header'
 
 
 const PointScreen = () => {
+    const default_garden = {
+        userID: "0",
+        id: "0",
+        flowerSize: 120,
+        points: 10
+    }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
     const [size, setSize] = useState(120)
+    const [userGarden, setUserGarden] = useState(default_garden)
 
     useEffect(() => {
         if (isFocused) {
-        const loadPoints = async () => {
-            try {
-                const val = await AsyncStorage.getItem('flowerPoints')
-                console.log("load points pointScreen: ", val)
-                if (val) {
-                    setPoints(parseInt(val))
-                } else {
-                    await AsyncStorage.setItem('flowerPoints', '20')
-                    setPoints(20)
-                }
-            } catch (error) {
-                console.log("error retrieving flower data")
+            const fetchUser = async () => {
+                const userInfo = await Auth.currentAuthenticatedUser();
+                const userData = await API.graphql (
+                    {
+                        query: getUser,
+                        variables: {id: userInfo.attributes.sub},
+                        authMode: "API_KEY"
+                    }
+                )
+                setUserGarden(userData.data.getUser.garden)
+                //console.log("POINTSCREEN GARDEN: ", userData.data.getUser.garden)
+                setPoints(userData.data.getUser.garden.points)
             }
-        }
-        loadPoints()
+            fetchUser()
         }
     }, [isFocused])
 
     const _waterPlant = async () => {
-        if (points >= 10) {
+        const garden = {
+            flowerSize: userGarden.flowerSize,
+            id: userGarden.id,
+            points: userGarden.points,
+            userID: userGarden.userID,
+        }
+        if (garden.points >= 10) {
             try {
-                await AsyncStorage.setItem('flowerPoints', (points-10).toString())
+                //await AsyncStorage.setItem('flowerPoints', (points-10).toString())
+                garden.points = garden.points - 10
+                garden.flowerSize = garden.flowerSize + 40
             } catch (error) {
                 console.log("error saving flower data")
             }
-            setPoints(points-10)
-            setSize(size+50)
-            {styles.image.width = size}
+            //{styles.image.width = garden.flowerSize}
+            console.log("POINTSCREEN GARDEN: ", garden)
+            setUserGarden(garden)
+            await API.graphql(
+                {
+                    query: updateGarden,
+                    variables: {input: garden},
+                    authMode: "API_KEY"
+                }
+            )
 
         } else {
             Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
@@ -56,12 +83,12 @@ const PointScreen = () => {
         <Header/>
         <Appbar.Header style={styles.head}>
             <Title style={styles.name}>
-                    Points: {points}
+                    Points: {userGarden.points}
             </Title>
             <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
         </Appbar.Header>
         <View style={styles.imageBox}>
-            <Image style={{width:size, height:size}}
+            <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
                 source={require('../assets/images/smile_flower.png')}
             />
         </View>
