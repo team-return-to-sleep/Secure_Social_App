@@ -6,8 +6,9 @@ import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
 
-import {listUsers} from '../src/graphql/queries'
+import {getUser, listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
+import {Auth} from 'aws-amplify'
 import { useIsFocused } from "@react-navigation/native";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -22,14 +23,43 @@ const Home = ({navigation}) => {
     useEffect( ()=> {
         if(isFocused){
             const fetchUsers = async() => {
+                    const userInfo = await Auth.currentAuthenticatedUser();
+                    const selfData = await API.graphql (
+                        {
+                            query: getUser,
+                            variables: {id: userInfo.attributes.sub},
+                            authMode: "API_KEY"
+                        }
+                    )
+                    const selfInterests = selfData.data.getUser.interests
+
                     const usersData = await API.graphql(
                         {
                             query: listUsers,
                             authMode: "API_KEY"
                         }
                     )
-                    setUsers(usersData.data.listUsers.items)
-                    // console.log(usersData.data.listUsers.items)
+                    const allUsers = usersData.data.listUsers.items;
+
+                    let compareInterests = (a1, a2) => a1.reduce((a, c) => a + a2.includes(c), 0);
+
+                    // sort by number of matching interests; descending order
+                    allUsers.sort(function(a, b){
+                        if (!b.interests && a.interests) {
+                            return -1
+                        } else if (!a.interests && b.interests) {
+                            return 1
+                        } else if (!a.interests && !b.interests) {
+                            return 0
+                        }
+                        return compareInterests(b.interests, selfInterests) -
+                               compareInterests(a.interests, selfInterests)
+                    })
+                    setUsers(allUsers)
+                    // for verification purposes
+                    for (let curr of allUsers) {
+                        console.log("HOME matches: ", curr.name, " ", curr.interests)
+                    }
             }
             fetchUsers();
         }
@@ -56,7 +86,7 @@ const Home = ({navigation}) => {
                 </ScrollView>
             </SafeAreaView>
 
-            <Text style={styles.subtext}>Your Friends</Text>
+            <Text style={styles.subtext}>Your Matches</Text>
 
             <View style={styles.profileWrapper}>
                 {users.map((user) => {
