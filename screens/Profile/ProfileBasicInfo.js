@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useState} from 'react'
 import { connect } from 'react-redux';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight,ScrollView,Picker} from 'react-native'
+import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight,ScrollView} from 'react-native'
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
