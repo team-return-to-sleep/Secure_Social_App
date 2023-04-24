@@ -2,7 +2,9 @@ import * as React from 'react';
 import {useState} from 'react'
 import { connect } from 'react-redux';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight,ScrollView} from 'react-native'
+import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight,ScrollView,Picker} from 'react-native'
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import {updateUser} from '../../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
@@ -17,6 +19,15 @@ const ProfileBasicInfo = ({route, navigation}) => {
     const [age, setAge] = useState(-1)
     const [region, setRegion] = useState("")
     const [status, setStatus] = useState("")
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+                        {label: 'West', value: 'West'},
+                        {label: 'Southwest', value: 'Southwest'},
+                        {label: 'Midwest', value: 'Midwest'},
+                        {label: 'Northeast', value: 'Northeast'},
+                        {label: 'Southeast', value: 'Southeast'},
+    ]);
 
    const saveUpdates = async() => {
     if(name != "") {
@@ -116,10 +127,21 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 />
 
                 <Text style={styles.username}>Region</Text>
-                <TextInput placeholder={user.region ? (user.region) : ("Add your region")}
-                     onChangeText={(text) =>
-                        setRegion(text)
-                     }
+                <DropDownPicker
+                    placeholder={user.region ? (user.region) : ("Select your region")}
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    itemStyle={{
+                        justifyContent: 'flex-start'
+                    }}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeValue={(value) => setRegion(value)}
                 />
 
                 <Text style={styles.username}>Status</Text>

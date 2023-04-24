@@ -93,7 +93,7 @@ const ProfileInterests = ({route, navigation}) => {
                 <Button mode="contained"
                 style={styles.nextButton}
                 onPress={() => saveUpdates()}>
-                    Set Favorite Interests
+                    Next: Choose Favorite Interests
                 </Button>
         </View>
       );
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     nextButton: {
-        width: 190,
+        width: 280,
         alignSelf: 'center',
         marginBottom: '25%',
         backgroundColor: '#BBCAEB',
