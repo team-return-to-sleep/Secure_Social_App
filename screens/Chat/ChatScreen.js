@@ -13,10 +13,27 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Toolbar from '../Toolbar'
 
 import { EThree } from '@virgilsecurity/e3kit-native';
+import NetInfo from '@react-native-community/netinfo';
+
+const getDevelopmentMachineIpAddress = async () => {
+  const networkInfo = await NetInfo.fetch();
+  return networkInfo.details.address;
+};
+
+const getApiUrl = async () => {
+  const ipAddress = await getDevelopmentMachineIpAddress();
+
+  if (Platform.OS === 'android' && !Platform.isPad && !Platform.isTV && !Platform.isTVOS) {
+    return Platform.Version >= 25 ? 'http://10.0.2.2:3000' : `http://${ipAddress}:3000`;
+  } else {
+    return `http://${ipAddress}:3000`;
+  }
+};
 
 const getTokenFactory = (identity) => {
   return async () => {
-    const apiUrl = 'http://10.0.2.2:3000'; // Works with android. Slight adjustment needed for ios devices
+    const apiUrl = await getApiUrl();
+    // const apiUrl = 'http://172.16.80.129:3000'; // Works with android emulators. Slight adjustment needed for ios devices
     const response = await fetch(`${apiUrl}/virgil-jwt`, {
       method: 'POST',
       headers: {
@@ -30,6 +47,7 @@ const getTokenFactory = (identity) => {
     return data.virgil_jwt;
   };
 };
+
 
 function isBase64(str) {
   try {
@@ -60,8 +78,11 @@ export function ChatScreen({route, navigation}) {
 
           let isRegistered_user = await eThree_user.hasLocalPrivateKey();
 
+          console.log("Check 2");
+
 
           if (!isRegistered_user) {
+          console.log("Check 1");
               // Attempt to register the user
               try {
                 await eThree_user.register();
