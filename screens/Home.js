@@ -96,16 +96,16 @@ const Home = ({navigation}) => {
                                 <Text style={styles.name}>{user.name}</Text>
                                 <Text style={styles.status}>{user.status}</Text>
                                 <View style={styles.buttons}>
-                                    <Button mode="contained"
+                                    <Pressable mode="contained"
                                     style={styles.accountButton}
                                     onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
                                         <Text style={styles.buttonText}>View Profile</Text>
-                                    </Button>
-                                    <Button mode="contained"
+                                    </Pressable>
+                                    <Pressable mode="contained"
                                     style={styles.accountButton}
                                     onPress={() => onClickHandler(user)}>
                                         <Text style={styles.buttonText}>Start Chatting</Text>
-                                    </Button>
+                                    </Pressable>
                                 </View>
                             </Pressable>
                         );
@@ -192,10 +192,10 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         marginHorizontal: 5,
         marginTop: 20,
-        textAlign: 'center',
+        alignItems: 'center',
     },
     buttonText: {
-        fontSize:12,
+        fontSize:10,
         color: "#181818",
     },
     buttons: {
