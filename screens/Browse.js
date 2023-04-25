@@ -23,6 +23,17 @@ const Browse = ({navigation}) => {
     const [currUsers, setCurr] = useState([])
     const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
 
+    const [open2, setOpen2] = useState(false);
+    const [value2, setValue2] = useState(null);
+    const [items2, setItems2] = useState([
+                        {label: '18 to 24', value: 1},
+                        {label: '25 to 34', value: 2},
+                        {label: '35 to 44', value: 3},
+                        {label: '45 to 54', value: 4},
+                        {label: '55 to 64', value: 5},
+                        {label: '65 or over', value: 6},
+    ]);
+
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
@@ -112,6 +123,71 @@ const Browse = ({navigation}) => {
         //setHasSearched(false)
     }
 
+    const filterByAge = async (value) => {
+        console.log(value)
+        if (value == 1) {
+            const ageUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    variables: {filter: {age: {ge: 18, le: 24}}},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(value)
+            console.log(ageUsersData.data.listUsers.items)
+        }
+        else if (value == 2) {
+            const ageUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    variables: {filter: {age: {ge: 25, le: 34}}},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(ageUsersData.data.listUsers.items)
+        }
+        else if (value == 3) {
+            const ageUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    variables: {filter: {age: {ge: 35, le: 44}}},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(ageUsersData.data.listUsers.items)
+        }
+        else if (value == 4) {
+            const ageUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    variables: {filter: {age: {ge: 45, le: 54}}},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(ageUsersData.data.listUsers.items)
+        }
+        else if (value == 5) {
+            const ageUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    variables: {filter: {age: {ge: 55, le: 64}}},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(ageUsersData.data.listUsers.items)
+        }
+        else if (value == 6) {
+            const ageUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    variables: {filter: {age: {ge: 65}}},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(ageUsersData.data.listUsers.items)
+        }
+    }
+
     const filterByRegion = async (value) => {
             const regionalUsersData = await API.graphql(
                 {
@@ -148,6 +224,24 @@ const Browse = ({navigation}) => {
             <View style={{flex:1}}>
                 <Header/>
 
+                <Text style={styles.username}>Filter by Age</Text>
+                <DropDownPicker
+                    placeholder="Age"
+                    open={open2}
+                    value={value2}
+                    items={items2}
+                    setOpen={setOpen2}
+                    setValue={setValue2}
+                    setItems={setItems2}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    itemStyle={{
+                        justifyContent: 'flex-start'
+                    }}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeValue={(value) => filterByAge(value)}
+                />
+
                 <Text style={styles.username}>Filter by Region</Text>
                 <DropDownPicker
                     placeholder="Region"
@@ -165,7 +259,6 @@ const Browse = ({navigation}) => {
                     dropDownStyle={{backgroundColor: '#fafafa'}}
                     onChangeValue={(value) => filterByRegion(value)}
                 />
-
 
         <View style={styles.container}>
             <Text style={styles.username}>Filter by Interests</Text>
