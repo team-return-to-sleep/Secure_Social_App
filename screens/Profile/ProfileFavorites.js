@@ -39,6 +39,7 @@ const ProfileFavorites = ({route, navigation}) => {
         },
         authMode: "API_KEY"
     })
+    //navigation.navigate("ProfileSpecificInterests", {user: user, interests: favoriteInterests});
     navigation.navigate("Account");
     }
 

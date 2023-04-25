@@ -13,6 +13,7 @@ import ProfileInterests from './ProfileInterests'
 import ProfileBasicInfo from './ProfileBasicInfo'
 import ProfileFavorites from './ProfileFavorites'
 import ProfilePicture from './ProfilePicture'
+import ProfileSpecificInterests from './ProfileSpecificInterests'
 import UserProfile from '../UserProfile'
 
 const Stack = createNativeStackNavigator()
@@ -30,8 +31,11 @@ const ProfileRoot = () => {
                 <Stack.Screen name="ProfileInterests" component={ProfileInterests}
                     options={{ headerShown: false }}
                 />
+                <Stack.Screen name="ProfileSpecificInterests" component={ProfileSpecificInterests}
+                    options={{ headerShown: false }}
+                />
                 <Stack.Screen name="ProfileBasicInfo" component={ProfileBasicInfo}
-                                    options={{ headerShown: false }}
+                    options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileFavorites" component={ProfileFavorites}
                     options={{ headerShown: false }}
