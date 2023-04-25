@@ -13,18 +13,18 @@ import OtherUserProfile from './OtherUserProfile'
 const Stack = createNativeStackNavigator()
 
 const Root = () => {
-  return (
-            <Stack.Navigator initialRouteName="Home">
-                <Stack.Screen name="Home" component={Home}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen name="UserProfile" component={UserProfile}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
-                    options={{ headerShown: false }}
-                />
-            </Stack.Navigator>
+    return (
+        <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={Home}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="UserProfile" component={UserProfile}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
 
     );
 };

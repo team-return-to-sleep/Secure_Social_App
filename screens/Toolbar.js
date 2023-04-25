@@ -22,9 +22,9 @@ const MEDIUM_FAB_HEIGHT = 56;
 const Tab = createBottomTabNavigator()
 
 const Toolbar = () => {
-  let iconName = '';
+    let iconName = '';
 
-  return (
+    return (
         <Tab.Navigator
             screenOptions={({route}) => ({
                 tabBarShowLabel: false,
@@ -64,7 +64,7 @@ const Toolbar = () => {
             <Tab.Screen name="PointScreen" component={PointScreen} options={{ headerShown: false}} />
             <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
-  );
+    );
 };
 
 export default Toolbar;

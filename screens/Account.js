@@ -13,75 +13,87 @@ import Header from './Header'
 import UserProfile from './UserProfile'
 
 const Account = ({route, navigation}) => {
-  const isFocused = useIsFocused()
-  const [users, setUsers] = useState([])
+    const isFocused = useIsFocused()
+    const [users, setUsers] = useState([])
 
-        const fetchUser = async() => {
-          const userInfo = await Auth.currentAuthenticatedUser();
-          const userData = await API.graphql (
+    const fetchUser = async() => {
+        const userInfo = await Auth.currentAuthenticatedUser();
+        const userData = await API.graphql (
             {
-              query: getUser,
-              variables: {id: userInfo.attributes.sub},
-              authMode: "API_KEY"
-             }
-           )
-           setUsers(Array(1).fill(userData.data.getUser))
-        }
+                query: getUser,
+                variables: {id: userInfo.attributes.sub},
+                authMode: "API_KEY"
+            }
+        )
+        setUsers(Array(1).fill(userData.data.getUser))
+    }
 
-     useEffect( ()=> {
+    useEffect( ()=> {
         if(isFocused) {
             fetchUser();
         }
-     }, [isFocused]);
+    }, [isFocused]);
 
-  return (
-    <ScrollView style={styles.container}>
+    return (
+        <ScrollView style={styles.container}>
+            <Header name="Account Info" />
             <View style={styles.accountWrapper}>
-                  {users.map((user) => {
+                {users.map((user) => {
                     return (
-                    <>
-                    <Text style={styles.username}>{user.name}</Text>
-                    <Image
-                        style={styles.accountPicture}
-                        source={{uri: user.imageUri}}
-                    />
-                    <Button icon="content-save"
-                    mode="contained"
-                    style={styles.profPicButton}>
-                        <Text style={styles.profPicText}>Change profile picture</Text>
-                    </Button>
-                    <Button mode="contained"
-                    style={styles.accountButton}
-                        onPress={() => {
-                            navigation.navigate("ProfileInterests", {user: user})}
-                        }>
-                        <Text>Edit Interests Profile</Text>
-                    </Button>
-                    <Button mode="contained"
-                    style={styles.accountButton}
-                        onPress={() => navigation.navigate("ProfileBasicInfo", {user: user})}>
-                        <Text>Edit Personal Details</Text>
-                    </Button>
-                    <Button mode="contained"
-                    style={styles.accountButton}
-                    onPress={() => navigation.navigate("UserProfile", {user: user})}>
-                        <Text>View Public Profile</Text>
-                    </Button>
-                    </>
+                        <>
+                        <Text style={styles.username}>{user.name}</Text>
+
+                        <Image
+                            style={styles.accountPicture}
+                            source={{uri: user.imageUri}}
+                        />
+
+                        <Button icon="content-save"
+                            mode="contained"
+                            style={styles.profPicButton}
+                            onPress={() => navigation.navigate("ProfilePicture", {user: user})}
+                        >
+                            <Text style={styles.profPicText}>Change profile picture</Text>
+                        </Button>
+
+                        <Button mode="contained"
+                            style={styles.accountButton}
+                            onPress={() => {
+                                navigation.navigate("ProfileInterests", {user: user})}
+                            }
+                        >
+                            <Text>Edit Interests Profile</Text>
+                        </Button>
+
+                        <Button mode="contained"
+                            style={styles.accountButton}
+                            onPress={() => navigation.navigate("ProfileBasicInfo", {user: user})}
+                        >
+                            <Text>Edit Personal Details</Text>
+                        </Button>
+
+                        <Button mode="contained"
+                            style={styles.accountButton}
+                            onPress={() => navigation.navigate("UserProfile", {user: user})}
+                        >
+                            <Text>View Public Profile</Text>
+                        </Button>
+
+                        </>
                     );
-                  })}
+                })}
             </View>
             <View style={{marginBottom:26}}>
-                        <Text>  {'\n\n'} </Text>
+                <Text> {'\n\n'} </Text>
             </View>
-    </ScrollView>
-  );
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-            flex:1,
-            backgroundColor:'#FFFFFF',
+        flex:1,
+        backgroundColor:'#FFFFFF',
     },
     accountButton: {
         margin:10,
@@ -89,7 +101,6 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: '#BBCAEB',
         justifyContent: 'center',
-
     },
     accountWrapper: {
         alignItems: 'center',
@@ -111,9 +122,10 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
     username: {
-            margin:15,
-            fontSize: 30,
-            fontWeight: 'bold',
+        margin:15,
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'black',
     },
 });
 

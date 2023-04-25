@@ -12,17 +12,16 @@ import {ChatScreen} from './ChatScreen'
 const Stack = createNativeStackNavigator()
 
 const ChatRoot = () => {
+    return (
+        <Stack.Navigator initialRouteName="Chats">
+            <Stack.Screen name="Chat" component={Chats}
+                options={{ headerShown: false }}
+            />
 
-  return (
-            <Stack.Navigator initialRouteName="Chats">
-                <Stack.Screen name="Chat" component={Chats}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen name="ChatScreen" component={ChatScreen}
-                    options={{ headerShown: false }}
-                />
-            </Stack.Navigator>
-
+            <Stack.Screen name="ChatScreen" component={ChatScreen}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
     );
 };
 

@@ -10,7 +10,6 @@ import Header from '../Header'
 const ProfileInterests = ({route, navigation}) => {
 
     const {user} = route.params;
-    const [curUser, setCurUser] = React.useState()
     var interests = user.interests;
     if (!interests) {
         interests = [];
@@ -55,6 +54,7 @@ const ProfileInterests = ({route, navigation}) => {
         },
         authMode: "API_KEY"
     })
+    navigation.navigate("ProfileFavorites", {user: user, interests: updatedInterests});
     }
 
     return (
@@ -74,7 +74,6 @@ const ProfileInterests = ({route, navigation}) => {
                             <TouchableHighlight
                               activeOpacity = {1}
                               underlayColor = {'#ffffff'}
-                              // style = {getStyle(possibleInterests[interest])}
                               style = {userInterests[interest] ? styles.selected : styles.interests}
                               onPress={() => {
                                 var temp = {...userInterests}
@@ -91,11 +90,10 @@ const ProfileInterests = ({route, navigation}) => {
                         );
                     })}
                 </View>
-                <Button icon="content-save"
-                mode="contained"
+                <Button mode="contained"
                 style={styles.nextButton}
                 onPress={() => saveUpdates()}>
-                    Save
+                    Set Favorite Interests
                 </Button>
         </View>
       );
@@ -119,6 +117,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderWidth: 3,
         borderColor: '#DDEDEA',
+        color: 'black',
     },
     selected: {
         marginTop: 5,
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     nextButton: {
-        width: 150,
+        width: 190,
         alignSelf: 'center',
         marginBottom: '25%',
         backgroundColor: '#BBCAEB',

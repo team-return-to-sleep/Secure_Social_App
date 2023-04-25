@@ -16,71 +16,71 @@ const UserProfile = ({route, navigation}) => {
 
     const {user} = route.params;
 
-  return (
-    <ScrollView style={styles.container}>
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.goBack()} />
+    return (
+        <ScrollView style={styles.container}>
+            <Appbar.Header>
+                <Appbar.BackAction onPress={() => navigation.goBack()} />
 
-        <Header name="User Profile Info" />
-        </Appbar.Header>
-            <View style={styles.profileWrapper}>
+            <Header name="User Profile Info" />
+            </Appbar.Header>
+                <View style={styles.profileWrapper}>
 
-                <Text style={styles.username}>{user.name}</Text>
-                <Image
-                    style={styles.profilePicture}
-                    source={{uri: user.imageUri}}
-                />
-                <View style={styles.bioContainer}>
-                    <Text style={styles.bio}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
-                </View>
-
-
-                <View style={styles.contentWrapper}>
-                    <View style={styles.divider}/>
-                    <View style={styles.interestsWrapper}>
-                        <View style={styles.interests}>
-                            <Text style={styles.interestText}>INTEREST1</Text>
-                        </View>
-                        <View style={styles.interests}>
-                            <Text style={styles.interestText}>INTEREST2</Text>
-                        </View>
-                        <View style={styles.interests}>
-                            <Text style={styles.interestText}>INTEREST3</Text>
-                        </View>
-                        <View style={styles.interests}>
-                            <Text style={styles.interestText}>INTEREST4</Text>
-                        </View>
-                        <View style={styles.interests}>
-                            <Text style={styles.interestText}>INTEREST5</Text>
-                        </View>
+                    <Text style={styles.username}>{user.name}</Text>
+                    <Image
+                        style={styles.profilePicture}
+                        source={{uri: user.imageUri}}
+                    />
+                    <View style={styles.bioContainer}>
+                        <Text style={styles.bio}>{user.status}</Text>
                     </View>
 
 
-                    <View style={styles.divider}/>
+                    <View style={styles.contentWrapper}>
+                        <View style={styles.divider}/>
                         <View style={styles.interestsWrapper}>
                             <View style={styles.interests}>
-                                <Text style={styles.interestText}>FAVORITE1</Text>
+                                <Text style={styles.interestText}>INTEREST1</Text>
                             </View>
                             <View style={styles.interests}>
-                                <Text style={styles.interestText}>FAVORITE2</Text>
+                                <Text style={styles.interestText}>INTEREST2</Text>
                             </View>
                             <View style={styles.interests}>
-                                <Text style={styles.interestText}>FAVORITE3</Text>
+                                <Text style={styles.interestText}>INTEREST3</Text>
                             </View>
                             <View style={styles.interests}>
-                                <Text style={styles.interestText}>FAVORITE4</Text>
+                                <Text style={styles.interestText}>INTEREST4</Text>
                             </View>
                             <View style={styles.interests}>
-                                <Text style={styles.interestText}>FAVORITE5</Text>
+                                <Text style={styles.interestText}>INTEREST5</Text>
                             </View>
                         </View>
+
+
+                        <View style={styles.divider}/>
+                            <View style={styles.interestsWrapper}>
+                                <View style={styles.interests}>
+                                    <Text style={styles.interestText}>FAVORITE1</Text>
+                                </View>
+                                <View style={styles.interests}>
+                                    <Text style={styles.interestText}>FAVORITE2</Text>
+                                </View>
+                                <View style={styles.interests}>
+                                    <Text style={styles.interestText}>FAVORITE3</Text>
+                                </View>
+                                <View style={styles.interests}>
+                                    <Text style={styles.interestText}>FAVORITE4</Text>
+                                </View>
+                                <View style={styles.interests}>
+                                    <Text style={styles.interestText}>FAVORITE5</Text>
+                                </View>
+                            </View>
+                    </View>
                 </View>
-            </View>
-            <View style={{marginBottom:26}}>
-                        <Text>  {'\n\n'} </Text>
-            </View>
-    </ScrollView>
-  );
+                <View style={{marginBottom:26}}>
+                    <Text> {'\n\n'} </Text>
+                </View>
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({

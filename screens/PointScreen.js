@@ -93,10 +93,7 @@ const PointScreen = () => {
             />
         </View>
     </View>
-
-
-
-  );
+ );
 };
 
 const styles = StyleSheet.create({
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
     },
     button: {
         float: 'right',
-        backgroundColor:'#D9D9D9',
+        backgroundColor:'#BBCAEB',
     },
     imageBox: {
         width: '100%',
