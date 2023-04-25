@@ -11,6 +11,7 @@ import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Toolbar from '../Toolbar'
+import { Platform } from 'react-native';
 
 import { EThree } from '@virgilsecurity/e3kit-native';
 import NetInfo from '@react-native-community/netinfo';
@@ -22,6 +23,7 @@ const getDevelopmentMachineIpAddress = async () => {
 
 const getApiUrl = async () => {
   const ipAddress = await getDevelopmentMachineIpAddress();
+  console.log("IP address", ipAddress);
 
   if (Platform.OS === 'android' && !Platform.isPad && !Platform.isTV && !Platform.isTVOS) {
     return Platform.Version >= 25 ? 'http://10.0.2.2:3000' : `http://${ipAddress}:3000`;
@@ -30,10 +32,11 @@ const getApiUrl = async () => {
   }
 };
 
+
 const getTokenFactory = (identity) => {
   return async () => {
     const apiUrl = await getApiUrl();
-    // const apiUrl = 'http://172.16.80.129:3000'; // Works with android emulators. Slight adjustment needed for ios devices
+    // const apiUrl = 'http://10.0.2.2:3000'; // Works with android emulators.
     const response = await fetch(`${apiUrl}/virgil-jwt`, {
       method: 'POST',
       headers: {
