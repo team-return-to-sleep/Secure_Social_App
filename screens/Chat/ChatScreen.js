@@ -11,13 +11,32 @@ import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Toolbar from '../Toolbar'
+import { Platform } from 'react-native';
 
 import { EThree } from '@virgilsecurity/e3kit-native';
+import NetInfo from '@react-native-community/netinfo';
+
+const getDevelopmentMachineIpAddress = async () => {
+  const networkInfo = await NetInfo.fetch();
+  return networkInfo.details.address;
+};
+
+const getApiUrl = async () => {
+  const ipAddress = await getDevelopmentMachineIpAddress();
+  console.log("IP address", ipAddress);
+
+  if (Platform.OS === 'android' && !Platform.isPad && !Platform.isTV && !Platform.isTVOS) {
+    return Platform.Version >= 25 ? 'http://10.0.2.2:3000' : `http://${ipAddress}:3000`;
+  } else {
+    return `http://${ipAddress}:3000`;
+  }
+};
 
 
 const getTokenFactory = (identity) => {
   return async () => {
-    const apiUrl = 'http://10.0.2.2:3000'; // Works with android. Slight adjustment needed for ios devices
+    const apiUrl = await getApiUrl();
+    // const apiUrl = 'http://10.0.2.2:3000'; // Works with android emulators.
     const response = await fetch(`${apiUrl}/virgil-jwt`, {
       method: 'POST',
       headers: {
@@ -31,6 +50,7 @@ const getTokenFactory = (identity) => {
     return data.virgil_jwt;
   };
 };
+
 
 function isBase64(str) {
   try {
@@ -55,43 +75,79 @@ export function ChatScreen({route, navigation}) {
 
   useEffect(() => {
     const initEThree = async () => {
-      let identity = myUserData.id;
-      let getToken = getTokenFactory(identity);
-      const eThree_user = await EThree.initialize(getToken, { AsyncStorage });
+          let identity = myUserData.id;
+          let getToken = getTokenFactory(identity);
+          const eThree_user = await EThree.initialize(getToken, { AsyncStorage });
 
-      let isRegistered_user = await eThree_user.hasLocalPrivateKey();
-      if (!isRegistered_user) {
-        await eThree_user.register();
-      }
+          let isRegistered_user = await eThree_user.hasLocalPrivateKey();
 
-      identity = otherUser.id;
-      getToken = getTokenFactory(identity);
-      const eThree_otherUser = await EThree.initialize(getToken, { AsyncStorage });
+          console.log("Check 2");
 
-      let isRegistered_otherUser = await eThree_otherUser.hasLocalPrivateKey();
-      if (!isRegistered_otherUser) {
-        await eThree_otherUser.register();
-      }
 
-      if (!eThree_user) {
-       console.error("User not found in the E3 application")
-      }
+          if (!isRegistered_user) {
+          console.log("Check 1");
+              // Attempt to register the user
+              try {
+                await eThree_user.register();
+                // Use user id as the backup password for the private key
+                // I do not like this
+                await eThree_user.backupPrivateKey(identity);
+              } catch (error) {
+                // If the user is already registered, handle the error
+                if (error.name === 'IdentityAlreadyExistsError') {
+                  // Use user id as the password to restore the private key
+                  try {
+                    await eThree_user.restorePrivateKey(identity);
+                  } catch (restoreError) {
+                    // If there is no backup or the password is incorrect, rotate the private key
+                    await eThree_user.rotatePrivateKey();
+                    // Use user id as the new password to backup the new private key
+                    await eThree_user.backupPrivateKey(identity);
+                  }
+                } else {
+                  // If there's an unexpected error, throw it
+                  throw error;
+                }
+              }
+          }
 
-      if (!eThree_otherUser) {
-       console.error("Other user not found in the E3 application")
-      }
 
-      setEThreeUser(eThree_user);
-      setEThreeOtherUser(eThree_otherUser);
+          identity = otherUser.id;
+          getToken = getTokenFactory(identity);
+          const eThree_otherUser = await EThree.initialize(getToken, { AsyncStorage });
 
-      isRegistered_otherUser = await eThree_otherUser.hasLocalPrivateKey();
-      isRegistered_user = await eThree_user.hasLocalPrivateKey();
-      if (isRegistered_user && isRegistered_otherUser) {
-        setEThreeInitialized(true);
-      }
-    };
+          try {
+            const otherUserPublicKey = await eThree_otherUser.findUsers(otherUser.id);
+            // Proceed with encrypting and sending the message
+          } catch (error) {
+            if (error.name === 'UsersNotFoundError') {
+              // The other user is not registered yet
+              console.log('The other user has not registered yet.');
+              // Inform the current user or take some alternative action
+            } else {
+              throw error;
+            }
+          }
 
-    initEThree();
+          if (!eThree_user) {
+           console.error("User not found in the E3 application")
+          }
+
+          if (!eThree_otherUser) {
+           console.error("Other user not found in the E3 application")
+          }
+
+          setEThreeUser(eThree_user);
+          setEThreeOtherUser(eThree_otherUser);
+
+       //   isRegistered_otherUser = await eThree_otherUser.hasLocalPrivateKey();
+          isRegistered_user = await eThree_user.hasLocalPrivateKey();
+          if (isRegistered_user) {
+            setEThreeInitialized(true);
+          }
+        };
+
+        initEThree();
   }, []);
 
   useEffect(() => {
@@ -230,27 +286,30 @@ export function ChatScreen({route, navigation}) {
 
 
             const sender = newMessage.user.id;
+            // console.log("Check during decrypt ",sender);
 
             // Get sender card with public key
             const senderCard = await eThreeUser.findUsers(sender);
+            // console.log("CHeck sender")
 
             // Decrypt text with sender's private key and ensure it was written by sender
             const decryptedText = await eThreeUser.authDecrypt(newMessage.content, senderCard);
 
-            /* TESTING
+            /*
             console.log('Sender ID:', sender);
             try {
-                const senderCard = await eThree.findUsers(sender);
+                const senderCard = await eThreeUser.findUsers(sender);
                 console.log('Sender card found:', senderCard);
             } catch (error) {
                 console.error('Sender card not found:', error);
             }
             console.log('Encrypted message:', newMessage.content);
 
-            const sender_Card = await eThree.findUsers(sender);
-            const decryptedText = await eThree.authDecrypt(newMessage.content, sender_Card);
+            const sender_Card = await eThreeUser.findUsers(sender);
+            const decryptedText = await eThreeUser.authDecrypt(newMessage.content, sender_Card);
             console.log('Decrypted message:', decryptedText);
             */
+
 
             const msg = {
                 _id: newMessage.id,
@@ -276,12 +335,14 @@ export function ChatScreen({route, navigation}) {
     // console.log('Identities:', identities);
 
     // Find users cards with public keys
+    // console.log("Check during encrypt ",route.params.user.id);
 
     if (eThreeUser) {
      const findUsersResult = await eThreeUser.findUsers(identities);
 
      // Encrypt text string with the recipient's public key and sign with sender's private key
      const encryptedText = await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
+    // console.log("ENcrrypt:", encryptedText);
 
 
      await API.graphql({
@@ -387,6 +448,8 @@ export function ChatScreen({route, navigation}) {
       </View>
     );
   }
+
+
 
   return (
     <>
