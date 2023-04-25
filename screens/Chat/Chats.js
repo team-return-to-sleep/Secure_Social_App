@@ -195,14 +195,43 @@ const Chats = ({navigation}) => {
             <Header />
 
             <SafeAreaView>
-                <View style={styles.headerWrapper}>
-                    {users.length > 0 ? (
-                        <Text style={styles.subtext}>Messages</Text>
-                    ) : (
-                        <Text style={styles.midtext}>Start chatting with someone by clicking on their profile!</Text>
-                    )}
-                </View>
+                <ScrollView
+                    contentContainerStyle={styles.headerWrapper}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {users.map((user) => {
+                        return (
+                            <Image
+                                style={styles.profileImage}
+                                source={{uri: user.imageUri}}
+                            />
+                        );
+                    })}
+                </ScrollView>
             </SafeAreaView>
+
+            <View>
+                {users.length > 0 ? (
+                    <View style={styles.headerWrapper}>
+                        <Text style={styles.subtext}>Messages</Text>
+                    </View>
+                ) : (
+                    <View style={styles.emptyChatsWrapper}>
+                        <Text style={styles.midtext}>You have no chats! Start chatting. </Text>
+                        <Button mode="contained"
+                        style={styles.goButton}
+                        onPress={() => navigation.navigate("Home")}>
+                            <Text style={styles.goText}>Go to Home</Text>
+                        </Button>
+                        <Button mode="contained"
+                        style={styles.goButton}
+                        onPress={() => navigation.navigate("Browse")}>
+                            <Text style={styles.goText}>Go to Browse</Text>
+                        </Button>
+                    </View>
+                )}
+            </View>
 
             <View style={styles.chatWrapper}>
                 {users.map((user) => {
@@ -244,7 +273,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        paddingTop: 15,
+        paddingTop: 20,
         paddingBottom: 0,
         alignItems: 'center',
     },
@@ -262,6 +291,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
         justifyContent: 'flex-start',
+        marginHorizontal: 5,
     },
     chat: {
         margin: '1%',
@@ -269,8 +299,10 @@ const styles = StyleSheet.create({
         height: 70,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        backgroundColor: '#BBCAEB',
+        backgroundColor: '#FFF7EA',
         borderRadius: 24,
+        borderColor: '#FFA34E',
+        borderWidth: 1.5,
     },
     chatContainer: {
         margin: 7,
@@ -299,15 +331,15 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     midtext: {
-        textAlign: 'center',
-        fontSize: 30,
-        fontWeight: 'bold',
+        fontSize: 15,
+        textAlign:"center",
+        marginHorizontal: '10%',
         color: 'black',
+        margin: 10,
     },
     msgtext: {
         marginLeft:5,
-        color:'#FFFFFF',
-        fontWeight: 'bold',
+        color:'#181818',
     },
     gameButton: {
         width: 30,
@@ -315,6 +347,25 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         marginLeft: 10,
     },
+    emptyChatsWrapper: {
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+    },
+    goButton: {
+        margin:3,
+        width: 150,
+        height: 35,
+        backgroundColor: '#FFA34E',
+        justifyContent: 'center',
+    },
+    goText: {
+        fontSize: 13,
+        color: "#181818",
+        alignSelf: 'center',
+    }
 });
 
 export default Chats;

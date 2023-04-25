@@ -1,10 +1,14 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react'
-import { Appbar, Title, Badge } from 'react-native-paper';
+import { Appbar, Title, Button, Badge } from 'react-native-paper';
 import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet,Pressable,ImageBackground} from 'react-native'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
+
+import {Auth} from 'aws-amplify'
+import {getUser} from '../src/graphql/queries'
+import {updateUser} from '../src/graphql/mutations'
 
 import {listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
@@ -16,12 +20,52 @@ import UserProfile from './UserProfile'
 import Browse from './Account'
 
 const Home = ({navigation}) => {
+    const [user, setUser] = useState([])
     const [users, setUsers] = useState([])
     const isFocused = useIsFocused()
+
+    const onClickHandler = async (user) => {
+        const userInfo = await Auth.currentAuthenticatedUser();
+        const userData = await API.graphql (
+            {
+                      query: getUser,
+                      variables: {id: userInfo.attributes.sub},
+                      authMode: "API_KEY"
+            }
+        )
+        let myFriends = userData.data.getUser.friends
+        if (myFriends) {
+            for (let i=0; i<myFriends.length; i++) {
+                if (myFriends[i] == user.id.toString()) {
+                    return;
+                }
+            }
+
+            myFriends.push(user.id.toString())
+        } else {
+            myFriends = [user.id.toString()]
+        }
+        const updatedUser = {
+            id: userData.data.getUser.id,
+            friends: myFriends,
+        };
+        const updated = await API.graphql (
+                {
+                          query: updateUser,
+                          variables: {input: updatedUser},
+                          authMode: "API_KEY"
+                }
+        )
+        navigation.navigate("Chats")
+
+      }
+
 
     useEffect( ()=> {
         if(isFocused){
             const fetchUsers = async() => {
+                    const userInfo = await Auth.currentAuthenticatedUser();
+                    setUser(userInfo.attributes.preferred_username)
                     const usersData = await API.graphql(
                         {
                             query: listUsers,
@@ -38,30 +82,31 @@ const Home = ({navigation}) => {
          return (
             <ScrollView style={styles.container}>
                 <Header />
-                <SafeAreaView>
-                     <View style={styles.headerWrapper}>
-                         {users.map((user) => {
-                             return (
-                                 <Image
-                                   style={styles.profileImage}
-                                   source={{uri: user.imageUri}}
-                                 />
-                             );
-                         })}
-                     </View>
-                </SafeAreaView>
-                <Text style={styles.subtext}>Your Friends</Text>
+                <Text style={styles.flowerText}>✿</Text>
+                <Text style={styles.subtext}>Hello {user}! Let's grow your next friendship. </Text>
                 <View style={styles.profileWrapper}>
                     {users.map((user) => {
                         return (
                             <Pressable
-                                style={styles.profile}
-                                onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
-                            <Image
-                                style={styles.profile}
-                                source={{uri: user.imageUri}}
-                            />
-                            <Text style={styles.nameIcon}>{user.name}</Text>
+                                style={styles.profile}>
+                                <Image
+                                    style={styles.profileImage}
+                                    source={{uri: user.imageUri}}
+                                />
+                                <Text style={styles.name}>{user.name}</Text>
+                                <Text style={styles.status}>{user.status}</Text>
+                                <View style={styles.buttons}>
+                                    <Button mode="contained"
+                                    style={styles.accountButton}
+                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
+                                        <Text style={styles.buttonText}>View Profile</Text>
+                                    </Button>
+                                    <Button mode="contained"
+                                    style={styles.accountButton}
+                                    onPress={() => onClickHandler(user)}>
+                                        <Text style={styles.buttonText}>Start Chatting</Text>
+                                    </Button>
+                                </View>
                             </Pressable>
                         );
                     })}
@@ -93,56 +138,71 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     profileImage: {
-        width: 50,
-        height: 50,
+        width: 74,
+        height: 74,
         borderRadius: 50,
+        margin: 20,
     },
     profile: {
         marginLeft: 10,
         marginRight: 10,
         marginTop: 7,
         marginBottom: 7,
-        width: 170,
-        height: 170,
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        backgroundColor: '#AFE1AF',
+        width: 285,
+        height: 203,
+        backgroundColor: 'rgba(255, 247, 234, 0.3)',
+        borderColor: '#FFA34E',
         borderRadius: 24,
+        borderWidth: 1.5,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
-    chooseButton: {
-        borderRadius: 50,
-        width: 20,
-    },
-    imageIcon: {
-            marginLeft: 10,
-            marginRight: 10,
-            marginTop: 7,
-            marginBottom: 7,
-            width: 170,
-            height: 170,
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            backgroundColor: '#AFE1AF',
-            borderRadius: 24,
-            position: 'absolute',
-    },
-    nameIcon: {
-        marginTop: 50,
-        color: 'white',
+    name: {
+        marginLeft: 40,
+        marginTop: 30,
+        color: 'black',
         fontSize: 20,
         lineHeight: 54,
         lineWidth: 100,
         fontWeight: 'bold',
-        textAlign: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000000c0',
         borderRadius: 20,
-        position: 'absolute',
+    },
+    status: {
+        marginHorizontal: 30,
     },
     subtext: {
-        marginLeft:15,
-        fontSize: 20,
-        fontWeight: 'bold',
+        alignSelf: 'center',
+        fontSize: 15,
+        textAlign:"center",
+        marginHorizontal: '10%',
+    },
+    flowerText: {
+        alignSelf: 'center',
+        fontSize: 30,
+        textAlign:"center",
+        color: "#FF9472",
+    },
+    accountButton: {
+        width: 95,
+        height: 20,
+        backgroundColor: '#FFFFFF',
+        justifyContent: 'center',
+        borderColor: '#FFA34E',
+        borderRadius: 24,
+        borderWidth: 1.5,
+        marginHorizontal: 5,
+        marginTop: 20,
+        textAlign: 'center',
+    },
+    buttonText: {
+        fontSize:12,
+        color: "#181818",
+    },
+    buttons: {
+        width:'100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
     },
 });
 
