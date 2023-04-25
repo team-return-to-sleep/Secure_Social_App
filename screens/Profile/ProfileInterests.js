@@ -41,20 +41,20 @@ const ProfileInterests = ({route, navigation}) => {
 
     var [ isPress, setIsPress ] = React.useState(false);
 
-   const saveUpdates = async() => {
-    var updatedInterests = Object.keys(userInterests).filter(interest => userInterests[interest] === true)
-    await API.graphql (
-    {
-        query: updateUser,
-        variables: {
-            input: {
-                id: user.id,
-                interests: updatedInterests
-            }
-        },
-        authMode: "API_KEY"
-    })
-    navigation.navigate("ProfileFavorites", {user: user, interests: updatedInterests});
+    const saveUpdates = async() => {
+        var updatedInterests = Object.keys(userInterests).filter(interest => userInterests[interest] === true)
+        await API.graphql (
+        {
+            query: updateUser,
+            variables: {
+                input: {
+                    id: user.id,
+                    interests: updatedInterests
+                }
+            },
+            authMode: "API_KEY"
+        })
+        navigation.navigate("ProfileFavorites", {user: user, interests: updatedInterests});
     }
 
     return (
