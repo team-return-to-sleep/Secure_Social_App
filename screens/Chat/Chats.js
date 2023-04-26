@@ -1,11 +1,20 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,SafeAreaView,ScrollView,Image,StyleSheet,Alert,Pressable} from 'react-native'
+import {View,Text,SafeAreaView,ScrollView, FlatList,Linking,TouchableOpacity,Image,StyleSheet,Alert,Pressable} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
 import Header from '../Header'
+import {
+ Menu,
+ MenuProvider,
+ MenuOptions,
+ MenuOption,
+ MenuTrigger,
+ renderers
+} from 'react-native-popup-menu';
+import { Activities } from '../../assets/Activities';
 
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers, getChatRoomUser} from '../../src/graphql/queries'
@@ -22,6 +31,8 @@ const Chats = ({navigation}) => {
 
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
+
+    const { ContextMenu } = renderers;
 
     // fetch user data
     useEffect(() => {
@@ -184,37 +195,67 @@ const Chats = ({navigation}) => {
             <Header />
 
             <SafeAreaView>
-                <View style={styles.headerWrapper}>
-                    {users.length > 0 ? (
-                        <Text style={styles.subtext}>Messages</Text>
-                    ) : (
-                        <Text style={styles.midtext}>Start chatting with someone by clicking on their profile!</Text>
-                    )}
-                </View>
+                <ScrollView
+                    contentContainerStyle={styles.headerWrapper}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {users.map((user) => {
+                        return (
+                            <Image
+                                style={styles.profileImage}
+                                source={{uri: user.imageUri}}
+                            />
+                        );
+                    })}
+                </ScrollView>
             </SafeAreaView>
+
+            <View>
+                {users.length > 0 ? (
+                    <View style={styles.headerWrapper}>
+                        <Text style={styles.subtext}>Messages</Text>
+                    </View>
+                ) : (
+                    <View style={styles.emptyChatsWrapper}>
+                        <Text style={styles.midtext}>You have no chats! Start chatting. </Text>
+                        <Button mode="contained"
+                        style={styles.goButton}
+                        onPress={() => navigation.navigate("Home")}>
+                            <Text style={styles.goText}>Go to Home</Text>
+                        </Button>
+                        <Button mode="contained"
+                        style={styles.goButton}
+                        onPress={() => navigation.navigate("Browse")}>
+                            <Text style={styles.goText}>Go to Browse</Text>
+                        </Button>
+                    </View>
+                )}
+            </View>
 
             <View style={styles.chatWrapper}>
                 {users.map((user) => {
                     return (
-                        <Pressable
-                        style={styles.chat}
-                        onPress={() => onClickHandler(user)}>
-                            <View style={styles.imageWrapper}>
-                                <Image
-                                    style={styles.profileImage}
-                                    source={{uri: user.imageUri}}
-                                />
-                                <View>
-                                    <Text style={styles.subtext}> {user.name} </Text>
-                                    <Text style={styles.msgtext}> Latest Message Here </Text>
-                                </View>
+                        <View style={styles.chatContainer}>
+                            <Pressable
+                            style={styles.chat}
+                            onPress={() => onClickHandler(user)}>
+                                <View style={styles.imageWrapper}>
+                                    <Image
+                                        style={styles.profileImage}
+                                        source={{uri: user.imageUri}}
+                                    />
+                                    <View>
+                                        <Text style={styles.subtext}> {user.name} </Text>
+                                        <Text style={styles.msgtext}> Latest Message Here </Text>
+                                    </View>
 
-                            </View>
-                        </Pressable>
+                                </View>
+                            </Pressable>
+                        </View>
                     );
                 })}
             </View>
-
             <View style={{marginBottom:26}}>
                 <Text> {'\n\n'} </Text>
             </View>
@@ -232,34 +273,43 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        paddingTop: 15,
+        paddingTop: 20,
         paddingBottom: 0,
         alignItems: 'center',
     },
     chatWrapper: {
         flex: 1,
-        flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 20,
+        marginHorizontal: '3%',
     },
     profileImage: {
         width: 50,
         height: 50,
         borderRadius: 50,
         justifyContent: 'flex-start',
-
+        marginHorizontal: 5,
     },
     chat: {
-        margin: 7,
-        width: '90%',
+        margin: '1%',
+        width: '95%',
         height: 70,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        backgroundColor: '#BBCAEB',
+        backgroundColor: '#FFF7EA',
         borderRadius: 24,
+        borderColor: '#FFA34E',
+        borderWidth: 1.5,
+    },
+    chatContainer: {
+        margin: 7,
+        alignItems: 'center',
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row'
     },
     imageWrapper: {
         marginRight: 'auto',
@@ -281,16 +331,41 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     midtext: {
-        textAlign: 'center',
-        fontSize: 30,
-        fontWeight: 'bold',
+        fontSize: 15,
+        textAlign:"center",
+        marginHorizontal: '10%',
         color: 'black',
+        margin: 10,
     },
     msgtext: {
         marginLeft:5,
-        color:'#FFFFFF',
-        fontWeight: 'bold',
+        color:'#181818',
     },
+    gameButton: {
+        width: 30,
+        height: 30,
+        borderRadius: 30,
+        marginLeft: 10,
+    },
+    emptyChatsWrapper: {
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+    },
+    goButton: {
+        margin:3,
+        width: 150,
+        height: 35,
+        backgroundColor: '#FFA34E',
+        justifyContent: 'center',
+    },
+    goText: {
+        fontSize: 13,
+        color: "#181818",
+        alignSelf: 'center',
+    }
 });
 
 export default Chats;

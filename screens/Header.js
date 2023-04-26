@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     name: {
         marginLeft: 10,
         fontWeight: 'bold',
-        //color: 'white',
+        color: '#C62F00',
     },
     logout: {
         marginLeft: 'auto',

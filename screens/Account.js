@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         margin:10,
         width: 200,
         height: 40,
-        backgroundColor: '#BBCAEB',
+        backgroundColor: '#FFA34E',
         justifyContent: 'center',
     },
     accountWrapper: {
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     profPicText: {
-        color: '#89A8D6',
+        color: 'rgba(255, 148, 114, 0.75)',
         fontStyle: 'italic',
     },
     username: {

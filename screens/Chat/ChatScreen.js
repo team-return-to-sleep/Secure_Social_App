@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react'
-import { GiftedChat, Bubble, Send, SystemMessage } from 'react-native-gifted-chat'
-import {View,Text,StyleSheet,AsyncStorage} from 'react-native'
+import { onQuickReply, ChatInput, Action, SendButton, LeftAction, GiftedChat, Bubble, Send } from 'react-native-gifted-chat'
+import {TouchableOpacity,ScrollView,Linking,View,Image,Text,FlatList,StyleSheet,AsyncStorage} from 'react-native'
 import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'react-native-paper';
 import { useIsFocused } from "@react-navigation/native";
 
@@ -9,6 +9,16 @@ import {getUser, getGarden, listUsers, messagesByChatRoom} from '../../src/graph
 import {createMessage, createGarden, updateGarden} from '../../src/graphql/mutations'
 import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
+
+import { Activities } from '../../assets/Activities';
+import {
+ Menu,
+ MenuProvider,
+ MenuOptions,
+ MenuOption,
+ MenuTrigger,
+ renderers
+} from 'react-native-popup-menu';
 
 import Toolbar from '../Toolbar'
 import { Platform } from 'react-native';
@@ -149,6 +159,8 @@ export function ChatScreen({route, navigation}) {
 
         initEThree();
   }, []);
+
+  const { ContextMenu } = renderers;
 
   useEffect(() => {
     const loadPrevMessages = async() => {
@@ -383,20 +395,20 @@ export function ChatScreen({route, navigation}) {
 
 
   function SystemMessage(props) {
-    return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          left: { backgroundColor: '#6646ee' },
-          right: { backgroundColor: '#6646ee' },
-        }}
-        textStyle={{
-          left: { color: '#fff' },
-          right: { color: '#fff' },
-        }}
-      />
-    );
-  }
+      return (
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            left: { backgroundColor: '#6646ee' },
+            right: { backgroundColor: '#6646ee' },
+          }}
+          textStyle={{
+            left: { color: '#fff' },
+            right: { color: '#fff' },
+          }}
+        />
+      );
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -468,10 +480,47 @@ export function ChatScreen({route, navigation}) {
     );
   }
 
+  const renderActions = (props) => {
+      return (
+        <View style={{ flexDirection: 'row', paddingBottom: 12 }}>
+        <Menu renderer={ContextMenu} {...props}>
+            <MenuTrigger>
+                <Image
+                    style={styles.gameButton}
+                    source={{ uri: 'https://www.freepnglogos.com/uploads/games-png/games-controller-game-icon-17.png'}}
+                    resizeMode='contain'/>
+            </MenuTrigger>
+            <MenuOptions>
+                <FlatList
+                    data={Activities}
+                    keyExtractor={(item) => item.id}
+                    style={{height:200}}
+                    renderItem={({item}) => (
+                        <MenuOption
 
+                            onSelect={() => props.onSend({text: item.uri})}
+                            customStyles={{
+                                optionWrapper: {
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                },
+                            }}
+                        >
+                            <Text>{item.name}</Text>
+                        </MenuOption>
+                    )}
+                />
+            </MenuOptions>
+        </Menu>
+      </View>
+
+      );
+    };
 
   return (
     <>
+        <MenuProvider>
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Title>
@@ -493,6 +542,7 @@ export function ChatScreen({route, navigation}) {
           placeholder='Type your message here...'
           showUserAvatar
           alwaysShowSend
+          renderActions={renderActions}
           renderSend={renderSend}
           renderLoading={renderLoading}
           bottomOffset={36}
@@ -510,3 +560,42 @@ export function ChatScreen({route, navigation}) {
   );
 
 }
+
+const styles = StyleSheet.create({
+    container: {
+      backgroundColor: '#f5f5f5',
+      flex: 1
+    },
+    menuContainer: {
+        marginTop: '5%',
+        width: '10%',
+    },
+    listTitle: {
+      fontSize: 22
+    },
+    listDescription: {
+      fontSize: 16
+    },
+    sendingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    bottomComponentContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    //BREAK
+    gameButton: {
+        paddingLeft: 50,
+        marginBottom: '-10%',
+        width: 30,
+        height: 30,
+        borderRadius: 30,
+    },
+});

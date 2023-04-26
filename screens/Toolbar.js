@@ -36,7 +36,7 @@ const Toolbar = () => {
                     left: '10%',
                     right: '10%',
                     elevation: 0,
-                    backgroundColor: '#BBCAEB',
+                    backgroundColor: '#FFC1AD',
                     borderRadius: 20,
                 },
                 tabBarIcon: ({focused, color}) => {
