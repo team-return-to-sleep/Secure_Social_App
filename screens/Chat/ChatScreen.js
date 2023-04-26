@@ -18,12 +18,13 @@ import NetInfo from '@react-native-community/netinfo';
 
 const getDevelopmentMachineIpAddress = async () => {
   const networkInfo = await NetInfo.fetch();
-  return networkInfo.details.address;
+  //console.log("NETWORK INFO:", networkInfo)
+  return networkInfo.details.ipAddress;
 };
 
 const getApiUrl = async () => {
   const ipAddress = await getDevelopmentMachineIpAddress();
-  console.log("IP address", ipAddress);
+  //console.log("IP address", ipAddress);
 
   if (Platform.OS === 'android' && !Platform.isPad && !Platform.isTV && !Platform.isTVOS) {
     return Platform.Version >= 25 ? 'http://10.0.2.2:3000' : `http://${ipAddress}:3000`;
@@ -34,9 +35,9 @@ const getApiUrl = async () => {
 
 
 const getTokenFactory = (identity) => {
-  return async () => {
-    const apiUrl = await getApiUrl();
-    // const apiUrl = 'http://10.0.2.2:3000'; // Works with android emulators.
+   return async () => {
+    // const apiUrl = await getApiUrl();
+     const apiUrl = 'http://10.0.2.2:3000'; // Works with android emulators.
     const response = await fetch(`${apiUrl}/virgil-jwt`, {
       method: 'POST',
       headers: {
@@ -46,7 +47,8 @@ const getTokenFactory = (identity) => {
     });
 
     const data = await response.json();
-    // console.log('Fetched Virgil JWT:', data.virgil_jwt);
+    console.log("DATA", data)
+    console.log('Fetched Virgil JWT:', data.virgil_jwt);
     return data.virgil_jwt;
   };
 };
@@ -76,9 +78,10 @@ export function ChatScreen({route, navigation}) {
   useEffect(() => {
     const initEThree = async () => {
           let identity = myUserData.id;
-          let getToken = getTokenFactory(identity);
+          let getToken = await getTokenFactory(identity);
+          console.log("getToken: ", getToken)
           const eThree_user = await EThree.initialize(getToken, { AsyncStorage });
-
+          console.log("ethree user: ", eThree_user)
           let isRegistered_user = await eThree_user.hasLocalPrivateKey();
 
           console.log("Check 2");
@@ -260,6 +263,9 @@ export function ChatScreen({route, navigation}) {
                 )
             }
             loadPoints();
+        } catch (error) {
+            console.log("CHATSCREEN: could not save flower points")
+        }
         }
     }, [isFocused])
 
