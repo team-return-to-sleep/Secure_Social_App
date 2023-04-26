@@ -235,45 +235,48 @@ export function ChatScreen({route, navigation}) {
     const setFlowerPoints = async () => {
 
         let garden;
-        try {
-            let userGarden = await API.graphql(
-                {
-                    query: getGarden,
-                    variables: {id: myUserData.id},
-                    authMode: "API_KEY",
-                }
-            )
-            console.log("CHATSCREEN USERGARDEN: ", userGarden)
-            //const val = await AsyncStorage.getItem('flowerPoints')
-            if (userGarden) {
-                garden = {
-                    flowerSize: userGarden.data.getGarden.flowerSize,
-                    id: userGarden.data.getGarden.id,
-                    userID: userGarden.data.getGarden.userID,
-                    points: userGarden.data.getGarden.points,
-                }
-                console.log("flower points: ", garden.points)
-                //setPoints(parseInt(val))
-            } else {
-//                await AsyncStorage.setItem('flowerPoints', '20')
-//                setPoints(20)
-                garden = {
-                    userID: myUserData.id,
-                    id: myUserData.id,
-                    flowerSize: 120,
-                    points: 10
-                }
-                await API.graphql(
-                    {
-                        query: createGarden,
-                        variables: {input: garden},
-                        authMode: "API_KEY"
+                try {
+                    let userGarden = await API.graphql(
+                        {
+                            query: getGarden,
+                            variables: {id: myUserData.id},
+                            authMode: "API_KEY",
+                        }
+                    )
+                    console.log("CHATSCREEN USERGARDEN: ", userGarden)
+                    //const val = await AsyncStorage.getItem('flowerPoints')
+                    if (userGarden) {
+                        garden = {
+                            flowerSize: userGarden.data.getGarden.flowerSize,
+                            id: userGarden.data.getGarden.id,
+                            userID: userGarden.data.getGarden.userID,
+                            points: userGarden.data.getGarden.points,
+                        }
+                        console.log("flower points: ", garden.points)
+                        //setPoints(parseInt(val))
+                    } else {
+        //                await AsyncStorage.setItem('flowerPoints', '20')
+        //                setPoints(20)
+                        garden = {
+                            userID: myUserData.id,
+                            id: myUserData.id,
+                            flowerSize: 120,
+                            points: 10
+                        }
+                        await API.graphql(
+                            {
+                                query: createGarden,
+                                variables: {input: garden},
+                                authMode: "API_KEY"
+                            }
+                        )
                     }
-                )
-            }
-            loadPoints();
-        }
-    }, [isFocused])
+                    loadPoints();
+                } catch (error) {
+                    console.log("CHATSCREEN: could not save flower points")
+                }
+                }
+            }, [isFocused])
 
     useEffect(() => {
         const setFlowerPoints = async () => {
@@ -556,6 +559,7 @@ export function ChatScreen({route, navigation}) {
           <View style={{marginBottom:17}}>
             <Text>{'\n\n'}</Text>
           </View>
+          </MenuProvider>
     </>
   );
 
