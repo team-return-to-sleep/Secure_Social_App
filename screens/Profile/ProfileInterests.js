@@ -43,6 +43,7 @@ const ProfileInterests = ({route, navigation}) => {
 
     const saveUpdates = async() => {
         var updatedInterests = Object.keys(userInterests).filter(interest => userInterests[interest] === true)
+        // TODO: for every interest create a model, store in interest array to pass to updatedInterests
         await API.graphql (
         {
             query: updateUser,
