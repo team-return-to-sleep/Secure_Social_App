@@ -144,6 +144,9 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                 onPress={() => saveUpdates()}>
                     Continue
                 </Button>
+            <View style={{marginBottom:26}}>
+                <Text> {'\n\n'} </Text>
+            </View>
         </ScrollView>
       );
 }
