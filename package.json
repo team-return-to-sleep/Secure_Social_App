@@ -30,7 +30,7 @@
     "express": "^4.18.2",
     "node-fetch": "^3.3.1",
     "react": "18.1.0",
-    "react-native": "0.70.5",
+    "react-native": "^0.70.5",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-element-dropdown": "^2.9.0",
     "react-native-gifted-chat": "^1.1.1",
