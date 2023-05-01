@@ -145,7 +145,7 @@ const SignUpFlowProfileBasicSetup = ({route, navigation}) => {
             authMode: "API_KEY"
         })
         console.log("UPDATED USER: ", testUser)
-        navigation.navigate("ProfileSpecificInterests", {user: testUser.data.getUser});
+        navigation.navigate("SignUpFlowProfileSpecificInterests", {user: testUser.data.getUser});
     }
    }
 

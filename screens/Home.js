@@ -17,6 +17,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
 import UserProfile from './UserProfile'
 import Browse from './Account'
+import SignUpFlowProfileBasicSetup from './Profile/SignUpFlowProfileBasicSetup'
 
 const Home = ({navigation}) => {
     const [user, setUser] = useState([])
@@ -32,6 +33,7 @@ const Home = ({navigation}) => {
                       authMode: "API_KEY"
             }
         )
+
         let myFriends = userData.data.getUser.friends
         if (myFriends) {
             for (let i=0; i<myFriends.length; i++) {
@@ -73,9 +75,15 @@ const Home = ({navigation}) => {
                             authMode: "API_KEY"
                         }
                     )
+
                     //console.log("DEBUG SELF: ", selfData.data.getUser.interests.items)
                     const selfInterests = selfData.data.getUser.interests.items
-                    const selfRegion = selfData.data.region
+                    const selfRegion = selfData.data.getUser.region
+                    console.log("MYREGIONIS")
+                    console.log(selfRegion)
+                    if(!selfRegion) {
+                        navigation.navigate("SignUpFlowProfileBasicSetup", {user: selfData.data.getUser})
+                    }
 
                     const usersData = await API.graphql(
                         {

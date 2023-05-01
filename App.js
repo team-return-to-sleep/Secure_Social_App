@@ -53,7 +53,6 @@ import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
 import ProfileRoot from './screens/Profile/ProfileRoot'
-import SignUpFlowProfileBasicSetup from './screens/Profile/SignUpFlowProfileBasicSetup'
 
 const Stack = createNativeStackNavigator()
 
@@ -151,11 +150,8 @@ const App = ({navigation}) => {
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={!exists ? ("SignUpFlowProfileBasicSetup") : ("ProfileRoot")}>
+            <Stack.Navigator initialRouteName={(!exists ? ("Toolbar") : ("ProfileRoot"))}>
                 <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="SignUpFlowProfileBasicSetup" component={SignUpFlowProfileBasicSetup}
-                    options={{ headerShown: false }}
-                />
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
                 />
