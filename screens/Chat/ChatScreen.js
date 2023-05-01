@@ -10,6 +10,10 @@ import {createMessage, createGarden, updateGarden} from '../../src/graphql/mutat
 import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
+import { Storage } from 'aws-amplify';
+import { v4 as uuidv4 } from 'uuid';
+
+
 import { Activities } from '../../assets/Activities';
 import {
  Menu,
@@ -69,6 +73,24 @@ function isBase64(str) {
     return false;
   }
 }
+
+const uploadImageToS3 = async (fileUri) => {
+  try {
+    const response = await fetch(fileUri);
+    const blob = await response.blob();
+    const imageName = new Date().toISOString() + '-' + Math.random().toString(36).substring(2, 7);
+    const fileKey = `${route.params.chatRoomID}/${imageName}`;
+    const result = await Storage.put(fileKey, blob, {
+      contentType: 'image/jpeg',
+      level: 'public',
+    });
+    const url = await Storage.get(result.key);
+    return url;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    return null;
+  }
+};
 
 export function ChatScreen({route, navigation}) {
     const isFocused = useIsFocused()
@@ -375,8 +397,21 @@ export function ChatScreen({route, navigation}) {
      const findUsersResult = await eThreeUser.findUsers(identities);
 
      // Encrypt text string with the recipient's public key and sign with sender's private key
-     const encryptedText = await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
+     // const encryptedText = await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
     // console.log("ENcrrypt:", encryptedText);
+
+    // Check if the message has an image
+        const imageObject = newMessage[0].image;
+        let imageURL = null;
+        if (imageObject) {
+          imageURL = await uploadImageToS3(imageObject.uri);
+          if (!imageURL) {
+            // Error uploading image, exit function
+            return;
+          }
+        }
+
+     const encryptedText = imageURL ? '' : await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
 
 
      await API.graphql({
