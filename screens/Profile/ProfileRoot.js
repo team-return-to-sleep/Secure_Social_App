@@ -9,9 +9,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 
 import Account from '../Account'
 import ProfileGender from './ProfileGender'
+import SignUpFlowProfileBasicSetup from './SignUpFlowProfileBasicSetup'
 import ProfileInterests from './ProfileInterests'
 import ProfileBasicInfo from './ProfileBasicInfo'
-import ProfileFavorites from './ProfileFavorites'
 import ProfilePicture from './ProfilePicture'
 import ProfileSpecificInterests from './ProfileSpecificInterests'
 import UserProfile from '../UserProfile'
@@ -28,6 +28,9 @@ const ProfileRoot = () => {
                 <Stack.Screen name="ProfileGender" component={ProfileGender}
                     options={{ headerShown: false }}
                 />
+                <Stack.Screen name="SignUpFlowProfileBasicSetup" component={SignUpFlowProfileBasicSetup}
+                    options={{ headerShown: false }}
+                />
                 <Stack.Screen name="ProfileInterests" component={ProfileInterests}
                     options={{ headerShown: false }}
                 />
@@ -35,9 +38,6 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileBasicInfo" component={ProfileBasicInfo}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen name="ProfileFavorites" component={ProfileFavorites}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="UserProfile" component={UserProfile}

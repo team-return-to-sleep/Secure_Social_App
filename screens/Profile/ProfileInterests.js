@@ -104,7 +104,7 @@ const ProfileInterests = ({route, navigation}) => {
             authMode: "API_KEY"
         })
         console.log("UPDATED USER: ", testUser)
-        navigation.navigate("ProfileFavorites", {user: testUser.data.getUser});
+        navigation.navigate("ProfileSpecificInterests", {user: testUser.data.getUser});
     }
 
     return (
