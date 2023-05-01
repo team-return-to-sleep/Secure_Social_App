@@ -121,8 +121,6 @@ export function ChatScreen({route, navigation}) {
               // Attempt to register the user
               try {
                 await eThree_user.register();
-                // Use user id as the backup password for the private key
-                // I do not like this
                 await eThree_user.backupPrivateKey(identity);
               } catch (error) {
                 // If the user is already registered, handle the error
