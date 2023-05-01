@@ -13,6 +13,7 @@ export const onCreateUser = /* GraphQL */ `
       interests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -23,6 +24,7 @@ export const onCreateUser = /* GraphQL */ `
       favoriteInterests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -88,6 +90,7 @@ export const onUpdateUser = /* GraphQL */ `
       interests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -98,6 +101,7 @@ export const onUpdateUser = /* GraphQL */ `
       favoriteInterests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -163,6 +167,7 @@ export const onDeleteUser = /* GraphQL */ `
       interests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -173,6 +178,7 @@ export const onDeleteUser = /* GraphQL */ `
       favoriteInterests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -776,6 +782,7 @@ export const onCreateInterest = /* GraphQL */ `
   subscription OnCreateInterest($filter: ModelSubscriptionInterestFilterInput) {
     onCreateInterest(filter: $filter) {
       id
+      userID
       categoryName
       specificNames
       createdAt
@@ -787,6 +794,7 @@ export const onUpdateInterest = /* GraphQL */ `
   subscription OnUpdateInterest($filter: ModelSubscriptionInterestFilterInput) {
     onUpdateInterest(filter: $filter) {
       id
+      userID
       categoryName
       specificNames
       createdAt
@@ -798,6 +806,7 @@ export const onDeleteInterest = /* GraphQL */ `
   subscription OnDeleteInterest($filter: ModelSubscriptionInterestFilterInput) {
     onDeleteInterest(filter: $filter) {
       id
+      userID
       categoryName
       specificNames
       createdAt

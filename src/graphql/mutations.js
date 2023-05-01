@@ -16,6 +16,7 @@ export const createUser = /* GraphQL */ `
       interests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -26,6 +27,7 @@ export const createUser = /* GraphQL */ `
       favoriteInterests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -94,6 +96,7 @@ export const updateUser = /* GraphQL */ `
       interests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -104,6 +107,7 @@ export const updateUser = /* GraphQL */ `
       favoriteInterests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -172,6 +176,7 @@ export const deleteUser = /* GraphQL */ `
       interests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -182,6 +187,7 @@ export const deleteUser = /* GraphQL */ `
       favoriteInterests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -818,6 +824,7 @@ export const createInterest = /* GraphQL */ `
   ) {
     createInterest(input: $input, condition: $condition) {
       id
+      userID
       categoryName
       specificNames
       createdAt
@@ -832,6 +839,7 @@ export const updateInterest = /* GraphQL */ `
   ) {
     updateInterest(input: $input, condition: $condition) {
       id
+      userID
       categoryName
       specificNames
       createdAt
@@ -846,6 +854,7 @@ export const deleteInterest = /* GraphQL */ `
   ) {
     deleteInterest(input: $input, condition: $condition) {
       id
+      userID
       categoryName
       specificNames
       createdAt

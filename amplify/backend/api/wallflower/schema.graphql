@@ -51,7 +51,8 @@ type Garden @model {
 }
 
 type Interest @model {
-    id: ID! @index(name: "byUser")
+    id: ID!
+    userID: ID! @index(name: "byUser")
     categoryName: String!
     specificNames: [String]
 }

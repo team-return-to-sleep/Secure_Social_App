@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
 import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
 
-import {updateUser} from '../../src/graphql/mutations'
+import {updateUser, createInterest} from '../../src/graphql/mutations'
+import {getInterest} from '../../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from '../Header'
@@ -10,51 +11,99 @@ import Header from '../Header'
 const ProfileInterests = ({route, navigation}) => {
 
     const {user} = route.params;
-    var interests = user.interests;
+    var interests = user.interests.items;
+    console.log("INTERESTS USER: ", user)
     if (!interests) {
         interests = [];
     }
-
+    console.log("INTERESTS: ", interests)
     var [ userInterests , setUserInterests ] = React.useState(
 {
-        "Books & Literature": interests.includes("Books & Literature"),
-        "Business": interests.includes("Business"),
-        "Career": interests.includes("Career"),
-        "Movies & TV": interests.includes("Movies & TV"),
-        "Education": interests.includes("Education"),
-        "Health": interests.includes("Health"),
-        "Home & Garden": interests.includes("Home & Garden"),
-        "Music & Radio": interests.includes("Music & Radio"),
-        "Comedy": interests.includes("Comedy"),
-        "Animals": interests.includes("Animals"),
-        "Food & Drink": interests.includes("Food & Drink"),
-        "Gaming": interests.includes("Gaming"),
-        "Travel": interests.includes("Travel"),
-        "DIY": interests.includes("DIY"),
-        "Sports": interests.includes("Sports"),
-        "Beauty & Style": interests.includes("Beauty & Style"),
-        "Art": interests.includes("Art"),
-        "Tech": interests.includes("Tech"),
-        "Automotive": interests.includes("Automotive"),
-        "Dance": interests.includes("Dance")
+        "Books & Literature": interests.some(e => e.categoryName === "Books & Literature"),
+        "Business": interests.some(e => e.categoryName === "Business"),
+        "Career": interests.some(e => e.categoryName === "Career"),
+        "Movies & TV": interests.some(e => e.categoryName === "Movies & TV"),
+        "Education": interests.some(e => e.categoryName === "Education"),
+        "Health": interests.some(e => e.categoryName === "Health"),
+        "Home & Garden": interests.some(e => e.categoryName === "Home & Garden"),
+        "Music & Radio": interests.some(e => e.categoryName === "Music & Radio"),
+        "Comedy": interests.some(e => e.categoryName === "Comedy"),
+        "Animals": interests.some(e => e.categoryName === "Animals"),
+        "Food & Drink": interests.some(e => e.categoryName === "Food & Drink"),
+        "Gaming": interests.some(e => e.categoryName === "Gaming"),
+        "Travel": interests.some(e => e.categoryName === "Travel"),
+        "DIY": interests.some(e => e.categoryName === "DIY"),
+        "Sports": interests.some(e => e.categoryName === "Sports"),
+        "Beauty & Style": interests.some(e => e.categoryName === "Beauty & Style"),
+        "Art": interests.some(e => e.categoryName === "Art"),
+        "Tech": interests.some(e => e.categoryName === "Tech"),
+        "Automotive": interests.some(e => e.categoryName === "Automotive"),
+        "Dance": interests.some(e => e.categoryName === "Dance")
     });
 
     var [ isPress, setIsPress ] = React.useState(false);
 
     const saveUpdates = async() => {
-        var updatedInterests = Object.keys(userInterests).filter(interest => userInterests[interest] === true)
+        var interestNames = Object.keys(userInterests).filter(interest => userInterests[interest] === true)
         // TODO: for every interest create a model, store in interest array to pass to updatedInterests
-        await API.graphql (
+        var updatedInterests = []
+        var oldInterests = user.interests.items
+        for (var name of interestNames) {
+            const interestData = {
+                id: name.concat(user.id),
+                userID: user.id,
+                categoryName: name,
+                specificNames: []
+            }
+            var fetchInterest;
+            if (oldInterests) {
+                fetchInterest = oldInterests.find(e => e.categoryName === name)
+            }
+//            await API.graphql (
+//                {
+//                    query: getInterest,
+//                    variables: {id: interestData.id},
+//                    authMode: "API_KEY"
+//                }
+//            )
+            if (!fetchInterest) {
+                fetchInterest = await API.graphql (
+                    {
+                        query: createInterest,
+                        variables: {
+                            input: interestData
+                        },
+                        authMode: "API_KEY"
+                    }
+                )
+                console.log("PROFILE INTERESTS: ", fetchInterest)
+                updatedInterests.push(fetchInterest)
+            } else {
+                console.log("PROFILE INTERESTS: ", fetchInterest)
+                updatedInterests.push(fetchInterest)
+            }
+
+        }
+//        await API.graphql (
+//        {
+//            query: updateUser,
+//            variables: {
+//                input: {
+//                    id: user.id,
+//                    interests: updatedInterests
+//                }
+//            },
+//            authMode: "API_KEY"
+//        })
+        const testUser = await API.graphql (
         {
-            query: updateUser,
+            query: getUser,
             variables: {
-                input: {
                     id: user.id,
-                    interests: updatedInterests
-                }
             },
             authMode: "API_KEY"
         })
+        console.log("UPDATED USER: ", testUser)
         navigation.navigate("ProfileFavorites", {user: user, interests: updatedInterests});
     }
 

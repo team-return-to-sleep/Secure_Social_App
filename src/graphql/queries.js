@@ -13,6 +13,7 @@ export const getUser = /* GraphQL */ `
       interests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -23,6 +24,7 @@ export const getUser = /* GraphQL */ `
       favoriteInterests {
         items {
           id
+          userID
           categoryName
           specificNames
           createdAt
@@ -432,6 +434,7 @@ export const getInterest = /* GraphQL */ `
   query GetInterest($id: ID!) {
     getInterest(id: $id) {
       id
+      userID
       categoryName
       specificNames
       createdAt
@@ -448,6 +451,7 @@ export const listInterests = /* GraphQL */ `
     listInterests(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        userID
         categoryName
         specificNames
         createdAt
@@ -677,16 +681,16 @@ export const messagesByChatRoom = /* GraphQL */ `
     }
   }
 `;
-export const interestsById = /* GraphQL */ `
-  query InterestsById(
-    $id: ID!
+export const interestsByUserID = /* GraphQL */ `
+  query InterestsByUserID(
+    $userID: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelInterestFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    interestsById(
-      id: $id
+    interestsByUserID(
+      userID: $userID
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -694,6 +698,7 @@ export const interestsById = /* GraphQL */ `
     ) {
       items {
         id
+        userID
         categoryName
         specificNames
         createdAt
