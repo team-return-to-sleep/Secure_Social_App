@@ -7,10 +7,9 @@ import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
 
 import {Auth} from 'aws-amplify'
-import {getUser} from '../src/graphql/queries'
 import {updateUser} from '../src/graphql/mutations'
 
-import {listUsers} from '../src/graphql/queries'
+import {getUser, listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
 import { useIsFocused } from "@react-navigation/native";
 
@@ -66,13 +65,51 @@ const Home = ({navigation}) => {
             const fetchUsers = async() => {
                     const userInfo = await Auth.currentAuthenticatedUser();
                     setUser(userInfo.attributes.preferred_username)
+
+                    const selfData = await API.graphql (
+                        {
+                            query: getUser,
+                            variables: {id: userInfo.attributes.sub},
+                            authMode: "API_KEY"
+                        }
+                    )
+                    //console.log("DEBUG SELF: ", selfData.data.getUser.interests.items)
+                    const selfInterests = selfData.data.getUser.interests.items
+                    const selfRegion = selfData.data.region
+
                     const usersData = await API.graphql(
                         {
                             query: listUsers,
                             authMode: "API_KEY"
                         }
                     )
-                    setUsers(usersData.data.listUsers.items)
+
+                    const allUsers = usersData.data.listUsers.items;
+                    //console.log("DEBUG ALL: ", allUsers)
+
+                    let compareInterests = (a1, a2) =>
+                        a1.reduce((a, c) => a + a2.some(e => e.categoryName === c.categoryName), 0);
+
+                    // sort by number of matching interests; descending order
+                    allUsers.sort(function(a, b){
+                        if (!b.interests.items && a.interests.items) {
+                            return -1
+                        } else if (!a.interests.items && b.interests.items) {
+                            return 1
+                        } else if (!a.interests.items && !b.interests.items) {
+                            return 0
+                        }
+                        return (compareInterests(b.interests.items, selfInterests) +
+                                ((b.region && selfRegion && b.region === selfRegion)?1:0)) -
+                               (compareInterests(a.interests.items, selfInterests) +
+                                ((a.region && selfRegion && a.region === selfRegion))?1:0)
+                    })
+                    setUsers(allUsers)
+                    // for verification purposes
+                    for (let curr of allUsers) {
+                        console.log("HOME matches: ", curr.name, " ", curr.interests.items)
+                    }
+                    //setUsers(usersData.data.listUsers.items)
                     // console.log(usersData.data.listUsers.items)
             }
             fetchUsers();

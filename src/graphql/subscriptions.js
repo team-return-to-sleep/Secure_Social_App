@@ -10,8 +10,28 @@ export const onCreateUser = /* GraphQL */ `
       age
       region
       status
-      interests
-      favoriteInterests
+      interests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      favoriteInterests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       friends
       chatRoomUser {
         items {
@@ -46,8 +66,6 @@ export const onCreateUser = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -69,8 +87,28 @@ export const onUpdateUser = /* GraphQL */ `
       age
       region
       status
-      interests
-      favoriteInterests
+      interests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      favoriteInterests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       friends
       chatRoomUser {
         items {
@@ -105,8 +143,6 @@ export const onUpdateUser = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -128,8 +164,28 @@ export const onDeleteUser = /* GraphQL */ `
       age
       region
       status
-      interests
-      favoriteInterests
+      interests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      favoriteInterests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       friends
       chatRoomUser {
         items {
@@ -164,8 +220,6 @@ export const onDeleteUser = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -193,8 +247,12 @@ export const onCreateChatRoomUser = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -244,8 +302,12 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -295,8 +357,12 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -436,8 +502,12 @@ export const onCreateMessage = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -486,8 +556,12 @@ export const onUpdateMessage = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -536,8 +610,12 @@ export const onDeleteMessage = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -585,8 +663,12 @@ export const onCreateGarden = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -624,8 +706,12 @@ export const onUpdateGarden = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -663,8 +749,12 @@ export const onDeleteGarden = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -683,6 +773,42 @@ export const onDeleteGarden = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateInterest = /* GraphQL */ `
+  subscription OnCreateInterest($filter: ModelSubscriptionInterestFilterInput) {
+    onCreateInterest(filter: $filter) {
+      id
+      userID
+      categoryName
+      specificNames
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateInterest = /* GraphQL */ `
+  subscription OnUpdateInterest($filter: ModelSubscriptionInterestFilterInput) {
+    onUpdateInterest(filter: $filter) {
+      id
+      userID
+      categoryName
+      specificNames
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteInterest = /* GraphQL */ `
+  subscription OnDeleteInterest($filter: ModelSubscriptionInterestFilterInput) {
+    onDeleteInterest(filter: $filter) {
+      id
+      userID
+      categoryName
+      specificNames
       createdAt
       updatedAt
     }

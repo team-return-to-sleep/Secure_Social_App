@@ -1,35 +1,58 @@
 import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight,Picker} from 'react-native'
+import {View,ScrollView,Text,SafeAreaView,StyleSheet,TouchableHighlight,Picker} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import {updateUser} from '../../src/graphql/mutations'
+import {updateUser, updateInterest} from '../../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from '../Header'
 
 const ProfileSpecificInterests = ({route, navigation}) => {
-    const {user, interests} = route.params;
+    const {user} = route.params;
 
-    var [ broadInterests , setBroadInterests ] = React.useState(interests);
-    var [ specInterests, setSpecInterests] = React.useState([["osu", "genshin impact"], ["kfc"]])
+    var [ broadInterests , setBroadInterests ] = React.useState(user.interests.items.map(e => e.categoryName));
+    var [ specInterests, setSpecInterests] = React.useState(user.interests.items.map(e => e.specificNames))
+
+    var [ currInterest, setCurrInterest] = useState(null)
+    var [ tempSpecific, setTempSpecific] = useState(null)
+
     var [ isPress, setIsPress ] = React.useState(false);
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [specific, setSpecific] = useState(null);
-    const [items, setItems] = useState([
-                        {label: 'gaming', value: 'gaming'},
-                        {label: 'food & drink', value: 'food & drink'},
-    ]);
+    const [items, setItems] = useState(user.interests.items.map(e => ({label: e.categoryName, value: e})));
+//    [
+//                        {label: 'gaming', value: 'gaming'},
+//                        {label: 'food & drink', value: 'food & drink'},
+//    ]);
 
-   const saveUpdates = async() => {
-    navigation.navigate("Account");
+    const saveInterest = async() => {
+        if (currInterest && tempSpecific) {
+            console.log("SPECIFIC: ", tempSpecific)
+            currInterest.specificNames.push(tempSpecific)
+            const updatedInterest = await API.graphql (
+            {
+                query: updateInterest,
+                variables: {
+                    input: {
+                        id: currInterest.id,
+                        specificNames: currInterest.specificNames
+                    }
+                },
+                authMode: "API_KEY"
+            })
+            console.log("UPDATED SPECIFIC: ", updatedInterest.data.updateInterest)
+        }
+    }
+    const saveUpdates = async() => {
+        navigation.navigate("Account");
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
 
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
@@ -39,41 +62,64 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                 </Appbar.Header>
 
                 <Text style={styles.question}> Add your personal flavors! </Text>
-                <Text > MY favorite in
-                    <DropDownPicker
-                        placeholder={"Select an interest"}
-                        open={open}
-                        value={value}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setValue}
-                        setItems={setItems}
-                        containerStyle={{height: 10}}
-                        style={{backgroundColor: 'white'}}
-                        itemStyle={{
-                            justifyContent: 'flex-start'
-                        }}
-                        dropDownStyle={{backgroundColor: 'white'}}
-                        onChangeValue={(value) => console.log(value, " was picked")}
-                    />
-                    is
-                    <TextInput
-                        label="write in a favorite"
-                        theme={{colors:{primary:"#000000"}}}
-                        value={specific}
-                        onChangeText={(text)=>setSpecific(text)}
-                    />
-                </Text>
+                <View style={styles.promptWrapper}>
+                        <Text style={{flex:1, marginLeft: 10}}> MY favorite in </Text>
+                        <DropDownPicker
+                            placeholder={"Select interest"}
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            containerStyle={{height: 10}}
+                            style={{
+                                    backgroundColor: 'white',
+                                    marginLeft: 10,
+                                    flex:1,
+                                    height: 30,
+                                    width: 100,
+                                    minHeight: 30,
+                                    paddingHorizontal: 5,
+                                   }}
+                            itemStyle={{
+                                justifyContent: 'flex-start'
+                            }}
+                            dropDownStyle={{backgroundColor: 'white', width: 100}}
+                            onChangeValue={(value) => (
+                                setCurrInterest(value)
+                            )}
+                        />
+                        <Text > is {'\n'}</Text>
+                        <TextInput
+                            label="write in a favorite"
+                            theme={{colors:{primary:"#000000"}}}
+                            value={specific}
+                            style={{
+                                    width: 30,
+                                    height: 20,
+                                    flex:1,
+                                    marginTop: 30
+                            }}
+                            onChangeText={(text)=>setTempSpecific(text)}
+                        />
 
+                </View>
+                <Button
+                        mode="contained"
+                        style={styles.nextButton}
+                        onPress={() => saveInterest()}>
+                        Add
+                </Button>
                 <View style={styles.interestsWrapper}>
-                    {Object.keys(broadInterests).map((interest) => {
+                    {user.interests.items.map((interest) => {
                         return (
                             <View style={{flex:1, marginLeft: 10}}>
-                            <Text style={styles.category}>{interest}</Text>
+                            <Text style={styles.category}>{interest.categoryName}</Text>
                             <View style={styles.specificWrapper}>
 
                                 {
-                                    specInterests.map((specifics)=>{
+                                    interest.specificNames.map((specifics)=>{
                                         return (
                                         <TouchableHighlight
                                             activeOpacity = {1}
@@ -98,7 +144,7 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                 onPress={() => saveUpdates()}>
                     Continue
                 </Button>
-        </View>
+        </ScrollView>
       );
 }
 
@@ -137,8 +183,14 @@ const styles = StyleSheet.create({
         borderColor: '#FFA34E',
     },
     promptWrapper: {
-        flexDirection: 'column',
+        flex: 1,
+        flexDirection: 'row',
         flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 15,
+        marginLeft: 20,
     },
     interestsWrapper: {
         flex: 1,
@@ -183,7 +235,6 @@ const styles = StyleSheet.create({
     nextButton: {
         width: 150,
         alignSelf: 'center',
-        marginBottom: '25%',
         backgroundColor: '#FFA34E',
     },
 })

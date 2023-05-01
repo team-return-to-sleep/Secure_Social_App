@@ -10,8 +10,28 @@ export const getUser = /* GraphQL */ `
       age
       region
       status
-      interests
-      favoriteInterests
+      interests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      favoriteInterests {
+        items {
+          id
+          userID
+          categoryName
+          specificNames
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       friends
       chatRoomUser {
         items {
@@ -55,8 +75,6 @@ export const getUser = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -83,8 +101,18 @@ export const listUsers = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+            items {
+              id
+              userID
+              categoryName
+              specificNames
+            }
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -120,8 +148,12 @@ export const getChatRoomUser = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -174,8 +206,6 @@ export const listChatRoomUsers = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -259,8 +289,12 @@ export const getMessage = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -314,8 +348,6 @@ export const listMessages = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -345,8 +377,12 @@ export const getGarden = /* GraphQL */ `
         age
         region
         status
-        interests
-        favoriteInterests
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
         friends
         chatRoomUser {
           nextToken
@@ -389,12 +425,41 @@ export const listGardens = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
         }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getInterest = /* GraphQL */ `
+  query GetInterest($id: ID!) {
+    getInterest(id: $id) {
+      id
+      userID
+      categoryName
+      specificNames
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listInterests = /* GraphQL */ `
+  query ListInterests(
+    $filter: ModelInterestFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listInterests(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        categoryName
+        specificNames
         createdAt
         updatedAt
       }
@@ -430,8 +495,6 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -474,8 +537,6 @@ export const chatRoomUsersByUserID = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -520,8 +581,6 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -568,8 +627,6 @@ export const messagesByUser = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -615,8 +672,6 @@ export const messagesByChatRoom = /* GraphQL */ `
           age
           region
           status
-          interests
-          favoriteInterests
           friends
           createdAt
           updatedAt
@@ -626,6 +681,33 @@ export const messagesByChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const interestsByUserID = /* GraphQL */ `
+  query InterestsByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInterestFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    interestsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        categoryName
+        specificNames
+        createdAt
         updatedAt
       }
       nextToken
