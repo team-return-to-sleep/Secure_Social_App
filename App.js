@@ -53,6 +53,7 @@ import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
 import ProfileRoot from './screens/Profile/ProfileRoot'
+import SignUpFlowProfileBasicSetup from './screens/Profile/SignUpFlowProfileBasicSetup'
 
 const Stack = createNativeStackNavigator()
 
@@ -60,7 +61,7 @@ LogBox.ignoreAllLogs() // removes warnings from phone screen
 
 Amplify.configure(config)
 
-const App = () => {
+const App = ({navigation}) => {
  //Auth.signOut();
 
  const [exists, setExists] = useState(false);
@@ -105,48 +106,56 @@ const App = () => {
 
                 return;
             }
-            const newUser = {
-                id: userInfo.attributes.sub,
-                name: userInfo.username,
-                imageUri: "https://placeimg.com/140/140/any",
-                status: "just created my account",
+            else {
+                console.log("NEW USER, INITIATE NEW PROFILE SETUP");
+                const newUser = {
+                    id: userInfo.attributes.sub,
+                    name: userInfo.username,
+                    imageUri: "https://placeimg.com/140/140/any",
+                    status: "just created my account",
+                }
+                await API.graphql(
+                    {
+                        query: createUser,
+                        variables: {input: newUser},
+                        authMode: "API_KEY"
+                    }
+                )
+                await API.graphql(
+                    {
+                        query: createGarden,
+                        variables: {
+                            input: {
+                                userID: newUser.id,
+                                id: newUser.id,
+                                flowerSize: 120,
+                                points: 10
+                            }
+                        },
+                        authMode: "API_KEY"
+                    }
+                )
+                //navigation.navigate("SignUpFlowProfileBasicSetup", {user: newUser})
             }
-            await API.graphql(
-                {
-                    query: createUser,
-                    variables: {input: newUser},
-                    authMode: "API_KEY"
-                }
-            )
-            await API.graphql(
-                {
-                    query: createGarden,
-                    variables: {
-                        input: {
-                            userID: newUser.id,
-                            id: newUser.id,
-                            flowerSize: 120,
-                            points: 10
-                        }
-                    },
-                    authMode: "API_KEY"
-                }
-            )
-            //console.log(userData)
         }
-
     }
 
     fetchUser();
 
  }, []);
     console.log("exists ", exists)
+//    if(!exists) {
+//        navigation.navigate("ProfileRoot", {screen:"SignUpFlowProfileBasicSetup", user: newUser})
+//    }
   return (
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={!exists ? ("Toolbar") : ("ProfileRoot")}>
+            <Stack.Navigator initialRouteName={!exists ? ("SignUpFlowProfileBasicSetup") : ("ProfileRoot")}>
                 <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="SignUpFlowProfileBasicSetup" component={SignUpFlowProfileBasicSetup}
+                    options={{ headerShown: false }}
+                />
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
                 />

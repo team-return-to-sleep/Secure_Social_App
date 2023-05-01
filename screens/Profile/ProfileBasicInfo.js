@@ -114,7 +114,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 />
 
                 <Text style={styles.username}>Age</Text>
-                <TextInput placeholder={user.age ? (user.age.toString()) : ("Add your age")}
+                <TextInput placeholder={user.age ? (user.age.toString()) : ("Enter your age")}
                      numeric value
                      keyboardType={'numeric'}
                      onChangeText={(text) => {
