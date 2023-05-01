@@ -102,6 +102,12 @@ export const listUsers = /* GraphQL */ `
         region
         status
         interests {
+            items {
+              id
+              userID
+              categoryName
+              specificNames
+            }
           nextToken
         }
         favoriteInterests {

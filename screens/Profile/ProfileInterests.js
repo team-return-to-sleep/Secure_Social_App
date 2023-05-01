@@ -3,7 +3,7 @@ import { Appbar, Title,Button,TextInput} from 'react-native-paper';
 import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
 
 import {updateUser, createInterest} from '../../src/graphql/mutations'
-import {getInterest} from '../../src/graphql/queries'
+import {getUser, getInterest} from '../../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from '../Header'
@@ -104,7 +104,7 @@ const ProfileInterests = ({route, navigation}) => {
             authMode: "API_KEY"
         })
         console.log("UPDATED USER: ", testUser)
-        navigation.navigate("ProfileFavorites", {user: user, interests: updatedInterests});
+        navigation.navigate("ProfileFavorites", {user: testUser.data.getUser});
     }
 
     return (

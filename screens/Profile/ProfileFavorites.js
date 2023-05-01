@@ -8,17 +8,19 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Header from '../Header'
 
 const ProfileFavorites = ({route, navigation}) => {
-    const {user, interests} = route.params;
-
+    const {user} = route.params;
+    const interests = user.interests.items
+    console.log("PROFILE FAVORITES interests: ", interests)
     var [ userInterests , setUserInterests ] = React.useState(interests);
 
     var favorites = {}
+    // TODO: can instead create a "favorited" tag in the interest model and toggle that
     interests.forEach(interest => {
-        if (!user.favoriteInterests || !(user.favoriteInterests.includes(interest))) {
-            favorites[interest] = false;
+        if (!user.favoriteInterests.items || !(user.favoriteInterests.items.some(e => e.categoryName === interest.categoryName))) {
+            favorites[interest.categoryName] = false;
         }
         else {
-            favorites[interest] = true;
+            favorites[interest.categoryName] = true;
         }
     });
 
@@ -27,20 +29,21 @@ const ProfileFavorites = ({route, navigation}) => {
     var [ isPress, setIsPress ] = React.useState(false);
 
    const saveUpdates = async() => {
-    var updatedFavoriteInterests = Object.keys(favoriteInterests).filter(interest => favoriteInterests[interest] === true)
-    await API.graphql (
-    {
-        query: updateUser,
-        variables: {
-            input: {
-                id: user.id,
-                favoriteInterests: updatedFavoriteInterests
-            }
-        },
-        authMode: "API_KEY"
-    })
-    //navigation.navigate("ProfileSpecificInterests", {user: user, interests: favoriteInterests});
-    navigation.navigate("Account");
+    //TODO: change to updateInterest and toggle favorited field
+//    var updatedFavoriteInterests = Object.keys(favoriteInterests).filter(interest => favoriteInterests[interest] === true)
+//    await API.graphql (
+//    {
+//        query: updateUser,
+//        variables: {
+//            input: {
+//                id: user.id,
+//                favoriteInterests: updatedFavoriteInterests
+//            }
+//        },
+//        authMode: "API_KEY"
+//    })
+    navigation.navigate("ProfileSpecificInterests", {user: user});
+    //navigation.navigate("Account");
     }
 
     return (
@@ -62,6 +65,7 @@ const ProfileFavorites = ({route, navigation}) => {
                               underlayColor = {'#ffffff'}
                               style = {favoriteInterests[interest] ? styles.selected : styles.interests}
                               onPress={() => {
+                              console.log("INNER LOOP: ", interest)
                                 var temp = {...favoriteInterests}
                                 if(favoriteInterests[interest]) {
                                     temp[interest] = false;
