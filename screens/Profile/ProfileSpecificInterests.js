@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react'
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,ScrollView,Text,SafeAreaView,StyleSheet,TouchableHighlight,Picker} from 'react-native'
+import {View,ScrollView,Text,SafeAreaView,StyleSheet,Pressable,TouchableHighlight,Picker} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import {updateUser, updateInterest} from '../../src/graphql/mutations'
@@ -61,74 +61,63 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                     </Title>
                 </Appbar.Header>
 
-                <Text style={styles.question}> Add your personal flavors! </Text>
+                <Text style={styles.question}> Add some personal flavor... </Text>
                 <View style={styles.promptWrapper}>
-                        <Text style={{flex:1, marginLeft: 10}}> MY favorite in </Text>
-                        <DropDownPicker
-                            placeholder={"Select interest"}
-                            open={open}
-                            value={value}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setValue}
-                            setItems={setItems}
-                            containerStyle={{height: 10}}
-                            style={{
-                                    backgroundColor: 'white',
-                                    marginLeft: 10,
-                                    flex:1,
-                                    height: 30,
-                                    width: 100,
-                                    minHeight: 30,
-                                    paddingHorizontal: 5,
-                                   }}
-                            itemStyle={{
-                                justifyContent: 'flex-start'
-                            }}
-                            dropDownStyle={{backgroundColor: 'white', width: 100}}
-                            onChangeValue={(value) => (
-                                setCurrInterest(value)
-                            )}
-                        />
-                        <Text > is {'\n'}</Text>
+                        <Text style={styles.subtext}> My favorite in </Text>
+                        <View>
+                            <DropDownPicker
+                                placeholder={"--"}
+                                open={open}
+                                value={value}
+                                items={items}
+                                setOpen={setOpen}
+                                setValue={setValue}
+                                setItems={setItems}
+                                style={styles.dropdown}
+                                dropDownStyle={{backgroundColor: 'white', width: 100}}
+                                onChangeValue={(value) => (
+                                    setCurrInterest(value)
+                                )}
+                            />
+                        </View>
+                        <Text style={styles.subtext}> is </Text>
                         <TextInput
-                            label="write in a favorite"
+                            placeholder={'Write in a favorite...'}
                             theme={{colors:{primary:"#000000"}}}
                             value={specific}
-                            style={{
-                                    width: 30,
-                                    height: 20,
-                                    flex:1,
-                                    marginTop: 30
-                            }}
+                            style={styles.inputBox}
                             onChangeText={(text)=>setTempSpecific(text)}
                         />
 
+
+
                 </View>
-                <Button
-                        mode="contained"
-                        style={styles.nextButton}
+                <Pressable mode="contained"
+                        style={styles.addButton}
                         onPress={() => saveInterest()}>
-                        Add
-                </Button>
+                        <Text style={styles.addButtonText}>Add</Text>
+                </Pressable>
                 <View style={styles.interestsWrapper}>
                     {user.interests.items.map((interest) => {
                         return (
                             <View style={{flex:1, marginLeft: 10}}>
-                            <Text style={styles.category}>{interest.categoryName}</Text>
+                            <View style={styles.category}>
+                                <Text style={styles.categoryText}>{interest.categoryName}</Text>
+                            </View>
                             <View style={styles.specificWrapper}>
 
                                 {
                                     interest.specificNames.map((specifics)=>{
                                         return (
-                                        <TouchableHighlight
-                                            activeOpacity = {1}
-                                            underlayColor = {'#FFF7EA'}
-                                            style = {styles.selected}
-
-                                        >
-                                            <Text>{specifics}</Text>
-                                        </TouchableHighlight>
+                                        <View>
+                                            <TouchableHighlight
+                                                activeOpacity = {1}
+                                                underlayColor = {'#FFF7EA'}
+                                                style = {styles.selected}
+                                            >
+                                                <Text>{specifics}</Text>
+                                            </TouchableHighlight>
+                                        </View>
                                         )
                                     })
 
@@ -156,6 +145,42 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'#FFFFFF',
     },
+    dropdown: {
+        backgroundColor: 'white',
+        flex:1,
+        height: 0,
+        marginTop: 10,
+        width: 85,
+        marginBottom: 30,
+        borderColor: '#FFA34E',
+        borderWidth: 1,
+        minHeight: 30,
+        paddingHorizontal: 5,
+    },
+    inputBox: {
+        width: 138,
+        height: 20,
+        marginTop: 30,
+        backgroundColor: 'white',
+        borderColor: '#FFA34E',
+        borderWidth: 1,
+        fontSize:   12,
+    },
+    addButton: {
+        width: 73,
+        height: 23,
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFA34E',
+        marginRight: '10%',
+        borderRadius: 24,
+    },
+    addButtonText: {
+        fontSize: 12,
+        color: "#181818",
+        fontStyle: 'italic'
+    },
     interests: {
         marginTop: 5,
         marginBottom: 5,
@@ -176,53 +201,46 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginLeft: 5,
         marginRight: 5,
-        width: 100,
-        height: 40,
+        width: 90,
+        height: 30,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 24,
         backgroundColor: '#FFF7EA',
-        borderWidth: 3,
+        borderWidth: 1.5,
         borderColor: '#FFA34E',
     },
     promptWrapper: {
-        flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 10,
         marginBottom: 15,
-        marginLeft: 20,
     },
     interestsWrapper: {
         flex: 1,
         flexDirection: 'column',
         flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
         marginTop: 10,
         marginBottom: 15,
         marginLeft: 20,
     },
     specificWrapper: {
-        width: '90%',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'flex-start',
         alignItems: 'center',
         marginTop: 10,
         marginLeft: 10,
         marginBottom: 20,
-        borderBottomColor: 'black',
-        borderBottomWidth: StyleSheet.hairlineWidth,
     },
     question: {
-        paddingTop: 20,
-        paddingBottom: 20,
+        paddingTop: 30,
+        paddingBottom: 10,
         textAlign: 'center',
-        fontSize: 18,
-        color: '#FFA34E',
+        fontSize: 25,
+        color: '#E8683F',
     },
     prompt: {
         fontSize: 14,
@@ -231,14 +249,26 @@ const styles = StyleSheet.create({
     category: {
         paddingTop: 5,
         paddingBottom: 5,
-        textAlign: 'left',
-        fontSize: 18,
-        color: 'black',
+        alignItems: 'flex-start',
+    },
+    categoryText: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#181818'
+    },
+    subtext: {
+        fontSize: 16,
+        marginHorizontal: 3,
     },
     nextButton: {
         width: 150,
         alignSelf: 'center',
         backgroundColor: '#FFA34E',
+        marginBottom: '10%',
+    },
+    label: {
+        fontSize: 13,
+
     },
 })
 

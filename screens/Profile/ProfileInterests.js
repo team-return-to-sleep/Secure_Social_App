@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
+import {View,Text,ScrollView,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
 
 import {updateUser, createInterest} from '../../src/graphql/mutations'
 import {getUser, getInterest} from '../../src/graphql/queries'
@@ -108,7 +108,7 @@ const ProfileInterests = ({route, navigation}) => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
 
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
@@ -143,9 +143,9 @@ const ProfileInterests = ({route, navigation}) => {
                 <Button mode="contained"
                 style={styles.nextButton}
                 onPress={() => saveUpdates()}>
-                    Next: Choose Favorite Interests
+                    Next
                 </Button>
-        </View>
+        </ScrollView>
       );
 }
 
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 24,
         backgroundColor: '#ffffff',
-        borderWidth: 3,
-        borderColor: '#DDEDEA',
+        borderWidth: 1.5,
+        borderColor: '#FFA34E',
         color: 'black',
     },
     selected: {
@@ -179,9 +179,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 24,
-        backgroundColor: '#DDEDEA',
+        backgroundColor: '#FFA34E',
         borderWidth: 3,
-        borderColor: '#DDEDEA',
+        borderColor: '#FFA34E',
     },
     interestsWrapper: {
         flex: 1,
@@ -193,15 +193,17 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     question: {
-        paddingTop: 20,
+        paddingTop: 30,
+        paddingBottom: 10,
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: 25,
+        color: '#E8683F',
     },
     nextButton: {
-        width: 280,
+        width: 150,
         alignSelf: 'center',
-        marginBottom: '25%',
-        backgroundColor: '#BBCAEB',
+        marginTop: '10%',
+        backgroundColor: '#FFA34E',
     },
 })
 
