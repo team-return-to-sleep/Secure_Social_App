@@ -13,7 +13,6 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Header from './Header'
 
 const OtherUserProfile = ({route, navigation}) => {
-
     const [info, setInfo] = useState({
         name:"loading",
         interests:"loading",
@@ -62,6 +61,7 @@ const OtherUserProfile = ({route, navigation}) => {
 
     }
 
+
     return (
         <ScrollView style={styles.container}>
             <Appbar.Header>
@@ -94,30 +94,28 @@ const OtherUserProfile = ({route, navigation}) => {
                             }
                         </View>
 
-
-                        <View style={styles.divider}/>
-                            <View style={styles.interestsWrapper}>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE1</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE2</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE3</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE4</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE5</Text>
+                                    <View style={styles.specifics}>
+                                        <Text style={styles.interestText}>FAVORITE1</Text>
+                                    </View>
+                                    <View style={styles.specifics}>
+                                        <Text style={styles.interestText}>FAVORITE2</Text>
+                                    </View>
+                                    <View style={styles.specifics}>
+                                        <Text style={styles.interestText}>FAVORITE3</Text>
+                                    </View>
+                                    <View style={styles.specifics}>
+                                        <Text style={styles.interestText}>FAVORITE4</Text>
+                                    </View>
+                                    <View style={styles.specifics}>
+                                        <Text style={styles.interestText}>FAVORITE5</Text>
+                                    </View>
                                 </View>
                             </View>
                     </View>
 
                 <Button icon="chat-plus"
                                 mode="contained"
-                                style={styles.accountButton}
+                                style={styles.chatButton}
                                 onPress={() => onClickHandler()}>
                                     Start Chatting!
                 </Button>
@@ -135,10 +133,19 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'#FFFFFF',
     },
+    category: {
+        paddingBottom: 5,
+        alignItems: 'flex-start',
+    },
+    categoryText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#181818'
+    },
     bioContainer: {
         width: '80%',
         height: 125,
-        backgroundColor:'#f4f4f4',
+        backgroundColor:'#FFF7EA',
         marginTop: 20,
         marginLeft: 20,
         marginRight: 20,
@@ -150,17 +157,22 @@ const styles = StyleSheet.create({
     username: {
         margin:15,
         fontSize: 20,
+        fontWeight: 'bold',
+        color: '#181818'
     },
-    interests: {
-        width: 80,
-        height: 17,
-        margin: 5,
+    specifics: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 90,
+        height: 30,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 24,
-        backgroundColor: '#f4f4f4',
-        borderWidth: 2,
-        borderColor: '#DDEDEA',
+        backgroundColor: '#FFF7EA',
+        borderWidth: 1.5,
+        borderColor: '#FFA34E',
     },
     interestText: {
         fontSize: 10,
@@ -171,11 +183,12 @@ const styles = StyleSheet.create({
         width: 300,
         margin: 20,
     },
-    accountButton: {
+    chatButton: {
         margin: 10,
         width: 200,
         height: 40,
-        backgroundColor: '#BBCAEB',
+        marginTop: '5%',
+        backgroundColor: '#FFA34E',
         justifyContent: 'center',
     },
     contentWrapper: {
@@ -186,7 +199,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         margin: 10,
     },
-    interestsWrapper: {
+    specificsWrapper: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
