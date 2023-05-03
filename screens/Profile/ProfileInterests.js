@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
 import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native'
 
-import {updateUser, createInterest} from '../../src/graphql/mutations'
+import {updateUser, createInterest, deleteInterest} from '../../src/graphql/mutations'
 import {getUser, getInterest} from '../../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
@@ -45,9 +45,27 @@ const ProfileInterests = ({route, navigation}) => {
 
     const saveUpdates = async() => {
         var interestNames = Object.keys(userInterests).filter(interest => userInterests[interest] === true)
-        // TODO: for every interest create a model, store in interest array to pass to updatedInterests
-        var updatedInterests = []
+        //var updatedInterests = []
         var oldInterests = user.interests.items
+
+        // check if any interests were removed
+        if (oldInterests) {
+            for (var oldInterest of oldInterests) {
+                if (userInterests[oldInterest.categoryName] === false) {
+                    const deleted = await API.graphql (
+                        {
+                            query: deleteInterest,
+                            variables: {
+                                input: {id: oldInterest.id}
+                            },
+                            authMode: "API_KEY"
+                        }
+                    )
+                    console.log("DELETED INTEREST: ", deleted)
+                }
+            }
+        }
+        // create new interest model for user if it doesn't yet exist
         for (var name of interestNames) {
             const interestData = {
                 id: name.concat(user.id),
@@ -55,19 +73,9 @@ const ProfileInterests = ({route, navigation}) => {
                 categoryName: name,
                 specificNames: []
             }
-            var fetchInterest;
-            if (oldInterests) {
-                fetchInterest = oldInterests.find(e => e.categoryName === name)
-            }
-//            await API.graphql (
-//                {
-//                    query: getInterest,
-//                    variables: {id: interestData.id},
-//                    authMode: "API_KEY"
-//                }
-//            )
-            if (!fetchInterest) {
-                fetchInterest = await API.graphql (
+
+            if (!oldInterests || !oldInterests.some(e => e.categoryName === name)) {
+                await API.graphql (
                     {
                         query: createInterest,
                         variables: {
@@ -76,13 +84,7 @@ const ProfileInterests = ({route, navigation}) => {
                         authMode: "API_KEY"
                     }
                 )
-                console.log("PROFILE INTERESTS: ", fetchInterest)
-                updatedInterests.push(fetchInterest)
-            } else {
-                console.log("PROFILE INTERESTS: ", fetchInterest)
-                updatedInterests.push(fetchInterest)
             }
-
         }
 //        await API.graphql (
 //        {

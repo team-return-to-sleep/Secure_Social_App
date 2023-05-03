@@ -21,7 +21,7 @@ const OtherUserProfile = ({route, navigation}) => {
     })
 
     const {user} = route.params;
-    //console.log("user: ", user)
+    //console.log("OTHER USER: ", user)
 
     const onClickHandler = async () => {
         const userInfo = await Auth.currentAuthenticatedUser();
@@ -84,21 +84,14 @@ const OtherUserProfile = ({route, navigation}) => {
                     <View style={styles.contentWrapper}>
                         <View style={styles.divider}/>
                         <View style={styles.interestsWrapper}>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST1</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST2</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST3</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST4</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST5</Text>
-                            </View>
+                            {user.interests.items.map((interest) => {
+                                return (
+                                    <View style={styles.interests}>
+                                        <Text style={styles.interestText}>{interest.categoryName}</Text>
+                                    </View>
+                                )
+                                })
+                            }
                         </View>
 
 

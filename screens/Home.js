@@ -79,8 +79,8 @@ const Home = ({navigation}) => {
                     //console.log("DEBUG SELF: ", selfData.data.getUser.interests.items)
                     const selfInterests = selfData.data.getUser.interests.items
                     const selfRegion = selfData.data.getUser.region
-                    console.log("MYREGIONIS")
-                    console.log(selfRegion)
+//                    console.log("MYREGIONIS")
+//                    console.log(selfRegion)
                     if(!selfRegion) {
                         navigation.navigate("SignUpFlowProfileBasicSetup", {user: selfData.data.getUser})
                     }
