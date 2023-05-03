@@ -86,28 +86,23 @@ const OtherUserProfile = ({route, navigation}) => {
                         <View style={styles.interestsWrapper}>
                             {user.interests.items.map((interest) => {
                                 return (
-                                    <View style={styles.interests}>
-                                        <Text style={styles.interestText}>{interest.categoryName}</Text>
+                                    <>
+                                    <View style={styles.category}>
+                                        <Text style={styles.categoryText}>{interest.categoryName}</Text>
                                     </View>
+                                    <View style={styles.specificsWrapper}>
+                                        {interest.specificNames.map((spec) => {
+                                            return (
+                                                <View style={styles.specifics}>
+                                                    <Text style={styles.interestText}>{spec}</Text>
+                                                </View>
+                                            )})
+                                        }
+                                    </View>
+                                    </>
                                 )
                                 })
                             }
-
-                                    <View style={styles.specifics}>
-                                        <Text style={styles.interestText}>FAVORITE1</Text>
-                                    </View>
-                                    <View style={styles.specifics}>
-                                        <Text style={styles.interestText}>FAVORITE2</Text>
-                                    </View>
-                                    <View style={styles.specifics}>
-                                        <Text style={styles.interestText}>FAVORITE3</Text>
-                                    </View>
-                                    <View style={styles.specifics}>
-                                        <Text style={styles.interestText}>FAVORITE4</Text>
-                                    </View>
-                                    <View style={styles.specifics}>
-                                        <Text style={styles.interestText}>FAVORITE5</Text>
-                                    </View>
                         </View>
                     </View>
 
