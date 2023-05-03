@@ -92,7 +92,6 @@ const OtherUserProfile = ({route, navigation}) => {
                                 )
                                 })
                             }
-                        </View>
 
                                     <View style={styles.specifics}>
                                         <Text style={styles.interestText}>FAVORITE1</Text>
@@ -109,8 +108,7 @@ const OtherUserProfile = ({route, navigation}) => {
                                     <View style={styles.specifics}>
                                         <Text style={styles.interestText}>FAVORITE5</Text>
                                     </View>
-                                </View>
-                            </View>
+                        </View>
                     </View>
 
                 <Button icon="chat-plus"
