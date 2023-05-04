@@ -39,7 +39,6 @@ const { Jwt, JwtGenerator} = require('virgil-sdk');
     // console.log('Generated Virgil JWT:', virgilJwt);
     res.json({ virgil_jwt: virgilJwt });
   });
-
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);

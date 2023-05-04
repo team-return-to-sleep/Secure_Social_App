@@ -12,7 +12,8 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 
 import { Storage } from 'aws-amplify';
 import { v4 as uuidv4 } from 'uuid';
-
+import DeviceInfo from 'react-native-device-info';
+import { DEVELOPMENT_MACHINE_IP } from '@env';
 
 import { Activities } from '../../assets/Activities';
 import {
@@ -28,29 +29,32 @@ import Toolbar from '../Toolbar'
 import { Platform } from 'react-native';
 
 import { EThree } from '@virgilsecurity/e3kit-native';
-import NetInfo from '@react-native-community/netinfo';
 
-const getDevelopmentMachineIpAddress = async () => {
-  const networkInfo = await NetInfo.fetch();
-  return networkInfo.details.address;
-};
 
 const getApiUrl = async () => {
-  const ipAddress = await getDevelopmentMachineIpAddress();
-  console.log("IP address", ipAddress);
+  // NOTE : DEVELOPMENT_MACHINE_IP IS DEPENDENT ON MACHINE AND NETWORK
+  // FOR WINDOWS TERMINAL, type ipconfig and locate the IPv4 Address under Wireless LAN adapter Wi-Fi
+  // Create an .env file in root, and type DEVELOPMENT_MACHINE_IP= [your ipv4 address];
+  console.log("IP address", DEVELOPMENT_MACHINE_IP);
 
-  if (Platform.OS === 'android' && !Platform.isPad && !Platform.isTV && !Platform.isTVOS) {
-    return Platform.Version >= 25 ? 'http://10.0.2.2:3000' : `http://${ipAddress}:3000`;
-  } else {
-    return `http://${ipAddress}:3000`;
-  }
+  const isEmulator = await DeviceInfo.isEmulator();
+
+    if (Platform.OS === 'android' && !Platform.isPad && !Platform.isTV && !Platform.isTVOS) {
+      if (isEmulator) {
+        return 'http://10.0.2.2:3000';
+      } else {
+        return `http://${DEVELOPMENT_MACHINE_IP}:3000`;
+      }
+    } else {
+      return `http://${DEVELOPMENT_MACHINE_IP}:3000`;
+    }
 };
 
 
 const getTokenFactory = (identity) => {
   return async () => {
     const apiUrl = await getApiUrl();
-    // const apiUrl = 'http://10.0.2.2:3000'; // Works with android emulators.
+    console.log("apiUrl", apiUrl);
     const response = await fetch(`${apiUrl}/virgil-jwt`, {
       method: 'POST',
       headers: {
