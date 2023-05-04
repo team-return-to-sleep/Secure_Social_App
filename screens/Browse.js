@@ -26,6 +26,7 @@ const Browse = ({navigation}) => {
     const [open2, setOpen2] = useState(false);
     const [value2, setValue2] = useState(null);
     const [items2, setItems2] = useState([
+                        {label: 'Any Age', value: 0},
                         {label: '18 to 24', value: 1},
                         {label: '25 to 34', value: 2},
                         {label: '35 to 44', value: 3},
@@ -37,6 +38,7 @@ const Browse = ({navigation}) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
+                        {label: 'Any Region', value: 'Any Region'},
                         {label: 'West', value: 'West'},
                         {label: 'Southwest', value: 'Southwest'},
                         {label: 'Midwest', value: 'Midwest'},
@@ -125,7 +127,17 @@ const Browse = ({navigation}) => {
 
     const filterByAge = async (value) => {
         console.log(value)
-        if (value == 1) {
+        if (value == 0) {
+            const ageUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(value)
+            console.log(ageUsersData.data.listUsers.items)
+        }
+        else if (value == 1) {
             const ageUsersData = await API.graphql(
                 {
                     query: listUsers,
@@ -189,6 +201,17 @@ const Browse = ({navigation}) => {
     }
 
     const filterByRegion = async (value) => {
+        if (value == "Any Region") {
+            const regionalUsersData = await API.graphql(
+                {
+                    query: listUsers,
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(value)
+            console.log(regionalUsersData.data.listUsers.items)
+        }
+        else {
             const regionalUsersData = await API.graphql(
                 {
                     query: listUsers,
@@ -198,6 +221,7 @@ const Browse = ({navigation}) => {
             )
             console.log(value)
             console.log(regionalUsersData.data.listUsers.items)
+        }
     }
 
     const filterByInterests = async (items) => {
