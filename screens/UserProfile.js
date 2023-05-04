@@ -38,42 +38,26 @@ const UserProfile = ({route, navigation}) => {
                     <View style={styles.contentWrapper}>
                         <View style={styles.divider}/>
                         <View style={styles.interestsWrapper}>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST1</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST2</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST3</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST4</Text>
-                            </View>
-                            <View style={styles.interests}>
-                                <Text style={styles.interestText}>INTEREST5</Text>
-                            </View>
+                            {user.interests.items.map((interest) => {
+                                return (
+                                    <>
+                                    <View style={styles.category}>
+                                        <Text style={styles.categoryText}>{interest.categoryName}</Text>
+                                    </View>
+                                    <View style={styles.specificsWrapper}>
+                                        {interest.specificNames.map((spec) => {
+                                            return (
+                                                <View style={styles.specifics}>
+                                                    <Text style={styles.interestText}>{spec}</Text>
+                                                </View>
+                                            )})
+                                        }
+                                    </View>
+                                    </>
+                                )
+                                })
+                            }
                         </View>
-
-
-                        <View style={styles.divider}/>
-                            <View style={styles.interestsWrapper}>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE1</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE2</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE3</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE4</Text>
-                                </View>
-                                <View style={styles.interests}>
-                                    <Text style={styles.interestText}>FAVORITE5</Text>
-                                </View>
-                            </View>
                     </View>
                 </View>
                 <View style={{marginBottom:26}}>
@@ -87,6 +71,15 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:'#FFFFFF',
+    },
+    category: {
+        paddingBottom: 5,
+        alignItems: 'flex-start',
+    },
+    categoryText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#181818'
     },
     bioContainer: {
         width: '80%',
@@ -104,6 +97,23 @@ const styles = StyleSheet.create({
         margin:15,
         fontSize: 20,
     },
+    specifics: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 5,
+        marginRight: 5,
+        width: 90,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 24,
+        backgroundColor: '#FFF7EA',
+        borderWidth: 1.5,
+        borderColor: '#FFA34E',
+    },
+    interestText: {
+        fontSize: 10,
+    },
     interests: {
         width: 80,
         height: 17,
@@ -114,9 +124,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f4f4f4',
         borderWidth: 2,
         borderColor: '#DDEDEA',
-    },
-    interestText: {
-        fontSize: 10,
     },
     divider: {
         borderBottomColor: 'black',
@@ -136,10 +143,10 @@ const styles = StyleSheet.create({
         width: '80%',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         margin: 10,
     },
-    interestsWrapper: {
+    specificsWrapper: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
