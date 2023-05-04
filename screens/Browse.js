@@ -114,6 +114,7 @@ const Browse = ({navigation}) => {
             if (results.length < 1) {
                 Alert.alert("Sorry, cannot find user " + name)
             } else {
+                console.log(results)
                 setCurr(results)
                 currUsers = results
                 console.log("set?")
@@ -126,102 +127,96 @@ const Browse = ({navigation}) => {
     }
 
     const filterByAge = async (value) => {
-        console.log(value)
+        var ageUsersData;
         if (value == 0) {
-            const ageUsersData = await API.graphql(
+            ageUsersData = await API.graphql(
                 {
                     query: listUsers,
                     authMode: "API_KEY"
                 }
             )
-            console.log(value)
-            console.log(ageUsersData.data.listUsers.items)
         }
         else if (value == 1) {
-            const ageUsersData = await API.graphql(
+            ageUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {age: {ge: 18, le: 24}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(value)
-            console.log(ageUsersData.data.listUsers.items)
         }
         else if (value == 2) {
-            const ageUsersData = await API.graphql(
+            ageUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {age: {ge: 25, le: 34}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(ageUsersData.data.listUsers.items)
         }
         else if (value == 3) {
-            const ageUsersData = await API.graphql(
+            ageUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {age: {ge: 35, le: 44}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(ageUsersData.data.listUsers.items)
         }
         else if (value == 4) {
-            const ageUsersData = await API.graphql(
+            ageUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {age: {ge: 45, le: 54}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(ageUsersData.data.listUsers.items)
         }
         else if (value == 5) {
-            const ageUsersData = await API.graphql(
+            ageUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {age: {ge: 55, le: 64}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(ageUsersData.data.listUsers.items)
         }
         else if (value == 6) {
-            const ageUsersData = await API.graphql(
+            ageUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {age: {ge: 65}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(ageUsersData.data.listUsers.items)
         }
+        console.log("updating currUsers by age filter")
+        console.log(ageUsersData.data.listUsers.items)
+        setCurr(ageUsersData.data.listUsers.items)
     }
 
     const filterByRegion = async (value) => {
+        var regionalUsersData;
         if (value == "Any Region") {
-            const regionalUsersData = await API.graphql(
+            regionalUsersData = await API.graphql(
                 {
                     query: listUsers,
                     authMode: "API_KEY"
                 }
             )
-            console.log(value)
-            console.log(regionalUsersData.data.listUsers.items)
         }
         else {
-            const regionalUsersData = await API.graphql(
+            regionalUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {region: {eq: value}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(value)
-            console.log(regionalUsersData.data.listUsers.items)
         }
+        console.log("updating currUsers by region filter")
+        console.log(regionalUsersData.data.listUsers.items)
+        setCurr(regionalUsersData.data.listUsers.items)
     }
 
     const filterByInterests = async (items) => {
