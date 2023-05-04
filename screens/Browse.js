@@ -21,18 +21,25 @@ const Browse = ({navigation}) => {
     const [users, setUsers] = useState([])
     const [searchedUsers, setSearched] = useState([])
     const [currUsers, setCurr] = useState([])
-    const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
+
+//    const [usernameFilteredUsers, setUsernameFilteredUsers] = useState([])
+//    const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
+//    const [regionFilteredUsers, setRegionFilteredUsers] = useState([])
+
+    var usernameFilteredUsers = []
+    var ageFilteredUsers = []
+    var regionFilteredUsers = []
 
     const [open2, setOpen2] = useState(false);
     const [value2, setValue2] = useState(null);
     const [items2, setItems2] = useState([
-                        {label: 'Any Age', value: 0},
-                        {label: '18 to 24', value: 1},
-                        {label: '25 to 34', value: 2},
-                        {label: '35 to 44', value: 3},
-                        {label: '45 to 54', value: 4},
-                        {label: '55 to 64', value: 5},
-                        {label: '65 or over', value: 6},
+                        {label: 'Any Age', value: [0,150]},
+                        {label: '18 to 24', value: [18,24]},
+                        {label: '25 to 34', value: [25,34]},
+                        {label: '35 to 44', value: [35,44]},
+                        {label: '45 to 54', value: [45,54]},
+                        {label: '55 to 64', value: [55,64]},
+                        {label: '65 or over', value: [65.150]},
     ]);
 
     const [open, setOpen] = useState(false);
@@ -88,9 +95,11 @@ const Browse = ({navigation}) => {
                     authMode: "API_KEY"
                 }
             )
-            setUsers(usersData.data.listUsers.items)
+            setUsers(usersData)
             setCurr(usersData.data.listUsers.items)
-            setAgeFilteredUsers(usersData.data.listUsers.items)
+            usernameFilteredUsers = usersData.data.listUsers.items
+            ageFilteredUsers = usersData.data.listUsers.items
+            regionFilteredUsers = usersData.data.listUsers.items
         }
         fetchUsers();
     }, []);
@@ -100,110 +109,49 @@ const Browse = ({navigation}) => {
     }, [currUsers]);
 
     const onClickHandler = async () => {
-        if (name != '') {
-            let results = []
-            for (let i=0; i<users.length; i++) {
-                if (users[i].name == name || users[i].name.includes(name)) {
-                    // TODO: change to add names which are superstrings of search
-                    results.push(users[i])
-                }
+        //let results = users;
+        var usernameFilteredUsersData = await API.graphql(
+            {
+                query: listUsers,
+                variables: {filter: {name: {beginsWith: name}}},
+                authMode: "API_KEY"
             }
-//            setSearched(users)
-//            setUsers(results)
-//            setHasSearched(true)
-            if (results.length < 1) {
-                Alert.alert("Sorry, cannot find user " + name)
-            } else {
-                console.log(results)
-                setCurr(results)
-                currUsers = results
-                console.log("set?")
-            }
-            //console.log("results: ", results)
-        }
-        //setUsers(searchedUsers)
-        setCurr(users)
-        //setHasSearched(false)
+        )
+        usernameFilteredUsers = usernameFilteredUsersData.data.listUsers.items
+        console.log("AGE")
+        console.log(ageFilteredUsers)
+//        console.log("REGION")
+//        console.log(regionFilteredUsers)
+
+//        console.log("HEY1!")
+        var temp1 = usernameFilteredUsers.filter(value => ageFilteredUsers.includes(value))
+        console.log(temp1)
+
+//        var temp1 = ageFilteredUsers.filter(value => regionFilteredUsers.includes(value))
+//        console.log(temp1)
+//        console.log("HEY2!")
+//        var temp2 = temp1.filter(value => regionFilteredUsers.includes(value))
+//        console.log(temp2)
+         setCurr(temp1)
+        //setCurr(users)
     }
 
     const filterByAge = async (value) => {
-        var ageUsersData;
-        if (value == 0) {
-            ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    authMode: "API_KEY"
-                }
-            )
+        const ageUsersData = await API.graphql(
+        {
+            query: listUsers,
+            variables: {filter: {age: {ge: value[0], le: value[1]}}},
+            authMode: "API_KEY"
         }
-        else if (value == 1) {
-            ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 18, le: 24}}},
-                    authMode: "API_KEY"
-                }
-            )
-        }
-        else if (value == 2) {
-            ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 25, le: 34}}},
-                    authMode: "API_KEY"
-                }
-            )
-        }
-        else if (value == 3) {
-            ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 35, le: 44}}},
-                    authMode: "API_KEY"
-                }
-            )
-        }
-        else if (value == 4) {
-            ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 45, le: 54}}},
-                    authMode: "API_KEY"
-                }
-            )
-        }
-        else if (value == 5) {
-            ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 55, le: 64}}},
-                    authMode: "API_KEY"
-                }
-            )
-        }
-        else if (value == 6) {
-            ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 65}}},
-                    authMode: "API_KEY"
-                }
-            )
-        }
-        console.log("updating currUsers by age filter")
-        console.log(ageUsersData.data.listUsers.items)
-        setCurr(ageUsersData.data.listUsers.items)
+        )
+        ageFilteredUsers = ageUsersData.data.listUsers.items
     }
 
     const filterByRegion = async (value) => {
         var regionalUsersData;
         if (value == "Any Region") {
-            regionalUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    authMode: "API_KEY"
-                }
-            )
+            console.log(users)
+            regionalUsersData = users;
         }
         else {
             regionalUsersData = await API.graphql(
@@ -214,9 +162,9 @@ const Browse = ({navigation}) => {
                 }
             )
         }
-        console.log("updating currUsers by region filter")
+        console.log("REIOdafds")
         console.log(regionalUsersData.data.listUsers.items)
-        setCurr(regionalUsersData.data.listUsers.items)
+        regionFilteredUsers = regionalUsersData.data.listUsers.items
     }
 
     const filterByInterests = async (items) => {
@@ -246,6 +194,7 @@ const Browse = ({navigation}) => {
                 <Text style={styles.username}>Filter by Age</Text>
                 <DropDownPicker
                     placeholder="Age"
+                    defaultValue={[0,150]}
                     open={open2}
                     value={value2}
                     items={items2}
@@ -264,6 +213,7 @@ const Browse = ({navigation}) => {
                 <Text style={styles.username}>Filter by Region</Text>
                 <DropDownPicker
                     placeholder="Region"
+                    defaultValue="Any Region"
                     open={open}
                     value={value}
                     items={items}
@@ -337,7 +287,7 @@ const Browse = ({navigation}) => {
                     style={{margin:20, backgroundColor: '#BBCAEB'}}
                     onPress={() => onClickHandler()
                 }>
-                    Search for Username
+                    Search for User
                 </Button>
 
                 <ScrollView style={styles.container}>
