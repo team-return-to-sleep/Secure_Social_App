@@ -5,6 +5,7 @@ import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native
 const Pictures = {
     // TODO: Put better pictures
     pfps: {
+        newuser: 'https://cdn.dribbble.com/users/2126214/screenshots/5134447/media/35ae40e3c73721e4a5cca4d3fca93839.gif',
         music: 'https://media.istockphoto.com/id/173696178/photo/musical-notebook.jpg?s=170667a&w=0&k=20&c=Yd5FNeI9h7wckh_t0VdR0HIzuK_lmSoDbkhFHBjZf8Q=',
         art: 'https://t4.ftcdn.net/jpg/00/62/65/29/360_F_62652907_dZgAPIdcVKu8DPCeUPvLRCb9JdHrnpVG.jpg',
         games: 'https://media.istockphoto.com/id/1160866353/photo/crop-hands-with-controller.jpg?s=612x612&w=0&k=20&c=ncOO3s1WfyGNM9dko0GHcqTvjl4sz8dl94o-_C4nir0=',

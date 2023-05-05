@@ -106,17 +106,19 @@ const ProfileBasicInfo = ({route, navigation}) => {
                     </Title>
                 </Appbar.Header>
 
-                <Text style={styles.username}>Name</Text>
+                <Text style={styles.label}>Name</Text>
                 <TextInput placeholder={user.name}
+                    style={styles.inputBox}
                      onChangeText={(text) =>
                         setName(text)
                      }
                 />
 
-                <Text style={styles.username}>Age</Text>
+                <Text style={styles.label}>Age</Text>
                 <TextInput placeholder={user.age ? (user.age.toString()) : ("Enter your age")}
                      numeric value
                      keyboardType={'numeric'}
+                     style={styles.inputBox}
                      onChangeText={(text) => {
                          if (!isNaN(+(text)) && +((text) > -1)) {
                             setAge(+(text))
@@ -126,7 +128,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                      }}
                 />
 
-                <Text style={styles.username}>Region</Text>
+                <Text style={styles.label}>Region</Text>
                 <DropDownPicker
                     placeholder={user.region ? (user.region) : ("Select your region")}
                     open={open}
@@ -136,16 +138,16 @@ const ProfileBasicInfo = ({route, navigation}) => {
                     setValue={setValue}
                     setItems={setItems}
                     containerStyle={{height: 40}}
-                    style={{backgroundColor: '#fafafa'}}
                     itemStyle={{
                         justifyContent: 'flex-start'
                     }}
-                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    style={styles.dropdown}
                     onChangeValue={(value) => setRegion(value)}
                 />
 
-                <Text style={styles.username}>Status</Text>
+                <Text style={styles.label}>Status</Text>
                 <TextInput placeholder={user.status}
+                    style={styles.inputBox}
                      onChangeText={(text) =>
                         setStatus(text)
                      }
@@ -171,10 +173,32 @@ const styles = StyleSheet.create({
         color: '#89A8D6',
         fontStyle: 'italic',
     },
-    username: {
-            margin:15,
-            fontSize: 20,
-            fontWeight: 'bold',
+    inputBox: {
+        backgroundColor: '#FFF7EA',
+        borderColor: '#FFA34E',
+        borderWidth: 1.5,
+        fontSize:   15,
+        borderRadius: 5,
+        width: '90%',
+        alignSelf: 'center',
+    },
+    dropdown: {
+        backgroundColor: '#FFF7EA',
+        flex:1,
+        alignSelf: 'center',
+        height: 60,
+        width: '90%',
+        borderColor: '#FFA34E',
+        borderWidth: 1.5,
+        paddingHorizontal: 5,
+    },
+    label: {
+        marginTop:25,
+        marginBottom: 10,
+        marginLeft: 30,
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#E8683F'
     },
     question: {
         paddingTop: 20,
@@ -185,8 +209,8 @@ const styles = StyleSheet.create({
         width: 150,
         alignSelf: 'center',
         marginBottom: '50%',
-        marginTop: 20,
-        backgroundColor: '#BBCAEB',
+        marginTop: 50,
+        backgroundColor: '#FFA34E',
     },
 })
 

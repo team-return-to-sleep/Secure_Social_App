@@ -17,7 +17,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
 import UserProfile from './UserProfile'
 import Browse from './Account'
-import SignUpFlowProfileBasicSetup from './Profile/SignUpFlowProfileBasicSetup'
+import ProfileAge from './Profile/ProfileAge'
+import ProfileRegion from './Profile/ProfileRegion'
 
 const Home = ({navigation}) => {
     const [user, setUser] = useState([])
@@ -79,10 +80,14 @@ const Home = ({navigation}) => {
                     //console.log("DEBUG SELF: ", selfData.data.getUser.interests.items)
                     const selfInterests = selfData.data.getUser.interests.items
                     const selfRegion = selfData.data.getUser.region
+                    const selfAge = selfData.data.getUser.age
 //                    console.log("MYREGIONIS")
 //                    console.log(selfRegion)
+                    if(!selfAge) {
+                        navigation.navigate("ProfileAge", {user: selfData.data.getUser})
+                    }
                     if(!selfRegion) {
-                        navigation.navigate("SignUpFlowProfileBasicSetup", {user: selfData.data.getUser})
+                        navigation.navigate("ProfileAge", {user: selfData.data.getUser})
                     }
 
                     const usersData = await API.graphql(
