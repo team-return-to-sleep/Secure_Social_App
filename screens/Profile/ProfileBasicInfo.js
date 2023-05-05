@@ -118,10 +118,10 @@ const ProfileBasicInfo = ({route, navigation}) => {
                      numeric value
                      keyboardType={'numeric'}
                      onChangeText={(text) => {
-                         if (!isNaN(+(text)) && +((text) > -1)) {
+                         if (!isNaN(+(text)) && +((text) >= 18) && +((text) <= 150)) {
                             setAge(+(text))
                          } else {
-                            alert("Age must be a positive integer")
+                            alert("Invalid age; must be 18 or older")
                          }
                      }}
                 />

@@ -152,7 +152,6 @@ const Browse = ({navigation}) => {
         }
         )
         ageFilteredUsers = ageUsersData.data.listUsers.items
-        console.log(regionFilteredUsers)
     }
 
     const filterByRegion = async (value) => {
@@ -171,7 +170,6 @@ const Browse = ({navigation}) => {
             )
         }
         regionFilteredUsers = regionalUsersData.data.listUsers.items
-        console.log(ageFilteredUsers)
     }
 
     const filterByInterests = async (items) => {
