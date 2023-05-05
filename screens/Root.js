@@ -9,6 +9,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Home from './Home'
 import UserProfile from './UserProfile'
 import OtherUserProfile from './OtherUserProfile'
+import SignUpFlowProfileBasicSetup from './Profile/SignUpFlowProfileBasicSetup'
+import SignUpFlowProfileSpecificInterests from './Profile/SignUpFlowProfileSpecificInterests'
 
 const Stack = createNativeStackNavigator()
 
@@ -22,6 +24,12 @@ const Root = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="SignUpFlowProfileBasicSetup" component={SignUpFlowProfileBasicSetup}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="SignUpFlowProfileSpecificInterests" component={SignUpFlowProfileSpecificInterests}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

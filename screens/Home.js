@@ -78,16 +78,18 @@ const Home = ({navigation}) => {
                     )
 
                     //console.log("DEBUG SELF: ", selfData.data.getUser.interests.items)
-                    const selfInterests = selfData.data.getUser.interests.items
-                    const selfRegion = selfData.data.getUser.region
+
+
+                    const selfName = selfData.data.getUser.name
                     const selfAge = selfData.data.getUser.age
-//                    console.log("MYREGIONIS")
-//                    console.log(selfRegion)
-                    if(!selfAge) {
-                        navigation.navigate("ProfileAge", {user: selfData.data.getUser})
-                    }
-                    if(!selfRegion) {
-                        navigation.navigate("ProfileAge", {user: selfData.data.getUser})
+                    const selfRegion = selfData.data.getUser.region
+                    const selfInterests = selfData.data.getUser.interests.items
+                    console.log(selfName)
+                    console.log(selfAge)
+                    console.log(selfRegion)
+                    console.log(selfInterests)
+                    if(!selfName || !selfAge || !selfRegion || !selfInterests) {
+                        navigation.navigate("SignUpFlowProfileBasicSetup", {user: selfData.data.getUser})
                     }
 
                     const usersData = await API.graphql(
