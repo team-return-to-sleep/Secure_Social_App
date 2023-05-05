@@ -118,22 +118,29 @@ const Browse = ({navigation}) => {
             }
         )
         usernameFilteredUsers = usernameFilteredUsersData.data.listUsers.items
+        console.log("USERNAME")
+        console.log(usernameFilteredUsers)
         console.log("AGE")
         console.log(ageFilteredUsers)
-//        console.log("REGION")
-//        console.log(regionFilteredUsers)
+        console.log("REGION")
+        console.log(regionFilteredUsers)
 
-//        console.log("HEY1!")
-        var temp1 = usernameFilteredUsers.filter(value => ageFilteredUsers.includes(value))
-        console.log(temp1)
-
-//        var temp1 = ageFilteredUsers.filter(value => regionFilteredUsers.includes(value))
-//        console.log(temp1)
-//        console.log("HEY2!")
-//        var temp2 = temp1.filter(value => regionFilteredUsers.includes(value))
-//        console.log(temp2)
-         setCurr(temp1)
-        //setCurr(users)
+        var matches = []
+        usernameFilteredUsers.forEach(u1 => {
+            ageFilteredUsers.forEach(u2 => {
+                if (u1.id == u2.id) {
+                    matches.push(u1)
+//                    regionFilteredUsers.forEach(u3 => {
+//                        if (u2.id == u3.id) {
+//                            console.log("HEY2")
+//                            matches.push(u1)
+//                        }
+//                    })
+                }
+            })
+        });
+        console.log(matches)
+        setCurr(matches)
     }
 
     const filterByAge = async (value) => {
@@ -145,6 +152,7 @@ const Browse = ({navigation}) => {
         }
         )
         ageFilteredUsers = ageUsersData.data.listUsers.items
+        console.log(regionFilteredUsers)
     }
 
     const filterByRegion = async (value) => {
@@ -162,9 +170,8 @@ const Browse = ({navigation}) => {
                 }
             )
         }
-        console.log("REIOdafds")
-        console.log(regionalUsersData.data.listUsers.items)
         regionFilteredUsers = regionalUsersData.data.listUsers.items
+        console.log(ageFilteredUsers)
     }
 
     const filterByInterests = async (items) => {
