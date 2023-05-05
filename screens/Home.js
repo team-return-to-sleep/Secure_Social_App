@@ -99,7 +99,7 @@ const Home = ({navigation}) => {
                         }
                     )
 
-                    const allUsers = usersData.data.listUsers.items;
+                    var allUsers = usersData.data.listUsers.items;
                     //console.log("DEBUG ALL: ", allUsers)
 
                     let compareInterests = (a1, a2) =>
@@ -114,10 +114,12 @@ const Home = ({navigation}) => {
                         } else if (!a.interests.items && !b.interests.items) {
                             return 0
                         }
-                        return (compareInterests(b.interests.items, selfInterests) +
-                                ((b.region && selfRegion && b.region === selfRegion)?1:0)) -
-                               (compareInterests(a.interests.items, selfInterests) +
-                                ((a.region && selfRegion && a.region === selfRegion))?1:0)
+
+                        let bBonus =  (b.region && selfRegion && b.region === selfRegion)?1:0
+                        let aBonus = (a.region && selfRegion && a.region === selfRegion)?1:0
+                        return ((compareInterests(b.interests.items, selfInterests) + bBonus) -
+                               (compareInterests(a.interests.items, selfInterests) + aBonus))
+                                
                     })
                     setUsers(allUsers)
                     // for verification purposes
