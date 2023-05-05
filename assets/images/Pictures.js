@@ -18,7 +18,7 @@ const Pictures = {
         education: 'https://www.ppic.org/wp-content/uploads/graduates-2.jpg',
         health: 'https://www.healthpolicypartnership.com/app/uploads/2021/03/what_is_health.jpg',
         home: 'https://www.gardeningknowhow.com/wp-content/uploads/2019/10/seedling-400x267.jpg',
-        comedy: 'https://amtshows.com/wp-content/uploads/2014/05/stand-up-comedy-neon-sign.jpg',
+        comedy: 'https://media.istockphoto.com/id/1186127120/photo/mic-on-a-stage-ready-for-the-singer-or-speaker.jpg?s=612x612&w=0&k=20&c=RIS1l7XtqtZvXwKp1YXGv9-agFcgC9BHbSe6mcHZ1Hw=',
         food: 'https://www.cnet.com/a/img/resize/989e8e3be4eb8baae522f982b7cc1f6a3f4c0f6d/hub/2022/12/14/8af299d7-0c8f-493f-9771-c5b4738cb690/gettyimages-1306753442.jpg?auto=webp&fit=crop&height=675&width=1200',
         travel: 'https://images.unsplash.com/photo-1568323993144-20d546ba585d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80',
         DIY: 'https://i.pinimg.com/736x/76/3d/06/763d0646bae3c13a1a93c3aadb4b52f3.jpg',

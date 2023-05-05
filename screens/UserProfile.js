@@ -98,8 +98,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     specifics: {
-        marginTop: 5,
-        marginBottom: 5,
+        marginBottom: 15,
         marginLeft: 5,
         marginRight: 5,
         width: 90,
