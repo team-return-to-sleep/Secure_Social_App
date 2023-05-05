@@ -5,6 +5,7 @@ import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight} from 'react-native
 const Pictures = {
     // TODO: Put better pictures
     pfps: {
+        newuser: 'https://cdn.dribbble.com/users/2126214/screenshots/5134447/media/35ae40e3c73721e4a5cca4d3fca93839.gif',
         music: 'https://media.istockphoto.com/id/173696178/photo/musical-notebook.jpg?s=170667a&w=0&k=20&c=Yd5FNeI9h7wckh_t0VdR0HIzuK_lmSoDbkhFHBjZf8Q=',
         art: 'https://t4.ftcdn.net/jpg/00/62/65/29/360_F_62652907_dZgAPIdcVKu8DPCeUPvLRCb9JdHrnpVG.jpg',
         games: 'https://media.istockphoto.com/id/1160866353/photo/crop-hands-with-controller.jpg?s=612x612&w=0&k=20&c=ncOO3s1WfyGNM9dko0GHcqTvjl4sz8dl94o-_C4nir0=',
@@ -17,7 +18,7 @@ const Pictures = {
         education: 'https://www.ppic.org/wp-content/uploads/graduates-2.jpg',
         health: 'https://www.healthpolicypartnership.com/app/uploads/2021/03/what_is_health.jpg',
         home: 'https://www.gardeningknowhow.com/wp-content/uploads/2019/10/seedling-400x267.jpg',
-        comedy: 'https://amtshows.com/wp-content/uploads/2014/05/stand-up-comedy-neon-sign.jpg',
+        comedy: 'https://media.istockphoto.com/id/1186127120/photo/mic-on-a-stage-ready-for-the-singer-or-speaker.jpg?s=612x612&w=0&k=20&c=RIS1l7XtqtZvXwKp1YXGv9-agFcgC9BHbSe6mcHZ1Hw=',
         food: 'https://www.cnet.com/a/img/resize/989e8e3be4eb8baae522f982b7cc1f6a3f4c0f6d/hub/2022/12/14/8af299d7-0c8f-493f-9771-c5b4738cb690/gettyimages-1306753442.jpg?auto=webp&fit=crop&height=675&width=1200',
         travel: 'https://images.unsplash.com/photo-1568323993144-20d546ba585d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80',
         DIY: 'https://i.pinimg.com/736x/76/3d/06/763d0646bae3c13a1a93c3aadb4b52f3.jpg',

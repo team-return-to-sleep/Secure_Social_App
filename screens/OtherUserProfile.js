@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     bioContainer: {
         width: '80%',
         height: 125,
-        backgroundColor:'#FFF7EA',
+        backgroundColor:'#f4f4f4',
         marginTop: 20,
         marginLeft: 20,
         marginRight: 20,
@@ -150,12 +150,9 @@ const styles = StyleSheet.create({
     username: {
         margin:15,
         fontSize: 20,
-        fontWeight: 'bold',
-        color: '#181818'
     },
     specifics: {
-        marginTop: 5,
-        marginBottom: 5,
+        marginBottom: 15,
         marginLeft: 5,
         marginRight: 5,
         width: 90,
@@ -169,6 +166,17 @@ const styles = StyleSheet.create({
     },
     interestText: {
         fontSize: 10,
+    },
+    interests: {
+        width: 80,
+        height: 17,
+        margin: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 24,
+        backgroundColor: '#f4f4f4',
+        borderWidth: 2,
+        borderColor: '#DDEDEA',
     },
     divider: {
         borderBottomColor: 'black',
@@ -189,13 +197,13 @@ const styles = StyleSheet.create({
         width: '80%',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         margin: 10,
     },
     specificsWrapper: {
-        flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
+        alignItems: 'flex-start',
     },
     profileWrapper: {
         alignItems: 'center',

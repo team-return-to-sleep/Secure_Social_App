@@ -79,7 +79,7 @@ const PointScreen = () => {
 
   return (
 
-    <View style={{flex:1, flexDirection:'column', backgroundColor:'#AFE1AF'}}>
+    <View style={{flex:1, flexDirection:'column', backgroundColor:'#83AD85'}}>
         <Header/>
         <Appbar.Header style={styles.head}>
             <Title style={styles.name}>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
     button: {
         float: 'right',
-        backgroundColor:'#BBCAEB',
+        backgroundColor:'#FFA34E',
     },
     imageBox: {
         width: '100%',

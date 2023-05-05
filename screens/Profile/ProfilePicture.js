@@ -73,6 +73,10 @@ const ProfilePicture = ({route, navigation}) => {
             </View>
 
             <View style={styles.picturesWrapper}>
+                <Pressable onPress={() => setImageUri(Pictures.pfps.newuser)}>
+                    <Image style={styles.pictures}
+                    source={{uri: Pictures.pfps.newuser}}/>
+                </Pressable>
                 <Pressable onPress={() => setImageUri(Pictures.pfps.music)}>
                     <Image style={styles.pictures}
                     source={{uri: Pictures.pfps.music}}/>
@@ -220,7 +224,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         position: 'relative',
         marginBottom: '35%',
-        backgroundColor: '#BBCAEB',
+        backgroundColor: '#FFA34E',
     },
 });
 

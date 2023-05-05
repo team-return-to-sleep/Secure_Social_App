@@ -1,16 +1,18 @@
 import * as React from 'react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
 import {View,ScrollView,Text,SafeAreaView,StyleSheet,Pressable,TouchableHighlight,Picker} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import {updateUser, updateInterest} from '../../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
+import { useIsFocused } from "@react-navigation/native";
 
 import Header from '../Header'
 
 const ProfileSpecificInterests = ({route, navigation}) => {
     const {user} = route.params;
+    const isFocused = useIsFocused()
 
     var [ broadInterests , setBroadInterests ] = React.useState(user.interests.items.map(e => e.categoryName));
     var [ specInterests, setSpecInterests] = React.useState(user.interests.items.map(e => e.specificNames))
@@ -47,6 +49,7 @@ const ProfileSpecificInterests = ({route, navigation}) => {
             console.log("UPDATED SPECIFIC: ", updatedInterest.data.updateInterest)
         }
     }
+
     const saveUpdates = async() => {
         navigation.navigate("Account");
     }
@@ -197,7 +200,6 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     selected: {
-        marginTop: 5,
         marginBottom: 5,
         marginLeft: 5,
         marginRight: 5,

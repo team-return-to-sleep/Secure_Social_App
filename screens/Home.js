@@ -17,7 +17,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
 import UserProfile from './UserProfile'
 import Browse from './Account'
-import SignUpFlowProfileBasicSetup from './Profile/SignUpFlowProfileBasicSetup'
+import ProfileAge from './Profile/ProfileAge'
+import ProfileRegion from './Profile/ProfileRegion'
 
 const Home = ({navigation}) => {
     const [user, setUser] = useState([])
