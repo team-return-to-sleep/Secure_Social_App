@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,SafeAreaView,Image,Pressable,StyleSheet,ScrollView,Alert,StatusBar,TouchableOpacity} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -26,9 +26,10 @@ const Browse = ({navigation}) => {
 //    const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
 //    const [regionFilteredUsers, setRegionFilteredUsers] = useState([])
 
-    var usernameFilteredUsers = []
-    var ageFilteredUsers = []
-    var regionFilteredUsers = []
+    const usernameFilteredUsers = useRef([])
+    const ageFilteredUsers = useRef([])
+    const regionFilteredUsers = useRef([])
+    const interestsFilteredUsers = useRef([])
 
     const [open2, setOpen2] = useState(false);
     const [value2, setValue2] = useState(null);
@@ -97,9 +98,9 @@ const Browse = ({navigation}) => {
             )
             setUsers(usersData)
             setCurr(usersData.data.listUsers.items)
-            usernameFilteredUsers = usersData.data.listUsers.items
-            ageFilteredUsers = usersData.data.listUsers.items
-            regionFilteredUsers = usersData.data.listUsers.items
+            usernameFilteredUsers.current = usersData.data.listUsers.items
+            ageFilteredUsers.current = usersData.data.listUsers.items
+            regionFilteredUsers.current = usersData.data.listUsers.items
         }
         fetchUsers();
     }, []);
@@ -117,30 +118,41 @@ const Browse = ({navigation}) => {
                 authMode: "API_KEY"
             }
         )
-        usernameFilteredUsers = usernameFilteredUsersData.data.listUsers.items
-        console.log("USERNAME")
-        console.log(usernameFilteredUsers)
-        console.log("AGE")
-        console.log(ageFilteredUsers)
-        console.log("REGION")
-        console.log(regionFilteredUsers)
+        usernameFilteredUsers.current = usernameFilteredUsersData.data.listUsers.items
+//        console.log("USERNAME")
+//        console.log(usernameFilteredUsers.current)
+//        console.log("AGE")
+//        console.log(ageFilteredUsers.current)
+//        console.log("REGION")
+//        console.log(regionFilteredUsers.current)
 
-        var matches = []
-        usernameFilteredUsers.forEach(u1 => {
-            ageFilteredUsers.forEach(u2 => {
-                if (u1.id == u2.id) {
-                    matches.push(u1)
-//                    regionFilteredUsers.forEach(u3 => {
-//                        if (u2.id == u3.id) {
-//                            console.log("HEY2")
-//                            matches.push(u1)
-//                        }
-//                    })
-                }
-            })
-        });
-        console.log(matches)
+//        var matches = []
+//        usernameFilteredUsers.forEach(u1 => {
+//            ageFilteredUsers.forEach(u2 => {
+//                if (u1.id == u2.id) {
+//                    matches.push(u1)
+////                    regionFilteredUsers.forEach(u3 => {
+////                        if (u2.id == u3.id) {
+////                            console.log("HEY2")
+////                            matches.push(u1)
+////                        }
+////                    })
+//                }
+//            })
+//        });
+        var matches = usernameFilteredUsers.current.filter(
+            value => ageFilteredUsers.current.some(e => e.id === value.id))
+        //console.log("NAME + AGE MATCHES: ", matches)
+        matches = matches.filter(value => regionFilteredUsers.current.some(e => e.id === value.id))
+        //console.log("NAME + AGE + REGION MATCHES: ", matches)
+        matches = matches.filter(
+            value => interestsFilteredUsers.current.some(e => e.id === value.id))
+        //console.log("NAME + AGE + REGION + INTERESTS MATCHES: ", matches)
         setCurr(matches)
+
+//        console.log("HEY1!")
+        matches.map(person => console.log("MATCH: ", person.name, " AGE: ", person.age,
+            " REGION: ", person.region, " INTERESTS: ", person.interests.items))
     }
 
     const filterByAge = async (value) => {
@@ -151,7 +163,7 @@ const Browse = ({navigation}) => {
             authMode: "API_KEY"
         }
         )
-        ageFilteredUsers = ageUsersData.data.listUsers.items
+        ageFilteredUsers.current = ageUsersData.data.listUsers.items
     }
 
     const filterByRegion = async (value) => {
@@ -169,26 +181,37 @@ const Browse = ({navigation}) => {
                 }
             )
         }
-        regionFilteredUsers = regionalUsersData.data.listUsers.items
+        regionFilteredUsers.current = regionalUsersData.data.listUsers.items
     }
 
     const filterByInterests = async (items) => {
-        let interestsStr = ''
-        function appendToStr(item) {
-          interestsStr += ('contains: "' + item + '", ');
-        }
-        items.forEach(appendToStr)
-        console.log(interestsStr)
+//        let interestsStr = ''
+//        function appendToStr(item) {
+//          interestsStr += ('contains: "' + item + '", ');
+//        }
+//        items.forEach(appendToStr)
+//        console.log(interestsStr)
+            console.log("SELECTED ITEMS: ", items)
 
-            const interestUsersData = await API.graphql(
-                {
+          // sadly appsync doesn't allow filtering on not top level types
+          // meaning can't filter users by Interest :(
+          const interestUsersData = await API.graphql(
+              {
                     query: listUsers,
-                    variables: {filter: {interests: {interestsStr}}},
                     authMode: "API_KEY"
-                }
-            )
-            console.log(items)
-            console.log(interestUsersData.data.listUsers.items)
+              }
+          )
+          var usersByInterest = interestUsersData.data.listUsers.items
+
+          function filterBy(item) {
+                usersByInterest = usersByInterest.filter(
+                    tempUser => tempUser.interests.items.some(e => e.categoryName === item)
+                )
+          }
+          items.forEach(filterBy)
+          console.log("BY INTEREST: ", usersByInterest)
+
+          interestsFilteredUsers.current = usersByInterest
     }
 
     return (
