@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react'
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,ScrollView,Text,SafeAreaView,StyleSheet,Pressable,TouchableHighlight,Picker} from 'react-native'
+import {View,ScrollView,Text,SafeAreaView,StyleSheet,
+        Pressable,TouchableHighlight,Picker,TouchableOpacity} from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {updateUser, updateInterest} from '../../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
@@ -14,8 +16,8 @@ const ProfileSpecificInterests = ({route, navigation}) => {
     const {user} = route.params;
     const isFocused = useIsFocused()
 
-    var [ broadInterests , setBroadInterests ] = React.useState(user.interests.items.map(e => e.categoryName));
-    var [ specInterests, setSpecInterests] = React.useState(user.interests.items.map(e => e.specificNames))
+//    var [ broadInterests , setBroadInterests ] = React.useState(user.interests.items.map(e => e.categoryName));
+//    var [ specInterests, setSpecInterests] = React.useState(user.interests.items.map(e => e.specificNames))
 
     var [ currInterest, setCurrInterest] = useState(null)
     var [ tempSpecific, setTempSpecific] = useState(null)
@@ -26,10 +28,8 @@ const ProfileSpecificInterests = ({route, navigation}) => {
     const [value, setValue] = useState(null);
     const [specific, setSpecific] = useState(null);
     const [items, setItems] = useState(user.interests.items.map(e => ({label: e.categoryName, value: e})));
-//    [
-//                        {label: 'gaming', value: 'gaming'},
-//                        {label: 'food & drink', value: 'food & drink'},
-//    ]);
+    const [specificMap, setSpecificMap] =
+        useState(user.interests.items);
 
     const saveInterest = async() => {
         if (currInterest && tempSpecific) {
@@ -47,10 +47,43 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                 authMode: "API_KEY"
             })
             console.log("UPDATED SPECIFIC: ", updatedInterest.data.updateInterest)
+
+            let interestIndex = specificMap.findIndex((e => e.id === currInterest.id))
+            let temp = [...specificMap]
+            //console.log("TEMP ", temp)
+            //temp[interestIndex].specificNames.push(tempSpecific)
+            setSpecificMap(temp)
+
         }
     }
 
+    const removeInterest = async (interest, name) => {
+        let temp = interest
+        temp.specificNames.splice(temp.specificNames.indexOf(name), 1)
+
+        const updatedInterest = await API.graphql (
+            {
+                query: updateInterest,
+                variables: {
+                    input: {
+                        id: interest.id,
+                        specificNames: temp.specificNames
+                    }
+                },
+                authMode: "API_KEY"
+            }
+        )
+        console.log("UPDATED SPECIFIC: ", updatedInterest.data.updateInterest)
+
+        //let interestIndex = specificMap.findIndex((e => e.id === interest.id))
+        let tempMap = [...specificMap]
+        //tempMap[interestIndex].specificNames.splice(tempMap[interestIndex].specificNames.indexOf(name), 1)
+        setSpecificMap(tempMap)
+        //console.log("MAP: ", specificMap)
+    }
+
     const saveUpdates = async() => {
+
         navigation.navigate("Account");
     }
 
@@ -101,31 +134,34 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                         <Text style={styles.addButtonText}>Add</Text>
                 </Pressable>
                 <View style={styles.interestsWrapper}>
-                    {user.interests.items.map((interest) => {
+                    {specificMap.map((interest) => {
                         return (
                             <View style={{flex:1, marginLeft: 10}}>
-                            <View style={styles.category}>
-                                <Text style={styles.categoryText}>{interest.categoryName}</Text>
-                            </View>
-                            <View style={styles.specificWrapper}>
+                                <View style={styles.category}>
+                                    <Text style={styles.categoryText}>{interest.categoryName}</Text>
+                                </View>
+                                <View style={styles.specificWrapper}>
 
-                                {
-                                    interest.specificNames.map((specifics)=>{
-                                        return (
-                                        <View>
-                                            <TouchableHighlight
-                                                activeOpacity = {1}
-                                                underlayColor = {'#FFF7EA'}
-                                                style = {styles.selected}
-                                            >
-                                                <Text>{specifics}</Text>
-                                            </TouchableHighlight>
-                                        </View>
-                                        )
-                                    })
+                                    {
+                                        interest.specificNames.map((specifics)=>{
+                                            return (
+                                            <View>
+                                                <TouchableOpacity
+                                                    activeOpacity = {1}
+                                                    underlayColor = {'#FFF7EA'}
+                                                    style = {styles.selected}
+                                                    onPress = {()=>removeInterest(interest, specifics)}
+                                                >
+                                                    <Text>{specifics}{" "}</Text>
+                                                    <AntDesign color="black" name="delete" size={17} />
+                                                </TouchableOpacity>
+                                            </View>
+                                            )
+                                        })
 
-                                }
-                            </View>
+                                    }
+
+                                </View>
                             </View>
                         );
                     })}
@@ -200,6 +236,7 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     selected: {
+        flexDirection: 'row',
         marginBottom: 5,
         marginLeft: 5,
         marginRight: 5,

@@ -119,7 +119,7 @@ const Home = ({navigation}) => {
                         let aBonus = (a.region && selfRegion && a.region === selfRegion)?1:0
                         return ((compareInterests(b.interests.items, selfInterests) + bBonus) -
                                (compareInterests(a.interests.items, selfInterests) + aBonus))
-                                
+
                     })
                     setUsers(allUsers)
                     // for verification purposes
