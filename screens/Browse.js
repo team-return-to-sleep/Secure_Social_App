@@ -220,94 +220,92 @@ const Browse = ({navigation}) => {
     }
 
     return (
-        <>
-            <View style={{flex:1}}>
-                <Header/>
-
-                <Text style={styles.username}>Filter by Age</Text>
-                <DropDownPicker
-                    placeholder="Age"
-                    open={open2}
-                    value={value2}
-                    items={items2}
-                    setOpen={setOpen2}
-                    setValue={setValue2}
-                    setItems={setItems2}
-                    containerStyle={{height: 40}}
-                    style={{backgroundColor: '#fafafa'}}
-                    itemStyle={{
-                        justifyContent: 'flex-start'
-                    }}
-                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                    onChangeValue={(value) => filterByAge(value)}
-                />
-
-                <Text style={styles.username}>Filter by Region</Text>
-                <DropDownPicker
-                    placeholder="Region"
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    containerStyle={{height: 40}}
-                    style={{backgroundColor: '#fafafa'}}
-                    itemStyle={{
-                        justifyContent: 'flex-start'
-                    }}
-                    dropDownStyle={{backgroundColor: '#fafafa'}}
-                    onChangeValue={(value) => filterByRegion(value)}
-                />
-
-        <View style={styles.container}>
-            <Text style={styles.username}>Filter by Interests</Text>
-            <MultiSelect
-                style={styles.dropdown}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={interests}
-                labelField="label"
-                valueField="value"
-                placeholder="Select Interests"
-                value={selected}
-                search
-                searchPlaceholder="Search..."
-                onChange={item => {
-                    setSelected(item);
-                    filterByInterests(item);
-                }}
-//                onToggleList={() => (
-//                    setExpanded(!expanded)
-//                    if(!expanded) {
-//                        console.log(selectedItems)
-//                    }
-//                )}
-                renderLeftIcon={() => (
-                    <AntDesign
-                        style={styles.icon}
-                        color="black"
-                        name="Safety"
-                        size={20}
+        <ScrollView style={styles.container}>
+            <Header />
+            <Text style={styles.subtext}>Find new buds in your area.</Text>
+            <View style={styles.filtersContainer}>
+                <View>
+                    <DropDownPicker
+                        placeholder="Age"
+                        open={open2}
+                        value={value2}
+                        items={items2}
+                        setOpen={setOpen2}
+                        setValue={setValue2}
+                        setItems={setItems2}
+                        containerStyle={{height: 40}}
+                        style={styles.dropdown1}
+                        itemStyle={{
+                            justifyContent: 'flex-start'
+                        }}
+                        dropDownStyle={{backgroundColor: '#fafafa'}}
+                        onChangeValue={(value) => filterByAge(value)}
                     />
-                )}
-                renderItem={renderDataItem}
-                renderSelectedItem={(item, unSelect) => (
-                    <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                        <View style={styles.selectedStyle}>
-                            <Text style={styles.textSelectedStyle}>{item.label}</Text>
-                            <AntDesign color="black" name="delete" size={17} />
-                        </View>
-                    </TouchableOpacity>
-                )}
-            />
-            <StatusBar />
-        </View>
+                </View>
 
+                <View>
+                    <DropDownPicker
+                        placeholder="Region"
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                        containerStyle={{height: 40}}
+                        style={styles.dropdown1}
+                        itemStyle={{
+                            justifyContent: 'flex-start'
+                        }}
+                        dropDownStyle={{backgroundColor: '#fafafa'}}
+                        onChangeValue={(value) => filterByRegion(value)}
+                    />
+                </View>
+
+                <View>
+                    <MultiSelect
+                        style={styles.dropdown2}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={interests}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Select Interests"
+                        value={selected}
+                        search
+                        searchPlaceholder="Search..."
+                        onChange={item => {
+                            setSelected(item);
+                            filterByInterests(item);
+                        }}
+                        renderLeftIcon={() => (
+                            <AntDesign
+                                style={styles.icon}
+                                color="black"
+                                name="Safety"
+                                size={20}
+                            />
+                        )}
+                        renderItem={renderDataItem}
+                        renderSelectedItem={(item, unSelect) => (
+                            <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                                <View style={styles.selectedStyle}>
+                                    <Text style={styles.textSelectedStyle}>{item.label}</Text>
+                                    <AntDesign color="black" name="delete" size={17} />
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                    />
+
+                <StatusBar />
+
+                </View>
+</View>
                 <TextInput
-                    label="search for a username"
+                    style={styles.inputBox}
+                    label="Enter a username"
                     theme={{colors:{primary:"#000000"}}}
                     value={name}
                     onChangeText={(text)=>setName(text)}
@@ -315,32 +313,30 @@ const Browse = ({navigation}) => {
 
                 <Button icon="magnify"
                     mode="contained"
-                    style={{margin:20, backgroundColor: '#BBCAEB'}}
+                    style={styles.searchButton}
                     onPress={() => onClickHandler()
                 }>
-                    Search for Username
+                    Search Users
                 </Button>
 
-                <ScrollView style={styles.container}>
-                    <View style={styles.profileWrapper}>
-                        {
-                        currUsers.map((user) => {
-                            return (
-                                <Pressable
+
+                <View style={styles.profileWrapper}>
+                    {
+                    currUsers.map((user) => {
+                        return (
+                            <Pressable
+                                style={styles.profile}
+                                onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
+                            >
+                                <Image
                                     style={styles.profile}
-                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
-                                >
-                                    <Image
-                                        style={styles.profile}
-                                        source={{uri: user.imageUri}}
-                                    />
-                                </Pressable>
-                            );
-                        })}
-                    </View>
-                </ScrollView>
-            </View>
-        </>
+                                    source={{uri: user.imageUri}}
+                                />
+                            </Pressable>
+                        );
+                    })}
+                </View>
+        </ScrollView>
     );
 };
 
@@ -370,24 +366,54 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 20,
     },
-    container: {
-        paddingTop: 30,
-        flex:1
+    searchButton: {
+        alignSelf: 'center',
+        margin:20,
+        width:'40%',
+        backgroundColor: '#FFA34E'
     },
-    dropdown: {
+    filtersContainer: {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom:50,
+        marginHorizontal: 50,
+        marginTop: 30,
+    },
+    dropdown1: {
+        backgroundColor: 'white',
+        flex:1,
+        height: 0,
+        width: 125,
+        borderColor: '#FFA34E',
+        borderWidth: 1,
+        minHeight: 40,
+        paddingHorizontal: 5,
+        marginHorizontal: 10,
+    },
+    dropdown2: {
+        marginTop: 20,
+        backgroundColor: 'white',
+        flex:1,
+        height: 0,
+        width: 300,
+        borderColor: '#FFA34E',
+        borderWidth: 1,
+        minHeight: 30,
+        alignSelf: 'center',
+        paddingHorizontal: 5,
+        borderRadius: 7,
+    },
+    inputBox: {
+        alignSelf: 'center',
+        width: 300,
         height: 50,
         backgroundColor: 'white',
-        borderRadius: 12,
-        padding: 12,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-
-        elevation: 2,
+        borderColor: '#FFA34E',
+        borderWidth: 1,
+        fontSize: 15,
+        borderRadius: 5,
     },
     placeholderStyle: {
         fontSize: 16,
@@ -435,6 +461,15 @@ const styles = StyleSheet.create({
     textSelectedStyle: {
         marginRight: 5,
         fontSize: 16,
+    },
+    subtext: {
+        alignSelf: 'center',
+        fontSize: 16,
+        textAlign:"center",
+        marginHorizontal: '10%',
+        fontColor: '#181818',
+        marginTop: 20,
+        fontWeight: 'bold',
     },
 });
 

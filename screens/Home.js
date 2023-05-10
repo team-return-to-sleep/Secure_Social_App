@@ -222,9 +222,11 @@ const styles = StyleSheet.create({
     },
     subtext: {
         alignSelf: 'center',
-        fontSize: 15,
+        fontSize: 16,
         textAlign:"center",
         marginHorizontal: '10%',
+        fontColor: '#181818',
+        fontWeight: 'bold',
     },
     flowerText: {
         alignSelf: 'center',
