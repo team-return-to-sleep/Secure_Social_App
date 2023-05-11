@@ -13,6 +13,7 @@ import {getUser, listUsers} from '../../src/graphql/queries'
 const ProfileRegion = ({route, navigation}) => {
     const {user} = route.params;
     const [region, setRegion] = useState("")
+    const [isPress, setIsPress] = useState("");
 
     const saveUpdates = async() => {
         const selfData = await API.graphql (
@@ -50,24 +51,29 @@ const ProfileRegion = ({route, navigation}) => {
                 <Text style={styles.question}> What is your geographical region? </Text>
                 <View style={styles.regionWrapper}>
 
-                                <TouchableHighlight style={styles.regions}
-                                    onPress={(region)=>setRegion("Northeast"), console.log(region)}>
+                                <TouchableHighlight style = {isPress=="Northeast" ? styles.selected : styles.regions}
+                                    underlayColor = {'#ffffff'}
+                                    onPress={(region)=>setRegion("Northeast"), (isPress)=>setIsPress('Northeast')}>
                                     <Text>Northeast</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
-                                    onPress={(region)=>setRegion("Southeast")}>
+                               <TouchableHighlight style = {isPress=="Southeast" ? styles.selected : styles.regions}
+                                    underlayColor = {'#ffffff'}
+                                    onPress={(region)=>setRegion("Southeast"), (isPress)=>setIsPress('Southeast')}>
                                     <Text>Southeast</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
-                                    onPress={(region)=>setRegion("Southwest")}>
+                                <TouchableHighlight style = {isPress=="Southwest" ? styles.selected : styles.regions}
+                                    underlayColor = {'#ffffff'}
+                                    onPress={(region)=>setRegion("Southwest"), (isPress)=>setIsPress('Southwest')}>
                                     <Text>Southwest</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
-                                    onPress={(region)=>setRegion("West")}>
+                                <TouchableHighlight style = {isPress=="West" ? styles.selected : styles.regions}
+                                    underlayColor = {'#ffffff'}
+                                    onPress={(region)=>setRegion("West"), (isPress)=>setIsPress('West')}>
                                     <Text>West</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight style={styles.regions}
-                                    onPress={(region)=>setRegion("Midwest")}>
+                                <TouchableHighlight style = {isPress=="Midwest" ? styles.selected : styles.regions}
+                                    underlayColor = {'#ffffff'}
+                                    onPress={(region)=>setRegion("Midwest"), (isPress)=>setIsPress('Midwest')}>
                                     <Text>Midwest</Text>
                                 </TouchableHighlight>
                 </View>
@@ -77,6 +83,13 @@ const ProfileRegion = ({route, navigation}) => {
                 onPress={() => saveUpdates()}>
                     Continue
                 </Button>
+
+                <View style={styles.progressBar}>
+                    <Text style={styles.flowerCompleted}>✿</Text>
+                    <Text style={styles.flowerCompleted}>✿</Text>
+                    <Text style={styles.flowerNotCompleted}>✿</Text>
+                    <Text style={styles.flowerNotCompleted}>✿</Text>
+                </View>
 
             </View>
         </ScrollView>
@@ -88,34 +101,55 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'#FFFFFF',
     },
+    progressBar: {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        alignSelf: 'center',
+        fontSize: 100,
+        marginBottom: '35%',
+        position: 'relative',
+    },
+    flowerCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+
+    },
+    flowerNotCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+        opacity: 0.3,
+    },
     regions: {
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
         marginLeft: 10,
         marginRight: 10,
-        width: 150,
-        height: 150,
+        width: 120,
+        height: 120,
         alignItems: 'center',
         justifyContent: 'space-evenly',
         backgroundColor: '#ffffff',
         borderRadius: 24,
-        borderWidth: 3,
-        borderColor: '#DDEDEA',
+        borderWidth: 1.5,
+        borderColor: '#FFA34E',
         alignItems: 'center',
     },
     selected: {
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
         marginLeft: 10,
         marginRight: 10,
-        width: 150,
-        height: 150,
+        width: 120,
+        height: 120,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        backgroundColor: '#DDEDEA',
+        backgroundColor: '#FFA34E',
         borderRadius: 24,
-        borderWidth: 3,
-        borderColor: '#DDEDEA',
+        borderWidth: 1.5,
+        borderColor: '#FFA34E',
         alignItems: 'center',
     },
     regionWrapper: {
@@ -128,16 +162,18 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     question: {
-        paddingTop: '3%',
+        paddingTop: '1%',
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: 20,
+        color: '#D73400'
     },
     nextButton: {
         width: 150,
         alignSelf: 'center',
         position: 'relative',
-        marginBottom: '35%',
-        backgroundColor: '#BBCAEB',
+        marginBottom: '10%',
+        backgroundColor: '#FFA34E',
+
     },
 });
 

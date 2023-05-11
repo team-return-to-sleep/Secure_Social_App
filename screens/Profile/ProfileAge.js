@@ -76,6 +76,13 @@ const ProfileAge = ({route, navigation}) => {
                     Continue
                 </Button>
 
+                <View style={styles.progressBar}>
+                    <Text style={styles.flowerCompleted}>✿</Text>
+                    <Text style={styles.flowerNotCompleted}>✿</Text>
+                    <Text style={styles.flowerNotCompleted}>✿</Text>
+                    <Text style={styles.flowerNotCompleted}>✿</Text>
+                </View>
+
             </View>
         </ScrollView>
       );
@@ -85,6 +92,27 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:'#FFFFFF',
+    },
+    progressBar: {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        alignSelf: 'center',
+        fontSize: 100,
+        marginBottom: '35%',
+        position: 'relative',
+    },
+    flowerCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+
+    },
+    flowerNotCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+        opacity: 0.3,
     },
     ageInput: {
         marginTop: '20%',
@@ -98,16 +126,17 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     question: {
-        paddingTop: '3%',
+        paddingTop: '1%',
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: 20,
+        color: '#D73400',
     },
     nextButton: {
         width: 150,
         alignSelf: 'center',
         position: 'relative',
         marginTop: '15%',
-        marginBottom: '35%',
+        marginBottom: '30%',
         backgroundColor: '#FFA34E',
     },
 });

@@ -57,12 +57,8 @@ const ProfileSpecificInterests = ({route, navigation}) => {
     return (
         <ScrollView style={styles.container}>
 
-                <Appbar.Header>
-                    <Appbar.BackAction onPress={() => navigation.goBack()} />
-                    <Title>
-                        Interests
-                    </Title>
-                </Appbar.Header>
+                <Header/>
+                <Appbar.BackAction onPress={() => navigation.goBack()} />
 
                 <Text style={styles.question}> Add some personal flavor... </Text>
                 <View style={styles.promptWrapper}>
@@ -136,8 +132,12 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                 onPress={() => saveUpdates()}>
                     Continue
                 </Button>
-            <View style={{marginBottom:26}}>
-                <Text> {'\n\n'} </Text>
+
+            <View style={styles.progressBar}>
+                <Text style={styles.flowerCompleted}>✿</Text>
+                <Text style={styles.flowerCompleted}>✿</Text>
+                <Text style={styles.flowerCompleted}>✿</Text>
+                <Text style={styles.flowerCompleted}>✿</Text>
             </View>
         </ScrollView>
       );
@@ -147,6 +147,26 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:'#FFFFFF',
+    },
+    progressBar: {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        alignSelf: 'center',
+        fontSize: 100,
+        marginBottom: '35%',
+        position: 'relative',
+    },
+    flowerCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+    },
+    flowerNotCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+        opacity: 0.3,
     },
     dropdown: {
         backgroundColor: 'white',
@@ -238,10 +258,10 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     question: {
-        paddingTop: 30,
+        paddingTop: '1%',
         paddingBottom: 10,
         textAlign: 'center',
-        fontSize: 25,
+        fontSize: 20,
         color: '#E8683F',
     },
     prompt: {
