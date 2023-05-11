@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,SafeAreaView,Image,Pressable,StyleSheet,ScrollView,Alert,StatusBar,TouchableOpacity} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,22 +21,32 @@ const Browse = ({navigation}) => {
     const [users, setUsers] = useState([])
     const [searchedUsers, setSearched] = useState([])
     const [currUsers, setCurr] = useState([])
-    const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
+
+//    const [usernameFilteredUsers, setUsernameFilteredUsers] = useState([])
+//    const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
+//    const [regionFilteredUsers, setRegionFilteredUsers] = useState([])
+
+    const usernameFilteredUsers = useRef([])
+    const ageFilteredUsers = useRef([])
+    const regionFilteredUsers = useRef([])
+    const interestsFilteredUsers = useRef([])
 
     const [open2, setOpen2] = useState(false);
     const [value2, setValue2] = useState(null);
     const [items2, setItems2] = useState([
-                        {label: '18 to 24', value: 1},
-                        {label: '25 to 34', value: 2},
-                        {label: '35 to 44', value: 3},
-                        {label: '45 to 54', value: 4},
-                        {label: '55 to 64', value: 5},
-                        {label: '65 or over', value: 6},
+                        {label: 'Any Age', value: [0,150]},
+                        {label: '18 to 24', value: [18,24]},
+                        {label: '25 to 34', value: [25,34]},
+                        {label: '35 to 44', value: [35,44]},
+                        {label: '45 to 54', value: [45,54]},
+                        {label: '55 to 64', value: [55,64]},
+                        {label: '65 or over', value: [65.150]},
     ]);
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
+                        {label: 'Any Region', value: 'Any Region'},
                         {label: 'West', value: 'West'},
                         {label: 'Southwest', value: 'Southwest'},
                         {label: 'Midwest', value: 'Midwest'},
@@ -86,9 +96,11 @@ const Browse = ({navigation}) => {
                     authMode: "API_KEY"
                 }
             )
-            setUsers(usersData.data.listUsers.items)
+            setUsers(usersData)
             setCurr(usersData.data.listUsers.items)
-            setAgeFilteredUsers(usersData.data.listUsers.items)
+            usernameFilteredUsers.current = usersData.data.listUsers.items
+            ageFilteredUsers.current = usersData.data.listUsers.items
+            regionFilteredUsers.current = usersData.data.listUsers.items
         }
         fetchUsers();
     }, []);
@@ -98,125 +110,108 @@ const Browse = ({navigation}) => {
     }, [currUsers]);
 
     const onClickHandler = async () => {
-        if (name != '') {
-            let results = []
-            for (let i=0; i<users.length; i++) {
-                if (users[i].name == name || users[i].name.includes(name)) {
-                    // TODO: change to add names which are superstrings of search
-                    results.push(users[i])
-                }
+        //let results = users;
+        var usernameFilteredUsersData = await API.graphql(
+            {
+                query: listUsers,
+                variables: {filter: {name: {beginsWith: name}}},
+                authMode: "API_KEY"
             }
-//            setSearched(users)
-//            setUsers(results)
-//            setHasSearched(true)
-            if (results.length < 1) {
-                Alert.alert("Sorry, cannot find user " + name)
-            } else {
-                setCurr(results)
-                currUsers = results
-                console.log("set?")
-            }
-            //console.log("results: ", results)
-        }
-        //setUsers(searchedUsers)
-        setCurr(users)
-        //setHasSearched(false)
+        )
+        usernameFilteredUsers.current = usernameFilteredUsersData.data.listUsers.items
+//        console.log("USERNAME")
+//        console.log(usernameFilteredUsers.current)
+//        console.log("AGE")
+//        console.log(ageFilteredUsers.current)
+//        console.log("REGION")
+//        console.log(regionFilteredUsers.current)
+
+//        var matches = []
+//        usernameFilteredUsers.forEach(u1 => {
+//            ageFilteredUsers.forEach(u2 => {
+//                if (u1.id == u2.id) {
+//                    matches.push(u1)
+////                    regionFilteredUsers.forEach(u3 => {
+////                        if (u2.id == u3.id) {
+////                            console.log("HEY2")
+////                            matches.push(u1)
+////                        }
+////                    })
+//                }
+//            })
+//        });
+        var matches = usernameFilteredUsers.current.filter(
+            value => ageFilteredUsers.current.some(e => e.id === value.id))
+        //console.log("NAME + AGE MATCHES: ", matches)
+        matches = matches.filter(value => regionFilteredUsers.current.some(e => e.id === value.id))
+        //console.log("NAME + AGE + REGION MATCHES: ", matches)
+        matches = matches.filter(
+            value => interestsFilteredUsers.current.some(e => e.id === value.id))
+        //console.log("NAME + AGE + REGION + INTERESTS MATCHES: ", matches)
+        setCurr(matches)
+
+//        console.log("HEY1!")
+        matches.map(person => console.log("MATCH: ", person.name, " AGE: ", person.age,
+            " REGION: ", person.region, " INTERESTS: ", person.interests.items))
     }
 
     const filterByAge = async (value) => {
-        console.log(value)
-        if (value == 1) {
-            const ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 18, le: 24}}},
-                    authMode: "API_KEY"
-                }
-            )
-            console.log(value)
-            console.log(ageUsersData.data.listUsers.items)
+        const ageUsersData = await API.graphql(
+        {
+            query: listUsers,
+            variables: {filter: {age: {ge: value[0], le: value[1]}}},
+            authMode: "API_KEY"
         }
-        else if (value == 2) {
-            const ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 25, le: 34}}},
-                    authMode: "API_KEY"
-                }
-            )
-            console.log(ageUsersData.data.listUsers.items)
-        }
-        else if (value == 3) {
-            const ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 35, le: 44}}},
-                    authMode: "API_KEY"
-                }
-            )
-            console.log(ageUsersData.data.listUsers.items)
-        }
-        else if (value == 4) {
-            const ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 45, le: 54}}},
-                    authMode: "API_KEY"
-                }
-            )
-            console.log(ageUsersData.data.listUsers.items)
-        }
-        else if (value == 5) {
-            const ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 55, le: 64}}},
-                    authMode: "API_KEY"
-                }
-            )
-            console.log(ageUsersData.data.listUsers.items)
-        }
-        else if (value == 6) {
-            const ageUsersData = await API.graphql(
-                {
-                    query: listUsers,
-                    variables: {filter: {age: {ge: 65}}},
-                    authMode: "API_KEY"
-                }
-            )
-            console.log(ageUsersData.data.listUsers.items)
-        }
+        )
+        ageFilteredUsers.current = ageUsersData.data.listUsers.items
     }
 
     const filterByRegion = async (value) => {
-            const regionalUsersData = await API.graphql(
+        var regionalUsersData;
+        if (value == "Any Region") {
+            console.log(users)
+            regionalUsersData = users;
+        }
+        else {
+            regionalUsersData = await API.graphql(
                 {
                     query: listUsers,
                     variables: {filter: {region: {eq: value}}},
                     authMode: "API_KEY"
                 }
             )
-            console.log(value)
-            console.log(regionalUsersData.data.listUsers.items)
+        }
+        regionFilteredUsers.current = regionalUsersData.data.listUsers.items
     }
 
     const filterByInterests = async (items) => {
-        let interestsStr = ''
-        function appendToStr(item) {
-          interestsStr += ('contains: "' + item + '", ');
-        }
-        items.forEach(appendToStr)
-        console.log(interestsStr)
+//        let interestsStr = ''
+//        function appendToStr(item) {
+//          interestsStr += ('contains: "' + item + '", ');
+//        }
+//        items.forEach(appendToStr)
+//        console.log(interestsStr)
+            console.log("SELECTED ITEMS: ", items)
 
-            const interestUsersData = await API.graphql(
-                {
+          // sadly appsync doesn't allow filtering on not top level types
+          // meaning can't filter users by Interest :(
+          const interestUsersData = await API.graphql(
+              {
                     query: listUsers,
-                    variables: {filter: {interests: {interestsStr}}},
                     authMode: "API_KEY"
-                }
-            )
-            console.log(items)
-            console.log(interestUsersData.data.listUsers.items)
+              }
+          )
+          var usersByInterest = interestUsersData.data.listUsers.items
+
+          function filterBy(item) {
+                usersByInterest = usersByInterest.filter(
+                    tempUser => tempUser.interests.items.some(e => e.categoryName === item)
+                )
+          }
+          items.forEach(filterBy)
+          console.log("BY INTEREST: ", usersByInterest)
+
+          interestsFilteredUsers.current = usersByInterest
     }
 
     return (
@@ -240,6 +235,73 @@ const Browse = ({navigation}) => {
                         }}
                         dropDownStyle={{backgroundColor: '#fafafa'}}
                         onChangeValue={(value) => filterByAge(value)}
+        <>
+            <View style={{flex:1}}>
+                <Header/>
+
+                <Text style={styles.username}>Filter by Age</Text>
+                <DropDownPicker
+                    placeholder="Age"
+                    defaultValue={[0,150]}
+                    open={open2}
+                    value={value2}
+                    items={items2}
+                    setOpen={setOpen2}
+                    setValue={setValue2}
+                    setItems={setItems2}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    itemStyle={{
+                        justifyContent: 'flex-start'
+                    }}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeValue={(value) => filterByAge(value)}
+                />
+
+                <Text style={styles.username}>Filter by Region</Text>
+                <DropDownPicker
+                    placeholder="Region"
+                    defaultValue="Any Region"
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    containerStyle={{height: 40}}
+                    style={{backgroundColor: '#fafafa'}}
+                    itemStyle={{
+                        justifyContent: 'flex-start'
+                    }}
+                    dropDownStyle={{backgroundColor: '#fafafa'}}
+                    onChangeValue={(value) => filterByRegion(value)}
+                />
+
+        <View style={styles.container}>
+            <Text style={styles.username}>Filter by Interests</Text>
+            <MultiSelect
+                style={styles.dropdown}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={interests}
+                labelField="label"
+                valueField="value"
+                placeholder="Select Interests"
+                value={selected}
+                search
+                searchPlaceholder="Search..."
+                onChange={item => {
+                    setSelected(item);
+                    filterByInterests(item);
+                }}
+                renderLeftIcon={() => (
+                    <AntDesign
+                        style={styles.icon}
+                        color="black"
+                        name="Safety"
+                        size={20}
                     />
                 </View>
 
