@@ -32,6 +32,10 @@ const { Jwt, JwtGenerator} = require('virgil-sdk');
   app.use(cors());
   app.use(bodyParser.json());
 
+  app.get('/', (req, res) => {
+    res.send('Hello, world!');
+  });
+
   // Create an endpoint for generating Virgil JWT tokens
   app.post('/virgil-jwt', (req, res) => {
     const identity = req.body.identity;

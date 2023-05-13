@@ -30,32 +30,12 @@ import { Platform } from 'react-native';
 
 import { EThree } from '@virgilsecurity/e3kit-native';
 
-
-const getApiUrl = async () => {
-  // NOTE : DEVELOPMENT_MACHINE_IP IS DEPENDENT ON MACHINE AND NETWORK
-  // FOR WINDOWS TERMINAL, type ipconfig and locate the IPv4 Address under Wireless LAN adapter Wi-Fi
-  // Create an .env file in root, and type DEVELOPMENT_MACHINE_IP= [your ipv4 address];
-  console.log("IP address", DEVELOPMENT_MACHINE_IP);
-
-  const isEmulator = await DeviceInfo.isEmulator();
-
-    if (Platform.OS === 'android' && !Platform.isPad && !Platform.isTV && !Platform.isTVOS) {
-      if (isEmulator) {
-        return 'http://10.0.2.2:3000';
-      } else {
-        return `http://${DEVELOPMENT_MACHINE_IP}:3000`;
-      }
-    } else {
-      return `http://${DEVELOPMENT_MACHINE_IP}:3000`;
-    }
-};
-
-
 const getTokenFactory = (identity) => {
   return async () => {
-    const apiUrl = await getApiUrl();
+    const apiUrl = 'https://virgil-386402.wm.r.appspot.com/virgil-jwt';
     console.log("apiUrl", apiUrl);
-    const response = await fetch(`${apiUrl}/virgil-jwt`, {
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
