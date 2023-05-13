@@ -110,7 +110,7 @@ const App = ({navigation}) => {
                 const newUser = {
                     id: userInfo.attributes.sub,
                     name: userInfo.username,
-                    imageUri: "https://placeimg.com/140/140/any",
+                    imageUri: "https://cdn.dribbble.com/users/2126214/screenshots/5134447/media/35ae40e3c73721e4a5cca4d3fca93839.gif",
                     status: "just created my account",
                 }
                 await API.graphql(

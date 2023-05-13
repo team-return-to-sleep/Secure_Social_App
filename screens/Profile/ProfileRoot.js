@@ -14,6 +14,8 @@ import SignUpFlowProfileSpecificInterests from './SignUpFlowProfileSpecificInter
 import ProfileInterests from './ProfileInterests'
 import ProfileBasicInfo from './ProfileBasicInfo'
 import ProfilePicture from './ProfilePicture'
+import ProfileAge from './ProfileAge'
+import ProfileRegion from './ProfileRegion'
 import ProfileSpecificInterests from './ProfileSpecificInterests'
 import UserProfile from '../UserProfile'
 
@@ -33,6 +35,12 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="SignUpFlowProfileSpecificInterests" component={SignUpFlowProfileSpecificInterests}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileAge" component={ProfileAge}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileRegion" component={ProfileRegion}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileInterests" component={ProfileInterests}

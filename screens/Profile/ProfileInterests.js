@@ -112,12 +112,8 @@ const ProfileInterests = ({route, navigation}) => {
     return (
         <ScrollView style={styles.container}>
 
-                <Appbar.Header>
-                    <Appbar.BackAction onPress={() => navigation.goBack()} />
-                    <Title>
-                        Account
-                    </Title>
-                </Appbar.Header>
+                <Header/>
+                <Appbar.BackAction onPress={() => navigation.goBack()} />
 
                 <Text style={styles.question}> What are your interests? </Text>
                 <View style={styles.interestsWrapper}>
@@ -147,6 +143,13 @@ const ProfileInterests = ({route, navigation}) => {
                 onPress={() => saveUpdates()}>
                     Next
                 </Button>
+
+                <View style={styles.progressBar}>
+                    <Text style={styles.flowerCompleted}>✿</Text>
+                    <Text style={styles.flowerCompleted}>✿</Text>
+                    <Text style={styles.flowerCompleted}>✿</Text>
+                    <Text style={styles.flowerNotCompleted}>✿</Text>
+                </View>
         </ScrollView>
       );
 }
@@ -155,6 +158,26 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:'#FFFFFF',
+    },
+    progressBar: {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        alignSelf: 'center',
+        fontSize: 100,
+        marginBottom: '35%',
+        position: 'relative',
+    },
+    flowerCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+    },
+    flowerNotCompleted: {
+        fontSize: 30,
+        margin: 2,
+        color: '#FF9472',
+        opacity: 0.3,
     },
     interests: {
         marginTop: 5,
@@ -195,17 +218,18 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     question: {
-        paddingTop: 30,
+        paddingTop: '1%',
         paddingBottom: 10,
         textAlign: 'center',
-        fontSize: 25,
+        fontSize: 20,
         color: '#E8683F',
     },
     nextButton: {
         width: 150,
         alignSelf: 'center',
-        marginTop: '10%',
+        marginTop: '5%',
         backgroundColor: '#FFA34E',
+        marginBottom: '10%',
     },
 })
 

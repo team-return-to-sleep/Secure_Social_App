@@ -96,10 +96,10 @@ const styles = StyleSheet.create({
     username: {
         margin:15,
         fontSize: 20,
+        fontWeight: 'bold',
     },
     specifics: {
-        marginTop: 5,
-        marginBottom: 5,
+        marginBottom: 15,
         marginLeft: 5,
         marginRight: 5,
         width: 90,
