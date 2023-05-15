@@ -11,9 +11,9 @@ import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import { Storage } from 'aws-amplify';
-import { v4 as uuidv4 } from 'uuid';
-import DeviceInfo from 'react-native-device-info';
-import { DEVELOPMENT_MACHINE_IP } from '@env';
+import {launchImageLibrary} from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/Ionicons';
+import RNFS from 'react-native-fs';
 
 import { Activities } from '../../assets/Activities';
 import {
@@ -58,12 +58,13 @@ function isBase64(str) {
   }
 }
 
-const uploadImageToS3 = async (fileUri) => {
+
+const uploadImageToS3 = async (fileUri, chatRoomID) => {
   try {
-    const response = await fetch(fileUri);
-    const blob = await response.blob();
+    const fileData = await RNFS.readFile(fileUri, 'base64');
+    const blob = await Blob.build(fileData, { type: 'image/jpeg;BASE64' });
     const imageName = new Date().toISOString() + '-' + Math.random().toString(36).substring(2, 7);
-    const fileKey = `${route.params.chatRoomID}/${imageName}`;
+    const fileKey = `${chatRoomID}/${imageName}`;
     const result = await Storage.put(fileKey, blob, {
       contentType: 'image/jpeg',
       level: 'public',
@@ -88,6 +89,30 @@ export function ChatScreen({route, navigation}) {
     const [eThreeOtherUser, setEThreeOtherUser] = useState(null);
     const [eThreeInitialized, setEThreeInitialized] = useState(false);
     const [showEncryptionMessage, setShowEncryptionMessage] = useState(true);
+
+
+
+        const selectImage = async () => {
+          let options = {
+            mediaType: 'photo',
+            maxWidth: 300,
+            maxHeight: 300,
+            quality: 1,
+          };
+
+          launchImageLibrary(options, async (response) => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            } else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            } else {
+              console.log('Image URI: ', response.assets[0].uri);
+              const imageUrl = await uploadImageToS3(response.assets[0].uri, myChatRoomID);
+              // Send the image URL as a message
+              onSend([{image: imageUrl}]);
+            }
+          });
+        };
 
   useEffect(() => {
     const initEThree = async () => {
@@ -189,15 +214,17 @@ export function ChatScreen({route, navigation}) {
            // Get sender card with public key
            const senderCard = await eThreeUser.findUsers(sender);
 
-           let decryptedText;
+           let decryptedContent;
            // Decrypt text with the recipient private key and ensure it was written by sender
            try {
-            decryptedText = await eThreeUser.authDecrypt(curr.content, senderCard);
+            decryptedContent = await eThreeUser.authDecrypt(curr.content, senderCard);
            } catch (err) {
             // This might happen if the messages didn't undergo encryption because it was sent before the set up
-            decryptedText = curr.content;
+            decryptedContent = curr.content;
            }
 
+
+            /*
             const msg = {
                 _id: curr.id,
                 text: decryptedText,
@@ -208,8 +235,37 @@ export function ChatScreen({route, navigation}) {
                     avatar: curr.user.imageUri,
                 },
             }
+            */
+            const isImageUrl = decryptedContent.startsWith('http'); // or use a more robust URL check
+            console.log("Image Url ", isImageUrl);
 
+            let msg;
 
+            if (isImageUrl) {
+              // Message is an image
+              msg = {
+                _id: curr.id,
+                image: decryptedContent, // pass the image URL
+                createdAt: curr.createdAt,
+                user: {
+                  _id: curr.user.id,
+                  name: curr.user.name,
+                  avatar: curr.user.imageUri,
+                },
+              };
+            } else {
+              // Message is text
+              msg = {
+                _id: curr.id,
+                text: decryptedContent, // pass the decrypted text
+                createdAt: curr.createdAt,
+                user: {
+                  _id: curr.user.id,
+                  name: curr.user.name,
+                  avatar: curr.user.imageUri,
+                },
+              };
+            }
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
         }
 
@@ -331,7 +387,7 @@ export function ChatScreen({route, navigation}) {
             // console.log("CHeck sender")
 
             // Decrypt text with sender's private key and ensure it was written by sender
-            const decryptedText = await eThreeUser.authDecrypt(newMessage.content, senderCard);
+            const decryptedContent = await eThreeUser.authDecrypt(newMessage.content, senderCard);
 
             /*
             console.log('Sender ID:', sender);
@@ -348,7 +404,38 @@ export function ChatScreen({route, navigation}) {
             console.log('Decrypted message:', decryptedText);
             */
 
+            const isImageUrl = decryptedContent.startsWith('http'); // or use a more robust URL check
 
+            let msg;
+
+            if (isImageUrl) {
+              // Message is an image
+              msg = {
+                _id: newMessage.id,
+                image: decryptedContent, // pass the image URL
+                createdAt: newMessage.createdAt,
+                user: {
+                  _id: newMessage.user.id,
+                  name: newMessage.user.name,
+                  avatar: newMessage.user.imageUri,
+                },
+              };
+            } else {
+              // Message is text
+              msg = {
+                _id: newMessage.id,
+                text: decryptedContent, // pass the decrypted text
+                createdAt: newMessage.createdAt,
+                user: {
+                  _id: newMessage.user.id,
+                  name: newMessage.user.name,
+                  avatar: newMessage.user.imageUri,
+                },
+              };
+            }
+
+
+           /*
             const msg = {
                 _id: newMessage.id,
                 text: decryptedText,
@@ -359,6 +446,7 @@ export function ChatScreen({route, navigation}) {
                     avatar: newMessage.user.imageUri,
                 },
             }
+            */
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
         },
         error: error => console.warn(error.error.errors)
@@ -383,17 +471,16 @@ export function ChatScreen({route, navigation}) {
     // console.log("ENcrrypt:", encryptedText);
 
     // Check if the message has an image
-        const imageObject = newMessage[0].image;
-        let imageURL = null;
-        if (imageObject) {
-          imageURL = await uploadImageToS3(imageObject.uri);
-          if (!imageURL) {
+    let messageContent = newMessage[0].text;
+        if (newMessage[0].image) {
+          const imageUrl = await uploadImageToS3(newMessage[0].image.uri);
+          if (!imageUrl) {
             // Error uploading image, exit function
             return;
           }
+          messageContent = imageUrl; // use the image URL as the message content
         }
-
-     const encryptedText = imageURL ? '' : await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
+     const encryptedText = await eThreeUser.authEncrypt(messageContent, findUsersResult);
 
 
      await API.graphql({
@@ -556,13 +643,27 @@ export function ChatScreen({route, navigation}) {
             _id: route.params.user.id,
             avatar: route.params.user.imageUri,
           }}
+           renderActions={() => (
+                <View style={{
+                    flexDirection: 'row',
+                    paddingLeft: 5,
+                    paddingBottom: 5,
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                  <TouchableOpacity onPress={selectImage}>
+                    <Icon name="camera-outline" size={32} color="black" />
+                  </TouchableOpacity>
+                </View>
+              )}
           renderBubble={renderBubble}
           scrollToBottom
           scrollToBottomComponent={scrollToBottomComponent}
           placeholder='Type your message here...'
           showUserAvatar
           alwaysShowSend
-          renderActions={renderActions}
+          // renderActions={renderActions}
           renderSend={renderSend}
           renderLoading={renderLoading}
           bottomOffset={36}

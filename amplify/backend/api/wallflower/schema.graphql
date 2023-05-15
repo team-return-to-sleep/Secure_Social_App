@@ -38,7 +38,6 @@ type Message @model {
     userID: ID! @index(name: "byUser", sortKeyFields: ["createdAt"], queryField: "messagesByUser")
     chatRoomID: ID! @index(name: "byChatRoom", sortKeyFields: ["createdAt"], queryField: "messagesByChatRoom")
     content: String
-    imageURL: String
     user: User @belongsTo(fields: ["userID"])
     chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
 }
