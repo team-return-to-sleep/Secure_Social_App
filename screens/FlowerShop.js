@@ -55,48 +55,90 @@ const FlowerShop = ({navigation, route}) => {
 
 
     const _buyCowboy = async() => {
-        garden.points = garden.points - 1
-        setUserGarden(garden)
-                await API.graphql(
-                    {
-                        query: updateGarden,
-                        variables: {input: garden},
-                        authMode: "API_KEY"
-                    }
-                )
-        navigation.navigate('PointScreen', {
-                                       paramKey: require('../assets/images/cowboy_flower.png'),
-                                     })
+        if (garden.points >= 1) {
+            garden.points = garden.points - 1
+            setUserGarden(garden)
+            await API.graphql(
+                {
+                    query: updateGarden,
+                    variables: {input: garden},
+                    authMode: "API_KEY"
+                }
+            )
+            navigation.navigate('PointScreen', {
+                                           paramKey: require('../assets/images/cowboy_flower.png'),
+                                         })
+                //{styles.image.width = garden.flowerSize}
+            setUserGarden(garden)
+            await API.graphql(
+                {
+                    query: updateGarden,
+                    variables: {input: garden},
+                    authMode: "API_KEY"
+                }
+            )
+
+        } else {
+            Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
+        }
     }
 
     const _buyRibbon = async() => {
-        garden.points = garden.points - 1
-        setUserGarden(garden)
-                    await API.graphql(
-                        {
-                            query: updateGarden,
-                            variables: {input: garden},
-                            authMode: "API_KEY"
-                        }
-                    )
-        navigation.navigate('PointScreen', {
-                                       paramKey: require('../assets/images/ribbon_flower.png'),
-                                     })
+        if (garden.points >= 1) {
+            garden.points = garden.points - 1
+            setUserGarden(garden)
+            await API.graphql(
+                {
+                    query: updateGarden,
+                    variables: {input: garden},
+                    authMode: "API_KEY"
+                }
+            )
+            navigation.navigate('PointScreen', {
+                                           paramKey: require('../assets/images/ribbon_flower.png'),
+                                         })
+                //{styles.image.width = garden.flowerSize}
+            setUserGarden(garden)
+            await API.graphql(
+                {
+                    query: updateGarden,
+                    variables: {input: garden},
+                    authMode: "API_KEY"
+                }
+            )
+
+        } else {
+            Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
+        }
     }
 
     const _buyHeadphone = async() => {
-        garden.points = garden.points - 1
-        setUserGarden(garden)
-                    await API.graphql(
-                        {
-                            query: updateGarden,
-                            variables: {input: garden},
-                            authMode: "API_KEY"
-                        }
-                    )
-        navigation.navigate('PointScreen', {
-                                       paramKey: require('../assets/images/headphone_flower.png'),
-                                     })
+        if (garden.points >= 1) {
+            garden.points = garden.points - 1
+            setUserGarden(garden)
+            await API.graphql(
+                {
+                    query: updateGarden,
+                    variables: {input: garden},
+                    authMode: "API_KEY"
+                }
+            )
+            navigation.navigate('PointScreen', {
+                                           paramKey: require('../assets/images/headphone_flower.png'),
+                                         })
+            //{styles.image.width = garden.flowerSize}
+            setUserGarden(garden)
+            await API.graphql(
+                {
+                    query: updateGarden,
+                    variables: {input: garden},
+                    authMode: "API_KEY"
+                }
+            )
+
+        } else {
+            Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
+        }
     }
 
     const _reset = async() => {
