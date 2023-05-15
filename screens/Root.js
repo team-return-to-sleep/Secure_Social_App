@@ -33,9 +33,6 @@ const Root = () => {
             <Stack.Screen name="SignUpFlowProfileSpecificInterests" component={SignUpFlowProfileSpecificInterests}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen name="FlowerShop" component={FlowerShop}
-                options={{ headerShown: false }}
-            />
         </Stack.Navigator>
 
     );
