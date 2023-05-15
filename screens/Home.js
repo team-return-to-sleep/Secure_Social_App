@@ -172,6 +172,9 @@ const Home = ({navigation}) => {
                         );
                     })}
                 </View>
+                <View style={{marginBottom:26}}>
+                    <Text> {'\n\n'} </Text>
+                </View>
             </ScrollView>
         );
 };

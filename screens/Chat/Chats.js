@@ -107,17 +107,20 @@ const Chats = ({navigation}) => {
         setMyUserData(myData)
         let myRooms = myData.chatRoomUser.items
         let exists = false
+
         // console.log(myRooms)
         // console.log(myUserData.chatRoomUser.items)
-
+        //myRooms.map(e => console.log("DEBUG: ", e.chatRoom.chatRoomUsers.items))
         if (myRooms) {
             for (let i=0; i<myRooms.length; i++) {
                 // TODO: room with yourself; do we still want this since you can't create a room
                 // TODO: with yourself with the current UI
+
                 if (myUserData.id == otherUser.id) {
                     if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id &&
                         myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
                         // room with this person already exists!
+
                         console.log("room exists!")
                         navigation.navigate("ChatScreen", {
                             chatRoomID: myRooms[i].chatRoomID,
