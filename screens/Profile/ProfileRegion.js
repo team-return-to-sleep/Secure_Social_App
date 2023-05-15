@@ -40,7 +40,15 @@ const ProfileRegion = ({route, navigation}) => {
         }
 
         navigation.navigate("ProfileInterests", {user: selfData.data.getUser});
+        console.log(region)
+        console.log(selfData.data.getUser.region)
+        console.log("done")
        }
+
+    const onPressRegion = async(region) => {
+        setIsPress(region)
+        setRegion(region)
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -53,27 +61,27 @@ const ProfileRegion = ({route, navigation}) => {
 
                                 <TouchableHighlight style = {isPress=="Northeast" ? styles.selected : styles.regions}
                                     underlayColor = {'#ffffff'}
-                                    onPress={(region)=>setRegion("Northeast"), (isPress)=>setIsPress('Northeast')}>
+                                    onPress={()=>onPressRegion("Northeast")}>
                                     <Text>Northeast</Text>
                                 </TouchableHighlight>
                                <TouchableHighlight style = {isPress=="Southeast" ? styles.selected : styles.regions}
                                     underlayColor = {'#ffffff'}
-                                    onPress={(region)=>setRegion("Southeast"), (isPress)=>setIsPress('Southeast')}>
+                                    onPress={()=>onPressRegion("Southeast")}>
                                     <Text>Southeast</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight style = {isPress=="Southwest" ? styles.selected : styles.regions}
                                     underlayColor = {'#ffffff'}
-                                    onPress={(region)=>setRegion("Southwest"), (isPress)=>setIsPress('Southwest')}>
+                                    onPress={()=>onPressRegion("Southwest")}>
                                     <Text>Southwest</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight style = {isPress=="West" ? styles.selected : styles.regions}
                                     underlayColor = {'#ffffff'}
-                                    onPress={(region)=>setRegion("West"), (isPress)=>setIsPress('West')}>
+                                    onPress={()=>onPressRegion("West")}>
                                     <Text>West</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight style = {isPress=="Midwest" ? styles.selected : styles.regions}
                                     underlayColor = {'#ffffff'}
-                                    onPress={(region)=>setRegion("Midwest"), (isPress)=>setIsPress('Midwest')}>
+                                    onPress={()=>onPressRegion("Midwest")}>
                                     <Text>Midwest</Text>
                                 </TouchableHighlight>
                 </View>

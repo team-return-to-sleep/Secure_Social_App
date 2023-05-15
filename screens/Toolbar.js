@@ -61,7 +61,7 @@ const Toolbar = () => {
             <Tab.Screen name="Home" component={Root} options={{ headerShown: false}} />
             <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
             <Tab.Screen name="Chats" component={ChatRoot} options={{ headerShown: false}} />
-            <Tab.Screen name="PointScreen" component={PointScreen} options={{ headerShown: false}} />
+            <Tab.Screen name="PointScreen" component={PointScreen} initialParams={{paramKey: null}} options={{ headerShown: false}} />
             <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
     );

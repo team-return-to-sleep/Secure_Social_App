@@ -11,6 +11,7 @@ import UserProfile from './UserProfile'
 import OtherUserProfile from './OtherUserProfile'
 import SignUpFlowProfileBasicSetup from './Profile/SignUpFlowProfileBasicSetup'
 import SignUpFlowProfileSpecificInterests from './Profile/SignUpFlowProfileSpecificInterests'
+import FlowerShop from './FlowerShop'
 
 const Stack = createNativeStackNavigator()
 
@@ -30,6 +31,9 @@ const Root = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="SignUpFlowProfileSpecificInterests" component={SignUpFlowProfileSpecificInterests}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="FlowerShop" component={FlowerShop}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

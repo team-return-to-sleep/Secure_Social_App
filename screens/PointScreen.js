@@ -13,9 +13,15 @@ import {getUser, getGarden} from '../src/graphql/queries'
 import {createGarden, updateGarden} from '../src/graphql/mutations'
 
 import Header from './Header'
+import FlowerShop from './FlowerShop'
 
 
-const PointScreen = () => {
+const PointScreen = ({navigation,route}) => {
+    //console.log(route.params.paramKey)
+    var flowerStyle = require('../assets/images/original_flower.png')
+    if (route.params.paramKey != null) {
+            flowerStyle = route.params.paramKey
+        }
     const default_garden = {
         userID: "0",
         id: "0",
@@ -46,6 +52,10 @@ const PointScreen = () => {
         }
     }, [isFocused])
 
+    const _toShop = async() => {
+        navigation.navigate("FlowerShop")
+    }
+
     const _waterPlant = async () => {
         const garden = {
             flowerSize: userGarden.flowerSize,
@@ -53,10 +63,10 @@ const PointScreen = () => {
             points: userGarden.points,
             userID: userGarden.userID,
         }
-        if (garden.points >= 10) {
+        if (garden.points >= 1) {
             try {
                 //await AsyncStorage.setItem('flowerPoints', (points-10).toString())
-                garden.points = garden.points - 10
+                garden.points = garden.points - 1
                 garden.flowerSize = garden.flowerSize + 40
             } catch (error) {
                 console.log("error saving flower data")
@@ -86,11 +96,11 @@ const PointScreen = () => {
                     Points: {userGarden.points}
             </Title>
             <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
+            <Appbar.Action style={styles.button} icon="watering-can" onPress={_toShop} />
         </Appbar.Header>
         <View style={styles.imageBox}>
-            <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                source={require('../assets/images/smile_flower.png')}
-            />
+                <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
+                    source={flowerStyle}/>
         </View>
     </View>
  );
