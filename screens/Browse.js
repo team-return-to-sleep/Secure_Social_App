@@ -101,6 +101,7 @@ const Browse = ({navigation}) => {
             usernameFilteredUsers.current = usersData.data.listUsers.items
             ageFilteredUsers.current = usersData.data.listUsers.items
             regionFilteredUsers.current = usersData.data.listUsers.items
+            interestsFilteredUsers.current = usersData.data.listUsers.items
         }
         fetchUsers();
     }, []);
