@@ -48,7 +48,15 @@ const Chats = ({navigation}) => {
                     }
                 )
                 setMyUserData(userData.data.getUser)
-                const myFriends = userData.data.getUser.friends
+                let myFriends = userData.data.getUser.friends
+
+                var blockedIDs = userData.data.getUser.blockedUsers
+                if (myFriends && blockedIDs) {
+                    myFriends = myFriends.filter(e => blockedIDs.includes(e) === false)
+                }
+                myFriends = myFriends.filter(e => !e.blockedUsers ||
+                        e.blockedUsers && (e.blockedUsers.includes(userData.data.getUser.id) === false))
+
                 const friendUsers = []
                 if (myFriends) {
                     for (let i=0; i<myFriends.length; i++) {
@@ -99,17 +107,20 @@ const Chats = ({navigation}) => {
         setMyUserData(myData)
         let myRooms = myData.chatRoomUser.items
         let exists = false
+
         // console.log(myRooms)
         // console.log(myUserData.chatRoomUser.items)
-
+        //myRooms.map(e => console.log("DEBUG: ", e.chatRoom.chatRoomUsers.items))
         if (myRooms) {
             for (let i=0; i<myRooms.length; i++) {
                 // TODO: room with yourself; do we still want this since you can't create a room
                 // TODO: with yourself with the current UI
+
                 if (myUserData.id == otherUser.id) {
                     if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id &&
                         myRooms[i].chatRoom.chatRoomUsers.items[1].userID == otherUser.id) {
                         // room with this person already exists!
+
                         console.log("room exists!")
                         navigation.navigate("ChatScreen", {
                             chatRoomID: myRooms[i].chatRoomID,
@@ -201,12 +212,13 @@ const Chats = ({navigation}) => {
                     showsHorizontalScrollIndicator={false}
                 >
                     {users.map((user) => {
+                        if (user){
                         return (
                             <Image
                                 style={styles.profileImage}
                                 source={{uri: user.imageUri}}
                             />
-                        );
+                        );}
                     })}
                 </ScrollView>
             </SafeAreaView>
@@ -235,6 +247,7 @@ const Chats = ({navigation}) => {
 
             <View style={styles.chatWrapper}>
                 {users.map((user) => {
+                    if(user){
                     return (
                         <View style={styles.chatContainer}>
                             <Pressable
@@ -254,6 +267,7 @@ const Chats = ({navigation}) => {
                             </Pressable>
                         </View>
                     );
+                    }
                 })}
             </View>
             <View style={{marginBottom:26}}>

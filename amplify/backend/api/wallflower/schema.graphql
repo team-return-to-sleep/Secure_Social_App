@@ -12,6 +12,7 @@ type User @model {
     interests: [Interest] @hasMany(indexName: "byUser", fields: ["id"])
     favoriteInterests: [Interest] @hasMany(indexName: "byUser", fields: ["id"])
     friends: [String]
+    blockedUsers: [String]
     chatRoomUser: [ChatRoomUser] @hasMany(indexName: "byUser", fields: ["id"])
     message: [Message] @hasMany(indexName: "byUser", fields: ["id"])
     garden: Garden @hasOne(fields: ["id"])

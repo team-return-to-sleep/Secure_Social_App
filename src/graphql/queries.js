@@ -33,6 +33,7 @@ export const getUser = /* GraphQL */ `
         nextToken
       }
       friends
+      blockedUsers
       chatRoomUser {
         items {
           id
@@ -59,6 +60,7 @@ export const getUser = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -76,6 +78,7 @@ export const getUser = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -103,17 +106,20 @@ export const listUsers = /* GraphQL */ `
         status
         interests {
             items {
-              id
-              userID
-              categoryName
-              specificNames
+                id
+                userID
+                categoryName
+                specificNames
+                createdAt
+                updatedAt
             }
-          nextToken
+            nextToken
         }
         favoriteInterests {
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -155,6 +161,7 @@ export const getChatRoomUser = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -207,6 +214,7 @@ export const listChatRoomUsers = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -243,6 +251,7 @@ export const getChatRoom = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -282,6 +291,7 @@ export const getMessage = /* GraphQL */ `
       userID
       chatRoomID
       content
+      imageURL
       user {
         id
         name
@@ -296,6 +306,7 @@ export const getMessage = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -341,6 +352,7 @@ export const listMessages = /* GraphQL */ `
         userID
         chatRoomID
         content
+        imageURL
         user {
           id
           name
@@ -349,6 +361,7 @@ export const listMessages = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -384,6 +397,7 @@ export const getGarden = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -426,6 +440,7 @@ export const listGardens = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -496,6 +511,7 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -538,6 +554,7 @@ export const chatRoomUsersByUserID = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -582,6 +599,7 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -620,6 +638,7 @@ export const messagesByUser = /* GraphQL */ `
         userID
         chatRoomID
         content
+        imageURL
         user {
           id
           name
@@ -628,6 +647,7 @@ export const messagesByUser = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -665,6 +685,7 @@ export const messagesByChatRoom = /* GraphQL */ `
         userID
         chatRoomID
         content
+        imageURL
         user {
           id
           name
@@ -673,6 +694,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
