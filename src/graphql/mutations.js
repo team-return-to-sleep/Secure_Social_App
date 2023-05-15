@@ -36,6 +36,7 @@ export const createUser = /* GraphQL */ `
         nextToken
       }
       friends
+      blockedUsers
       chatRoomUser {
         items {
           id
@@ -53,6 +54,7 @@ export const createUser = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -70,6 +72,7 @@ export const createUser = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -116,6 +119,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
       }
       friends
+      blockedUsers
       chatRoomUser {
         items {
           id
@@ -133,6 +137,7 @@ export const updateUser = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -150,6 +155,7 @@ export const updateUser = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -196,6 +202,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
       }
       friends
+      blockedUsers
       chatRoomUser {
         items {
           id
@@ -213,6 +220,7 @@ export const deleteUser = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -230,6 +238,7 @@ export const deleteUser = /* GraphQL */ `
           region
           status
           friends
+          blockedUsers
           createdAt
           updatedAt
         }
@@ -264,6 +273,7 @@ export const createChatRoomUser = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -320,6 +330,7 @@ export const updateChatRoomUser = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -376,6 +387,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -433,6 +445,7 @@ export const createChatRoom = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -466,6 +479,7 @@ export const updateChatRoom = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -499,6 +513,7 @@ export const deleteChatRoom = /* GraphQL */ `
           userID
           chatRoomID
           content
+          imageURL
           updatedAt
         }
         nextToken
@@ -519,6 +534,7 @@ export const createMessage = /* GraphQL */ `
       userID
       chatRoomID
       content
+      imageURL
       user {
         id
         name
@@ -533,6 +549,7 @@ export const createMessage = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -576,6 +593,7 @@ export const updateMessage = /* GraphQL */ `
       userID
       chatRoomID
       content
+      imageURL
       user {
         id
         name
@@ -590,6 +608,7 @@ export const updateMessage = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -633,6 +652,7 @@ export const deleteMessage = /* GraphQL */ `
       userID
       chatRoomID
       content
+      imageURL
       user {
         id
         name
@@ -647,6 +667,7 @@ export const deleteMessage = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -703,6 +724,7 @@ export const createGarden = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -749,6 +771,7 @@ export const updateGarden = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }
@@ -795,6 +818,7 @@ export const deleteGarden = /* GraphQL */ `
           nextToken
         }
         friends
+        blockedUsers
         chatRoomUser {
           nextToken
         }

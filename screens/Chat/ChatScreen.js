@@ -81,6 +81,8 @@ export function ChatScreen({route, navigation}) {
     const myChatRoomID = route.params.chatRoomID;
     const myUserData = route.params.user;
     const otherUser = route.params.otherUser;
+
+    const [myGarden, setMyGarden] = useState();
     const [messages, setMessages] = useState([]);
     const [points, setPoints] = useState(0);
 
@@ -276,14 +278,17 @@ export function ChatScreen({route, navigation}) {
                         )
                     }
                     loadPoints();
+                    setMyGarden(garden)
                 } catch (error) {
                     console.log("CHATSCREEN: could not save flower points")
                 }
-                }
-            }, [isFocused])
+    }
+
+    }, [isFocused])
 
     useEffect(() => {
         const setFlowerPoints = async () => {
+            let garden = myGarden
             try {
                 console.log("prev (curr) points: ", garden.points)
                 garden.points = garden.points + 10
@@ -295,6 +300,7 @@ export function ChatScreen({route, navigation}) {
                         authMode: "API_KEY"
                     }
                 )
+                setMyGarden(garden)
                         //console.log("prev (curr) points: ", parseInt(val))
                         //await AsyncStorage.setItem('flowerPoints', (parseInt(val)+10).toString())
             } catch (error) {

@@ -34,10 +34,7 @@ const awsmobile = {
     "aws_appsync_graphqlEndpoint": "https://gqcty2xkxfcczpj2r3i53chopu.appsync-api.us-west-2.amazonaws.com/graphql",
     "aws_appsync_region": "us-west-2",
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
-    "aws_appsync_apiKey": "da2-hi2ekwcfvfawzl3oziuhodlbzu",
-
-    "aws_user_files_s3_bucket": "amplify-wallflower-staging-63629-deployment",
-    "aws_user_files_s3_bucket_region": "us-west-2"
+    "aws_appsync_apiKey": "da2-hi2ekwcfvfawzl3oziuhodlbzu"
 };
 
 

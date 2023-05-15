@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
+import { useIsFocused } from "@react-navigation/native";
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
 import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,14 +14,79 @@ import {API, graphqlOperation} from '@aws-amplify/api'
 import Header from './Header'
 
 const OtherUserProfile = ({route, navigation}) => {
-    const [info, setInfo] = useState({
-        name:"loading",
-        interests:"loading",
-        age:"loading"
-    })
+//    const [info, setInfo] = useState({
+//        name:"loading",
+//        interests:"loading",
+//        age:"loading"
+//    })
 
     const {user} = route.params;
+    const [isBlocked, setIsBlocked] = useState(false);
+    const [myUser, setMyUser] = useState()
+    const isFocused = useIsFocused()
     //console.log("OTHER USER: ", user)
+
+    useEffect( ()=> {
+        if(isFocused){
+            const fetchUser = async() => {
+                const userInfo = await Auth.currentAuthenticatedUser();
+                const userData = await API.graphql (
+                    {
+                        query: getUser,
+                        variables: {id: userInfo.attributes.sub},
+                        authMode: "API_KEY"
+                    }
+                )
+
+                let blockList = userData.data.getUser.blockedUsers
+                console.log("BLOCKLIST: ", blockList)
+                if (blockList && blockList.includes(user.id.toString())) {
+                    // already blocked
+                    setIsBlocked(true)
+                } else {
+                    setIsBlocked(false)
+                }
+
+                setMyUser(userData.data.getUser)
+            }
+            fetchUser()
+        }
+    }, [isFocused])
+
+    const onBlockClickHandler = async () => {
+        let blockedIDs = myUser.blockedUsers
+        if (isBlocked) {
+            // unblock
+            if (!blockedIDs) {
+                // do nothing
+            } else {
+                blockedIDs = blockedIDs.filter(e => e !== user.id.toString())
+            }
+
+            setIsBlocked(false)
+        } else {
+            // block
+            if (!blockedIDs) {
+                blockedIDs = [user.id.toString()]
+            } else {
+                blockedIDs.push(user.id.toString())
+            }
+            setIsBlocked(true)
+        }
+
+        const updatedUser = {
+            id: myUser.id,
+            blockedUsers: blockedIDs,
+        };
+
+        const updated = await API.graphql (
+            {
+                query: updateUser,
+                variables: {input: updatedUser},
+                authMode: "API_KEY"
+            }
+        )
+    }
 
     const onClickHandler = async () => {
         const userInfo = await Auth.currentAuthenticatedUser();
@@ -111,6 +177,12 @@ const OtherUserProfile = ({route, navigation}) => {
                                 style={styles.chatButton}
                                 onPress={() => onClickHandler()}>
                                     Start Chatting!
+                </Button>
+                <Button icon="account-cancel"
+                                mode="contained"
+                                style={styles.chatButton}
+                                onPress={() => onBlockClickHandler()}>
+                                    {isBlocked ? (<>Unblock</>) : (<>Block</>)}
                 </Button>
                 </View>
 

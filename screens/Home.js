@@ -79,7 +79,7 @@ const Home = ({navigation}) => {
 
                     //console.log("DEBUG SELF: ", selfData.data.getUser.interests.items)
 
-
+                    const selfID = selfData.data.getUser.id
                     const selfName = selfData.data.getUser.name
                     const selfAge = selfData.data.getUser.age
                     const selfRegion = selfData.data.getUser.region
@@ -100,6 +100,13 @@ const Home = ({navigation}) => {
                     )
 
                     var allUsers = usersData.data.listUsers.items;
+                    var blockedIDs = selfData.data.getUser.blockedUsers
+                    if (blockedIDs) {
+                        allUsers = allUsers.filter(e => blockedIDs.includes(e.id) === false)
+                    }
+                    allUsers = allUsers.filter(e => !e.blockedUsers ||
+                        e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
+                    console.log("HOME BLOCKED USERS: ", blockedIDs)
                     //console.log("DEBUG ALL: ", allUsers)
 
                     let compareInterests = (a1, a2) =>
