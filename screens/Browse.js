@@ -5,8 +5,9 @@ import {View,Text,SafeAreaView,Image,Pressable,StyleSheet,ScrollView,Alert,Statu
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import {listUsers} from '../src/graphql/queries'
+import {getUser, listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
+import {Auth} from 'aws-amplify'
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import { MultiSelect } from 'react-native-element-dropdown';
@@ -21,6 +22,7 @@ const Browse = ({navigation}) => {
     const [users, setUsers] = useState([])
     const [searchedUsers, setSearched] = useState([])
     const [currUsers, setCurr] = useState([])
+    const [selfData, setSelfData] = useState()
 
 //    const [usernameFilteredUsers, setUsernameFilteredUsers] = useState([])
 //    const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
@@ -97,7 +99,28 @@ const Browse = ({navigation}) => {
                 }
             )
             setUsers(usersData)
-            setCurr(usersData.data.listUsers.items)
+
+            const selfInfo = await Auth.currentAuthenticatedUser();
+            const selfData = await API.graphql (
+                {
+                    query: getUser,
+                    variables: {id: selfInfo.attributes.sub},
+                    authMode: "API_KEY"
+                }
+            )
+
+            var allUsers = usersData.data.listUsers.items;
+            var selfID = selfData.data.getUser.id
+            var blockedIDs = selfData.data.getUser.blockedUsers
+            if (blockedIDs) {
+                allUsers = allUsers.filter(e => blockedIDs.includes(e.id) === false)
+            }
+            allUsers = allUsers.filter(e => !e.blockedUsers ||
+                e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
+
+            setCurr(allUsers)
+            setSelfData(selfData)
+
             usernameFilteredUsers.current = usersData.data.listUsers.items
             ageFilteredUsers.current = usersData.data.listUsers.items
             regionFilteredUsers.current = usersData.data.listUsers.items
@@ -119,7 +142,16 @@ const Browse = ({navigation}) => {
                 authMode: "API_KEY"
             }
         )
-        usernameFilteredUsers.current = usernameFilteredUsersData.data.listUsers.items
+
+        var allUsers = usernameFilteredUsersData.data.listUsers.items
+        var blockedIDs = selfData.data.getUser.blockedUsers
+        if (blockedIDs) {
+            allUsers = allUsers.filter(e => blockedIDs.includes(e.id) === false)
+        }
+        allUsers = allUsers.filter(e => !e.blockedUsers ||
+            e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
+
+        usernameFilteredUsers.current = allUsers
 //        console.log("USERNAME")
 //        console.log(usernameFilteredUsers.current)
 //        console.log("AGE")
@@ -317,20 +349,23 @@ const Browse = ({navigation}) => {
 
 
                 <View style={styles.profileWrapper}>
-                    {
-                    currUsers.map((user) => {
-                        return (
-                            <Pressable
-                                style={styles.profile}
-                                onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
-                            >
-                                <Image
+                    { currUsers.length > 0 ? (
+                        currUsers.map((user) => {
+                            return (
+                                <Pressable
                                     style={styles.profile}
-                                    source={{uri: user.imageUri}}
-                                />
-                            </Pressable>
-                        );
-                    })}
+                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
+                                >
+                                    <Image
+                                        style={styles.profile}
+                                        source={{uri: user.imageUri}}
+                                    />
+                                </Pressable>
+                            );
+                        })) : (
+                            <Text>No Users Found</Text>
+                        )
+                    }
                 </View>
         </ScrollView>
     );
