@@ -37,16 +37,52 @@ const PointScreen = ({navigation,route}) => {
         if (isFocused) {
             const fetchUser = async () => {
                 const userInfo = await Auth.currentAuthenticatedUser();
-                const userData = await API.graphql (
+//                const userData = await API.graphql (
+//                    {
+//                        query: getUser,
+//                        variables: {id: userInfo.attributes.sub},
+//                        authMode: "API_KEY"
+//                    }
+//                )
+                let userGarden = await API.graphql(
                     {
-                        query: getUser,
+                        query: getGarden,
                         variables: {id: userInfo.attributes.sub},
-                        authMode: "API_KEY"
+                        authMode: "API_KEY",
                     }
                 )
-                setUserGarden(userData.data.getUser.garden)
-                console.log("POINTSCREEN GARDEN: ", userData.data.getUser.garden)
-                setPoints(userData.data.getUser.garden.points)
+
+                if (userGarden) {
+                        garden = {
+                            flowerSize: userGarden.data.getGarden.flowerSize,
+                            id: userGarden.data.getGarden.id,
+                            userID: userGarden.data.getGarden.userID,
+                            points: userGarden.data.getGarden.points,
+                        }
+                        console.log("garden exists; flower points: ", garden.points)
+                        //setPoints(parseInt(val))
+                } else {
+        //                await AsyncStorage.setItem('flowerPoints', '20')
+        //                setPoints(20)
+                        garden = {
+                            userID: myUserData.id,
+                            id: myUserData.id,
+                            flowerSize: 120,
+                            points: 10
+                        }
+                        await API.graphql(
+                            {
+                                query: createGarden,
+                                variables: {input: garden},
+                                authMode: "API_KEY"
+                            }
+                        )
+                        console.log("created new garden!")
+                }
+                    //loadPoints();
+                setUserGarden(garden)
+                console.log("POINTSCREEN GARDEN: ", garden)
+                setPoints(garden.points)
             }
             fetchUser()
         }
@@ -96,7 +132,7 @@ const PointScreen = ({navigation,route}) => {
                     Points: {userGarden.points}
             </Title>
             <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
-            <Appbar.Action style={styles.button} icon="watering-can" onPress={_toShop} />
+            <Appbar.Action style={styles.button} icon="shopping" onPress={_toShop} />
         </Appbar.Header>
         <View style={styles.imageBox}>
                 <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}

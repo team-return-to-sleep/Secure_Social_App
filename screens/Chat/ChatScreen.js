@@ -277,18 +277,21 @@ export function ChatScreen({route, navigation}) {
                             }
                         )
                     }
-                    loadPoints();
+                    //loadPoints();
                     setMyGarden(garden)
+                    console.log("GARDEN SET ", garden)
                 } catch (error) {
-                    console.log("CHATSCREEN: could not save flower points")
+                    console.log("CHATSCREEN: could not save flower points; ", error)
                 }
     }
+    setFlowerPoints();
 
-    }, [isFocused])
+  }, [isFocused])
 
     useEffect(() => {
         const setFlowerPoints = async () => {
             let garden = myGarden
+            console.log("DEBUG GARDEN ", garden)
             try {
                 console.log("prev (curr) points: ", garden.points)
                 garden.points = garden.points + 10
@@ -304,7 +307,7 @@ export function ChatScreen({route, navigation}) {
                         //console.log("prev (curr) points: ", parseInt(val))
                         //await AsyncStorage.setItem('flowerPoints', (parseInt(val)+10).toString())
             } catch (error) {
-                console.log("error retrieving flower data")
+                console.log("error retrieving flower data: ", error)
             }
         }
 
