@@ -14,11 +14,11 @@ import {createGarden, updateGarden} from '../src/graphql/mutations'
 
 import Header from './Header'
 import FlowerShop from './FlowerShop'
-
+import Outfits from '../assets/images/Outfits';
 
 const PointScreen = ({navigation,route}) => {
     //console.log(route.params.paramKey)
-    var flowerStyle = require('../assets/images/original_flower.png')
+    //var flowerStyle = require('../assets/images/original_flower.png')
     if (route.params.paramKey != null) {
             flowerStyle = route.params.paramKey
         }
@@ -26,10 +26,12 @@ const PointScreen = ({navigation,route}) => {
         userID: "0",
         id: "0",
         flowerSize: 120,
-        points: 10
+        points: 100,
+        flowerOutfit: require('../assets/images/original_flower.png'),
     }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
+    const [outfit, setOutfit] = useState("")
     const [size, setSize] = useState(120)
     const [userGarden, setUserGarden] = useState(default_garden)
 
@@ -37,13 +39,7 @@ const PointScreen = ({navigation,route}) => {
         if (isFocused) {
             const fetchUser = async () => {
                 const userInfo = await Auth.currentAuthenticatedUser();
-//                const userData = await API.graphql (
-//                    {
-//                        query: getUser,
-//                        variables: {id: userInfo.attributes.sub},
-//                        authMode: "API_KEY"
-//                    }
-//                )
+
                 let userGarden = await API.graphql(
                     {
                         query: getGarden,
@@ -51,24 +47,26 @@ const PointScreen = ({navigation,route}) => {
                         authMode: "API_KEY",
                     }
                 )
+                console.log("USER INFO", userGarden)
 
                 if (userGarden) {
-                        garden = {
+                        console.log("here")
+                        var garden = {
                             flowerSize: userGarden.data.getGarden.flowerSize,
                             id: userGarden.data.getGarden.id,
                             userID: userGarden.data.getGarden.userID,
                             points: userGarden.data.getGarden.points,
+                            flowerOutfit: userGarden.data.getGarden.flowerOutfit,
                         }
                         console.log("garden exists; flower points: ", garden.points)
-                        //setPoints(parseInt(val))
+
                 } else {
-        //                await AsyncStorage.setItem('flowerPoints', '20')
-        //                setPoints(20)
                         garden = {
                             userID: myUserData.id,
                             id: myUserData.id,
                             flowerSize: 120,
-                            points: 10
+                            points: 10,
+                            flowerOutfit: require('../assets/images/original_flower.png'),
                         }
                         await API.graphql(
                             {
@@ -79,9 +77,8 @@ const PointScreen = ({navigation,route}) => {
                         )
                         console.log("created new garden!")
                 }
-                    //loadPoints();
                 setUserGarden(garden)
-                console.log("POINTSCREEN GARDEN: ", garden)
+                console.log("POINTSCREEN GARDEN: ", userGarden)
                 setPoints(garden.points)
             }
             fetchUser()
@@ -98,17 +95,19 @@ const PointScreen = ({navigation,route}) => {
             id: userGarden.id,
             points: userGarden.points,
             userID: userGarden.userID,
+            flowerOutfit: userGarden.flowerOutfit,
         }
+        console.log("POINTSCREEN GARDEN: ", garden)
         if (garden.points >= 1) {
+            console.log(garden.points)
+            console.log(garden.flowerOutfit)
             try {
-                //await AsyncStorage.setItem('flowerPoints', (points-10).toString())
                 garden.points = garden.points - 1
                 garden.flowerSize = garden.flowerSize + 40
             } catch (error) {
                 console.log("error saving flower data")
             }
             //{styles.image.width = garden.flowerSize}
-            console.log("POINTSCREEN GARDEN: ", garden)
             setUserGarden(garden)
             await API.graphql(
                 {
@@ -131,12 +130,14 @@ const PointScreen = ({navigation,route}) => {
             <Title style={styles.name}>
                     Points: {userGarden.points}
             </Title>
-            <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
-            <Appbar.Action style={styles.button} icon="shopping" onPress={_toShop} />
+            <View style={styles.actionsBar}>
+                <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
+                <Appbar.Action style={styles.button} icon="shopping" onPress={_toShop} />
+            </View>
         </Appbar.Header>
         <View style={styles.imageBox}>
                 <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                    source={flowerStyle}/>
+                    source={Number(userGarden.flowerOutfit)}/>
         </View>
     </View>
  );
@@ -152,6 +153,12 @@ const styles = StyleSheet.create({
     },
     points: {
         float: 'right',
+    },
+    actionsBar: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        marginBottom: 7,
     },
     button: {
         float: 'right',

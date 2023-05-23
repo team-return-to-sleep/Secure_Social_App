@@ -622,7 +622,7 @@ const styles = StyleSheet.create({
 
     //BREAK
     gameButton: {
-        paddingLeft: 50,
+        paddingLeft: 30,
         marginBottom: '-10%',
         width: 30,
         height: 30,

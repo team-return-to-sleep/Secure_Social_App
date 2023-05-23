@@ -16,76 +16,102 @@ import Header from './Header'
 import PointScreen from './PointScreen'
 
 
-const FlowerShop = ({navigation, route}) => {
+const FlowerShop = ({navigation}) => {
     const default_garden = {
         userID: "0",
         id: "0",
         flowerSize: 120,
-        points: 10
+        points: 10,
+        flowerOutfit: require('../assets/images/original_flower.png'),
     }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
     const [size, setSize] = useState(120)
+    const [outfit, setOutfit] = useState("")
     const [userGarden, setUserGarden] = useState(default_garden)
 
     useEffect(() => {
-        if (isFocused) {
-            const fetchUser = async () => {
-                const userInfo = await Auth.currentAuthenticatedUser();
-                const userData = await API.graphql (
-                    {
-                        query: getUser,
-                        variables: {id: userInfo.attributes.sub},
-                        authMode: "API_KEY"
+            if (isFocused) {
+                const fetchUser = async () => {
+                    const userInfo = await Auth.currentAuthenticatedUser();
+
+                    let userGarden = await API.graphql(
+                        {
+                            query: getGarden,
+                            variables: {id: userInfo.attributes.sub},
+                            authMode: "API_KEY",
+                        }
+                    )
+                    console.log("USER INFO", userGarden)
+
+                    if (userGarden) {
+                            console.log("here")
+                            var garden = {
+                                flowerSize: userGarden.data.getGarden.flowerSize,
+                                id: userGarden.data.getGarden.id,
+                                userID: userGarden.data.getGarden.userID,
+                                points: userGarden.data.getGarden.points,
+                                flowerOutfit: userGarden.data.getGarden.flowerOutfit,
+                            }
+                            console.log("garden exists; flower points: ", garden.points)
+
+                    } else {
+                            garden = {
+                                userID: myUserData.id,
+                                id: myUserData.id,
+                                flowerSize: 120,
+                                points: 10,
+                                flowerOutfit: require('../assets/images/original_flower.png')
+                                //flowerOutfit: require('../assets/images/original_flower.png'),
+                            }
+                            await API.graphql(
+                                {
+                                    query: createGarden,
+                                    variables: {input: garden},
+                                    authMode: "API_KEY"
+                                }
+                            )
+                            console.log("created new garden!")
                     }
-                )
-                setUserGarden(userData.data.getUser.garden)
-                setPoints(userData.data.getUser.garden.points)
+                    setUserGarden(garden)
+                    console.log("POINTSCREEN GARDEN: ", userGarden)
+                    setPoints(garden.points)
+                }
+                fetchUser()
             }
-            fetchUser()
-        }
-    }, [isFocused])
+        }, [isFocused])
 
     const garden = {
         flowerSize: userGarden.flowerSize,
         id: userGarden.id,
         points: userGarden.points,
         userID: userGarden.userID,
+        flowerOutfit: userGarden.flowerOutfit,
     }
 
-
+    // NOTE: VERY UNOPTIMAL CODE JUST TO GET THINGS WORKING FIRST
     const _buyCowboy = async() => {
         if (garden.points >= 1) {
-            garden.points = garden.points - 1
-            setUserGarden(garden)
-            await API.graphql(
-                {
-                    query: updateGarden,
-                    variables: {input: garden},
-                    authMode: "API_KEY"
+                    garden.points = garden.points - 1
+                    garden.flowerOutfit = require('../assets/images/cowboy_flower.png')
+                    setUserGarden(garden)
+                    await API.graphql(
+                        {
+                            query: updateGarden,
+                            variables: {input: garden},
+                            authMode: "API_KEY"
+                        }
+                    )
+                    navigation.navigate('PointScreen')
+                } else {
+                    Alert.alert("You don't have enough points :(")
                 }
-            )
-            navigation.navigate('PointScreen', {
-                                           paramKey: require('../assets/images/cowboy_flower.png'),
-                                         })
-                //{styles.image.width = garden.flowerSize}
-            setUserGarden(garden)
-            await API.graphql(
-                {
-                    query: updateGarden,
-                    variables: {input: garden},
-                    authMode: "API_KEY"
-                }
-            )
-
-        } else {
-            Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
-        }
     }
 
     const _buyRibbon = async() => {
         if (garden.points >= 1) {
             garden.points = garden.points - 1
+            garden.flowerOutfit = require('../assets/images/ribbon_flower.png')
             setUserGarden(garden)
             await API.graphql(
                 {
@@ -94,26 +120,17 @@ const FlowerShop = ({navigation, route}) => {
                     authMode: "API_KEY"
                 }
             )
-            navigation.navigate('PointScreen', {
-                                           paramKey: require('../assets/images/ribbon_flower.png'),
-                                         })
-                //{styles.image.width = garden.flowerSize}
-            setUserGarden(garden)
-            await API.graphql(
-                {
-                    query: updateGarden,
-                    variables: {input: garden},
-                    authMode: "API_KEY"
-                }
-            )
-
+            navigation.navigate('PointScreen')
         } else {
-            Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
+            Alert.alert("You don't have enough points :(")
         }
     }
 
     const _buyHeadphone = async() => {
+        console.log(garden.points)
+        console.log(garden.flowerOutfit)
         if (garden.points >= 1) {
+            garden.flowerOutfit = require('../assets/images/headphone_flower.png')
             garden.points = garden.points - 1
             setUserGarden(garden)
             await API.graphql(
@@ -123,66 +140,74 @@ const FlowerShop = ({navigation, route}) => {
                     authMode: "API_KEY"
                 }
             )
-            navigation.navigate('PointScreen', {
-                                           paramKey: require('../assets/images/headphone_flower.png'),
-                                         })
-            //{styles.image.width = garden.flowerSize}
-            setUserGarden(garden)
-            await API.graphql(
-                {
-                    query: updateGarden,
-                    variables: {input: garden},
-                    authMode: "API_KEY"
-                }
-            )
-
+            navigation.navigate('PointScreen')
         } else {
-            Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
+            Alert.alert("You don't have enough points :(")
         }
     }
 
     const _reset = async() => {
-        navigation.navigate('PointScreen', {
-                                       paramKey: require('../assets/images/original_flower.png'),
-                                     })
+        garden.flowerOutfit = require('../assets/images/original_flower.png')
+        setUserGarden(garden)
+        await API.graphql(
+            {
+                query: updateGarden,
+                variables: {input: garden},
+                authMode: "API_KEY"
+            }
+        )
+        navigation.navigate('PointScreen')
     }
-
-
 
 
   return (
     <ScrollView>
         <Appbar.BackAction onPress={() => navigation.navigate(PointScreen)} />
-        <Pressable
-            onPress={_buyCowboy}>
-            <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                source={require('../assets/images/cowboy_flower.png')}
-            />
-        </Pressable>
+        <Text style={styles.mainText}>Style Shop</Text>
+        <Text style={styles.subtext}>Bored of your look? Let's change things up with your own personal style!</Text>
+        <View style={styles.shopLayout}>
+            <View style={styles.item}>
+                <Pressable
+                    onPress={_buyCowboy}>
+                    <Image style={styles.outfits}
+                        source={require('../assets/images/cowboy_flower.png')}
+                    />
+                </Pressable>
+                <Text styles={styles.priceTag}>Cost: 1 point</Text>
+            </View>
 
-        <Pressable
-            onPress={_buyRibbon}>
-            <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                source={require('../assets/images/ribbon_flower.png')}
-            />
-        </Pressable>
+            <View style={styles.item}>
+                <Pressable
+                    onPress={_buyRibbon}>
+                    <Image style={styles.outfits}
+                        source={require('../assets/images/ribbon_flower.png')}
+                    />
+                </Pressable>
+                <Text styles={styles.priceTag}>Cost: 1 point</Text>
+            </View>
 
-        <Pressable
-            onPress={_buyHeadphone}>
-            <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                source={require('../assets/images/headphone_flower.png')}
-            />
-        </Pressable>
+            <View style={styles.item}>
+                <Pressable
+                    onPress={_buyHeadphone}>
+                    <Image style={styles.outfits}
+                        source={require('../assets/images/headphone_flower.png')}
+                    />
+                </Pressable>
+                <Text styles={styles.priceTag}>Cost: 1 point</Text>
+            </View>
 
-        <Pressable
-            onPress={_reset}>
-            <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                source={require('../assets/images/original_flower.png')}
-            />
-        </Pressable>
+            <View style={styles.item}>
+                <Pressable
+                    onPress={_reset}>
+                    <Image style={styles.outfits}
+                        source={require('../assets/images/original_flower.png')}
+                    />
+                </Pressable>
+                <Text styles={styles.priceTag}>Free</Text>
+            </View>
+        </View>
 
     </ScrollView>
-
 
  );
 };
@@ -198,6 +223,43 @@ const styles = StyleSheet.create({
     points: {
         float: 'right',
     },
+    outfits: {
+        width: 200,
+        height: 200,
+        margin: -15,
+        marginBottom: -50,
+    },
+    shopLayout: {
+        marginTop: '3%',
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    mainText: {
+        alignSelf: 'center',
+        textAlign:"center",
+        fontSize: 50,
+        color: '#181818',
+        fontWeight: 'bold',
+    },
+    subtext: {
+        alignSelf: 'center',
+        textAlign:"center",
+        fontSize: 16,
+        color: '#181818',
+        marginHorizontal: '20%',
+        marginVertical: '5%',
+    },
+    priceTag: {
+        fontSize: 10,
+        color: '#181818',
+    },
+    item: {
+        alignItems: 'center',
+        marginBottom: '15%'
+    },
     button: {
         float: 'right',
         backgroundColor:'#FFA34E',
@@ -212,7 +274,6 @@ const styles = StyleSheet.create({
         width: 120,
         height: 120,
         resizeMode:"stretch"
-        //justifyContent: 'center',
     }
 });
 
