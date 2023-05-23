@@ -70,6 +70,7 @@ export const getUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -113,7 +114,7 @@ export const listUsers = /* GraphQL */ `
                 createdAt
                 updatedAt
             }
-            nextToken
+          nextToken
         }
         favoriteInterests {
           nextToken
@@ -131,6 +132,7 @@ export const listUsers = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -173,6 +175,7 @@ export const getChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -318,6 +321,7 @@ export const getMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -383,6 +387,7 @@ export const getGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -409,6 +414,7 @@ export const getGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -432,6 +438,7 @@ export const listGardens = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name

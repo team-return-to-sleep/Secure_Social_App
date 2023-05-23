@@ -61,6 +61,7 @@ export const onCreateUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -141,6 +142,7 @@ export const onUpdateUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -221,6 +223,7 @@ export const onDeleteUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -275,6 +278,7 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -331,6 +335,7 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -387,6 +392,7 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -537,6 +543,7 @@ export const onCreateMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -593,6 +600,7 @@ export const onUpdateMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -649,6 +657,7 @@ export const onDeleteMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -677,6 +686,7 @@ export const onCreateGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -703,6 +713,7 @@ export const onCreateGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -721,6 +732,7 @@ export const onUpdateGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -747,6 +759,7 @@ export const onUpdateGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }
@@ -765,6 +778,7 @@ export const onDeleteGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -791,6 +805,7 @@ export const onDeleteGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
         }

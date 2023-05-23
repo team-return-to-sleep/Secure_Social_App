@@ -49,6 +49,7 @@ type Garden @model {
     userID: ID!
     points: Int
     flowerSize: Int
+    flowerOutfit: String
     user: User @belongsTo(fields: ["userID"])
 }
 
