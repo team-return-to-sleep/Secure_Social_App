@@ -26,8 +26,8 @@ const PointScreen = ({navigation,route}) => {
         userID: "0",
         id: "0",
         flowerSize: 120,
-        points: 100,
-        flowerOutfit: require('../assets/images/original_flower.png'),
+        points: 0,
+        flowerOutfit: "require('../assets/images/original_flower.png')",
     }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
@@ -66,7 +66,7 @@ const PointScreen = ({navigation,route}) => {
                             id: myUserData.id,
                             flowerSize: 120,
                             points: 10,
-                            flowerOutfit: require('../assets/images/original_flower.png'),
+                            flowerOutfit: "require('../assets/images/original_flower.png')",
                         }
                         await API.graphql(
                             {

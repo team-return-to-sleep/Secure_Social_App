@@ -21,8 +21,8 @@ const FlowerShop = ({navigation}) => {
         userID: "0",
         id: "0",
         flowerSize: 120,
-        points: 10,
-        flowerOutfit: require('../assets/images/original_flower.png'),
+        points: 0,
+        flowerOutfit: "require('../assets/images/original_flower.png')",
     }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
@@ -61,7 +61,7 @@ const FlowerShop = ({navigation}) => {
                                 id: myUserData.id,
                                 flowerSize: 120,
                                 points: 10,
-                                flowerOutfit: require('../assets/images/original_flower.png')
+                                flowerOutfit: "require('../assets/images/original_flower.png')"
                                 //flowerOutfit: require('../assets/images/original_flower.png'),
                             }
                             await API.graphql(
@@ -165,6 +165,9 @@ const FlowerShop = ({navigation}) => {
         <Appbar.BackAction onPress={() => navigation.navigate(PointScreen)} />
         <Text style={styles.mainText}>Style Shop</Text>
         <Text style={styles.subtext}>Bored of your look? Let's change things up with your own personal style!</Text>
+        <Title style={styles.points}>
+                Points: {userGarden.points}
+        </Title>
         <View style={styles.shopLayout}>
             <View style={styles.item}>
                 <Pressable
@@ -221,7 +224,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     points: {
-        float: 'right',
+        alignSelf: 'center',
     },
     outfits: {
         width: 200,
