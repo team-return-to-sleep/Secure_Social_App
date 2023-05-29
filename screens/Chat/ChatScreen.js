@@ -31,6 +31,12 @@ import { Platform } from 'react-native';
 import { Buffer } from 'buffer';
 
 import { EThree } from '@virgilsecurity/e3kit-native';
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from "@aws-sdk/client-secrets-manager";
+
+
 
 const getTokenFactory = (identity) => {
   return async () => {
@@ -48,6 +54,33 @@ const getTokenFactory = (identity) => {
     const data = await response.json();
     // console.log('Fetched Virgil JWT:', data.virgil_jwt);
     return data.virgil_jwt;
+  };
+};
+
+const fetchSecretsFactory = () => {
+  return async () => {
+    const secret_name = "S3secret";
+
+    const client = new SecretsManagerClient({
+      region: "us-west-2",
+    });
+
+    try {
+      const response = await client.send(
+        new GetSecretValueCommand({
+          SecretId: secret_name,
+          VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
+        })
+      );
+
+      return JSON.parse(response.SecretString);
+
+    } catch (error) {
+      // For a list of exceptions thrown, see
+      // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+      console.log("Here");
+      throw error;
+    }
   };
 };
 
@@ -108,26 +141,31 @@ export function ChatScreen({route, navigation}) {
       });
     };
 
-    const uploadFile = (filePath) => {
+    const uploadFile = async (filePath) => {
       if (Object.keys(filePath).length == 0) {
         alert('Please select image first');
         return;
       }
       console.log("file path",filePath);
+
+      /*
+      const fetchSecrets = fetchSecretsFactory();
+      const secrets = await fetchSecrets();
+      console.log("Secrets: ",secrets);
+      */
+
       RNS3.put(
             {
               uri: filePath.assets[0].uri,
               name: filePath.assets[0].fileName,
-              type: filePath.assets[0].type, // this should be contentType: filePath.assets[0].type,
+              type: filePath.assets[0].type,
             },
         {
-          keyPrefix: 'public/', // Ex. myuploads/
-          bucket: 'amplify-wallflower-staging-63629-deployment', // Ex. aboutreact
-          region: 'us-west-2', // Ex. ap-south-1
-          accessKey: 'AKIAQSZYEAOKEZWUS52A',
-          // Ex. AKIH73GS7S7C53M46OQ
-          secretKey: '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',
-          // Ex. Pt/2hdyro977ejd/h2u8n939nh89nfdnf8hd8f8fd
+          keyPrefix: 'public/',
+          bucket: 'amplify-wallflower-staging-63629-deployment',
+          region: 'us-west-2',
+          accessKey: process.env.ACCESS_KEY,
+          secretKey: process.env.SECRET_KEY,
           successActionStatus: 201,
         },
       )
@@ -167,11 +205,7 @@ export function ChatScreen({route, navigation}) {
 
           let isRegistered_user = await eThree_user.hasLocalPrivateKey();
 
-          console.log("Check 2");
-
-
           if (!isRegistered_user) {
-          console.log("Check 1");
               // Attempt to register the user
               try {
                 await eThree_user.register();
