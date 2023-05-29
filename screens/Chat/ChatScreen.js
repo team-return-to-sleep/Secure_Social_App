@@ -14,6 +14,7 @@ import { Storage } from 'aws-amplify';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNFS from 'react-native-fs';
+import { RNS3 } from 'react-native-aws3';
 
 import { Activities } from '../../assets/Activities';
 import {
@@ -27,6 +28,7 @@ import {
 
 import Toolbar from '../Toolbar'
 import { Platform } from 'react-native';
+import { Buffer } from 'buffer';
 
 import { EThree } from '@virgilsecurity/e3kit-native';
 
@@ -58,25 +60,6 @@ function isBase64(str) {
   }
 }
 
-
-const uploadImageToS3 = async (fileUri, chatRoomID) => {
-  try {
-    const fileData = await RNFS.readFile(fileUri, 'base64');
-    const blob = await Blob.build(fileData, { type: 'image/jpeg;BASE64' });
-    const imageName = new Date().toISOString() + '-' + Math.random().toString(36).substring(2, 7);
-    const fileKey = `${chatRoomID}/${imageName}`;
-    const result = await Storage.put(fileKey, blob, {
-      contentType: 'image/jpeg',
-      level: 'public',
-    });
-    const url = await Storage.get(result.key);
-    return url;
-  } catch (error) {
-    console.error('Error uploading image:', error);
-    return null;
-  }
-};
-
 export function ChatScreen({route, navigation}) {
     const isFocused = useIsFocused()
     const myChatRoomID = route.params.chatRoomID;
@@ -92,29 +75,89 @@ export function ChatScreen({route, navigation}) {
     const [eThreeInitialized, setEThreeInitialized] = useState(false);
     const [showEncryptionMessage, setShowEncryptionMessage] = useState(true);
 
+    const [uploadSuccessMessage, setUploadSuccessMessage] = useState('');
 
 
-        const selectImage = async () => {
-          let options = {
-            mediaType: 'photo',
-            maxWidth: 300,
-            maxHeight: 300,
-            quality: 1,
-          };
+    const chooseFile = () => {
+      let options = {
+        mediaType: 'photo',
+      };
+      launchImageLibrary(options, (response) => {
+        console.log('Response = ', response);
+        if (response.assets && response.assets[0].type) {
+            console.log('Type = ', response.assets[0].type);
+          } else {
+            console.log('Type is not defined');
+          }
 
-          launchImageLibrary(options, async (response) => {
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
-            } else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            } else {
-              console.log('Image URI: ', response.assets[0].uri);
-              const imageUrl = await uploadImageToS3(response.assets[0].uri, myChatRoomID);
-              // Send the image URL as a message
-              onSend([{image: imageUrl}]);
-            }
-          });
-        };
+        setUploadSuccessMessage('');
+        if (response.didCancel) {
+        //  alert('User cancelled camera picker');
+          return;
+        } else if (response.errorCode == 'camera_unavailable') {
+          alert('Camera not available on device');
+          return;
+        } else if (response.errorCode == 'permission') {
+          alert('Permission not satisfied');
+          return;
+        } else if (response.errorCode == 'others') {
+          alert(response.errorMessage);
+          return;
+        }
+        uploadFile(response);
+      });
+    };
+
+    const uploadFile = (filePath) => {
+      if (Object.keys(filePath).length == 0) {
+        alert('Please select image first');
+        return;
+      }
+      console.log("file path",filePath);
+      RNS3.put(
+            {
+              uri: filePath.assets[0].uri,
+              name: filePath.assets[0].fileName,
+              type: filePath.assets[0].type, // this should be contentType: filePath.assets[0].type,
+            },
+        {
+          keyPrefix: 'public/', // Ex. myuploads/
+          bucket: 'amplify-wallflower-staging-63629-deployment', // Ex. aboutreact
+          region: 'us-west-2', // Ex. ap-south-1
+          accessKey: 'AKIAQSZYEAOKEZWUS52A',
+          // Ex. AKIH73GS7S7C53M46OQ
+          secretKey: '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',
+          // Ex. Pt/2hdyro977ejd/h2u8n939nh89nfdnf8hd8f8fd
+          successActionStatus: 201,
+        },
+      )
+        .progress((progress) =>
+          setUploadSuccessMessage(
+            `Uploading: ${progress.loaded / progress.total} (${
+              progress.percent
+            }%)`,
+          ),
+        )
+        .then((response) => {
+          if (response.status !== 201)
+            alert('Failed to upload image to S3');
+          console.log(response.body);
+          let {
+            bucket,
+            etag,
+            key,
+            location
+          } = response.body.postResponse;
+          onSend([{ image: location }]);
+          setUploadSuccessMessage(
+            `Uploaded Successfully:
+            \n1. bucket => ${bucket}
+            \n2. etag => ${etag}
+            \n3. key => ${key}
+            \n4. location => ${location}`,
+          );
+        });
+    };
 
   useEffect(() => {
     const initEThree = async () => {
@@ -225,20 +268,7 @@ export function ChatScreen({route, navigation}) {
             decryptedContent = curr.content;
            }
 
-
-            /*
-            const msg = {
-                _id: curr.id,
-                text: decryptedText,
-                createdAt: curr.createdAt,
-                user: {
-                    _id: curr.user.id,
-                    name: curr.user.name,
-                    avatar: curr.user.imageUri,
-                },
-            }
-            */
-            const isImageUrl = decryptedContent.startsWith('http'); // or use a more robust URL check
+            const isImageUrl = decryptedContent.startsWith('https://amplify-wallflower-staging-63629-deployment.s3.amazonaws.com/'); // or use a more robust URL check
             console.log("Image Url ", isImageUrl);
 
             let msg;
@@ -395,22 +425,9 @@ export function ChatScreen({route, navigation}) {
             // Decrypt text with sender's private key and ensure it was written by sender
             const decryptedContent = await eThreeUser.authDecrypt(newMessage.content, senderCard);
 
-            /*
-            console.log('Sender ID:', sender);
-            try {
-                const senderCard = await eThreeUser.findUsers(sender);
-                console.log('Sender card found:', senderCard);
-            } catch (error) {
-                console.error('Sender card not found:', error);
-            }
-            console.log('Encrypted message:', newMessage.content);
-
-            const sender_Card = await eThreeUser.findUsers(sender);
-            const decryptedText = await eThreeUser.authDecrypt(newMessage.content, sender_Card);
-            console.log('Decrypted message:', decryptedText);
-            */
-
-            const isImageUrl = decryptedContent.startsWith('http'); // or use a more robust URL check
+            console.log("Hi there");
+            const isImageUrl = decryptedContent.startsWith('https://amplify-wallflower-staging-63629-deployment.s3.amazonaws.com/'); // or use a more robust URL check
+            console.log("Image Url ", isImageUrl);
 
             let msg;
 
@@ -418,7 +435,7 @@ export function ChatScreen({route, navigation}) {
               // Message is an image
               msg = {
                 _id: newMessage.id,
-                image: decryptedContent, // pass the image URL
+               image: decryptedContent, // pass the image URL
                 createdAt: newMessage.createdAt,
                 user: {
                   _id: newMessage.user.id,
@@ -439,20 +456,7 @@ export function ChatScreen({route, navigation}) {
                 },
               };
             }
-
-
-           /*
-            const msg = {
-                _id: newMessage.id,
-                text: decryptedText,
-                createdAt: newMessage.createdAt,
-                user: {
-                    _id: newMessage.user.id,
-                    name: newMessage.user.name,
-                    avatar: newMessage.user.imageUri,
-                },
-            }
-            */
+            
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
         },
         error: error => console.warn(error.error.errors)
@@ -463,6 +467,7 @@ export function ChatScreen({route, navigation}) {
   const onSend = async(newMessage = []) => {
 
     // Get recipient id
+    console.log("Inside onsend");
     const identities = [otherUser.id];
     // console.log('Identities:', identities);
 
@@ -477,17 +482,13 @@ export function ChatScreen({route, navigation}) {
     // console.log("ENcrrypt:", encryptedText);
 
     // Check if the message has an image
+    console.log("message content", newMessage[0].image);
     let messageContent = newMessage[0].text;
-        if (newMessage[0].image) {
-          const imageUrl = await uploadImageToS3(newMessage[0].image.uri);
-          if (!imageUrl) {
-            // Error uploading image, exit function
-            return;
-          }
-          messageContent = imageUrl; // use the image URL as the message content
-        }
+    if (newMessage[0].image) {
+          messageContent = newMessage[0].image; // use the image URL as the message content
+          console.log("Inside onsend 2 and content", messageContent);
+     }
      const encryptedText = await eThreeUser.authEncrypt(messageContent, findUsersResult);
-
 
      await API.graphql({
        query: createMessage,
@@ -658,8 +659,8 @@ export function ChatScreen({route, navigation}) {
                     justifyContent: 'center',
                     alignItems: 'center'
                   }}>
-                  <TouchableOpacity onPress={selectImage}>
-                    <Icon name="camera-outline" size={32} color="black" />
+                  <TouchableOpacity onPress={chooseFile}>
+                     <Icon name="camera-outline" size={32} color="black" />
                   </TouchableOpacity>
                 </View>
               )}
