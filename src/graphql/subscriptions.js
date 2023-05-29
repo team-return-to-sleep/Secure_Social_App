@@ -77,6 +77,18 @@ export const onCreateUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      sentNotifs {
+        items {
+          id
+          toUserID
+          fromUserID
+          hasRead
+          content
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -157,6 +169,18 @@ export const onUpdateUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
+      }
+      sentNotifs {
+        items {
+          id
+          toUserID
+          fromUserID
+          hasRead
+          content
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
@@ -239,6 +263,18 @@ export const onDeleteUser = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      sentNotifs {
+        items {
+          id
+          toUserID
+          fromUserID
+          hasRead
+          content
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -282,6 +318,9 @@ export const onCreateChatRoomUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        sentNotifs {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -292,6 +331,16 @@ export const onCreateChatRoomUser = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -339,6 +388,9 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        sentNotifs {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -349,6 +401,16 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -396,6 +458,9 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        sentNotifs {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -406,6 +471,16 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -441,6 +516,34 @@ export const onCreateChatRoom = /* GraphQL */ `
         }
         nextToken
       }
+      lastMessageID
+      lastMessage {
+        id
+        createdAt
+        userID
+        chatRoomID
+        content
+        imageURL
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -472,6 +575,34 @@ export const onUpdateChatRoom = /* GraphQL */ `
         }
         nextToken
       }
+      lastMessageID
+      lastMessage {
+        id
+        createdAt
+        userID
+        chatRoomID
+        content
+        imageURL
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -502,6 +633,34 @@ export const onDeleteChatRoom = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      lastMessageID
+      lastMessage {
+        id
+        createdAt
+        userID
+        chatRoomID
+        content
+        imageURL
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
       }
       createdAt
       updatedAt
@@ -547,6 +706,9 @@ export const onCreateMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        sentNotifs {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -557,6 +719,16 @@ export const onCreateMessage = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -604,6 +776,9 @@ export const onUpdateMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        sentNotifs {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -614,6 +789,16 @@ export const onUpdateMessage = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -661,6 +846,9 @@ export const onDeleteMessage = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        sentNotifs {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -672,9 +860,172 @@ export const onDeleteMessage = /* GraphQL */ `
         messages {
           nextToken
         }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
+        }
         createdAt
         updatedAt
       }
+      updatedAt
+    }
+  }
+`;
+export const onCreateNotification = /* GraphQL */ `
+  subscription OnCreateNotification(
+    $filter: ModelSubscriptionNotificationFilterInput
+  ) {
+    onCreateNotification(filter: $filter) {
+      id
+      toUserID
+      fromUserID
+      fromUser {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
+        friends
+        blockedUsers
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          flowerOutfit
+          createdAt
+          updatedAt
+        }
+        sentNotifs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      hasRead
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateNotification = /* GraphQL */ `
+  subscription OnUpdateNotification(
+    $filter: ModelSubscriptionNotificationFilterInput
+  ) {
+    onUpdateNotification(filter: $filter) {
+      id
+      toUserID
+      fromUserID
+      fromUser {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
+        friends
+        blockedUsers
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          flowerOutfit
+          createdAt
+          updatedAt
+        }
+        sentNotifs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      hasRead
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteNotification = /* GraphQL */ `
+  subscription OnDeleteNotification(
+    $filter: ModelSubscriptionNotificationFilterInput
+  ) {
+    onDeleteNotification(filter: $filter) {
+      id
+      toUserID
+      fromUserID
+      fromUser {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
+        friends
+        blockedUsers
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          flowerOutfit
+          createdAt
+          updatedAt
+        }
+        sentNotifs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      hasRead
+      content
+      createdAt
       updatedAt
     }
   }
@@ -716,6 +1067,9 @@ export const onCreateGarden = /* GraphQL */ `
           flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -763,6 +1117,9 @@ export const onUpdateGarden = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        sentNotifs {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -808,6 +1165,9 @@ export const onDeleteGarden = /* GraphQL */ `
           flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt

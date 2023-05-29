@@ -16,6 +16,7 @@ type User @model {
     chatRoomUser: [ChatRoomUser] @hasMany(indexName: "byUser", fields: ["id"])
     message: [Message] @hasMany(indexName: "byUser", fields: ["id"])
     garden: Garden @hasOne(fields: ["id"])
+    sentNotifs: [Notification] @hasMany(fields: ["id"])
 }
 
 type ChatRoomUser @model {
@@ -30,6 +31,8 @@ type ChatRoom @model {
     id: ID!
     chatRoomUsers: [ChatRoomUser] @hasMany(indexName: "byChatRoom",fields: ["id"])
     messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
+    lastMessageID: ID
+    lastMessage: Message @hasOne(fields: ["lastMessageID"])
 }
 
 #@key(name: "byChatRoom", fields: ["chatRoomID", "createdAt"], queryField: "messagesByChatRoom")
@@ -42,6 +45,15 @@ type Message @model {
     imageURL: String
     user: User @belongsTo(fields: ["userID"])
     chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
+}
+
+type Notification @model {
+    id: ID!
+    toUserID: ID
+    fromUserID: ID
+    fromUser: User @belongsTo(fields: ["fromUserID"])
+    hasRead: Boolean
+    content: String
 }
 
 type Garden @model {
