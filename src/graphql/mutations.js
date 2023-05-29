@@ -64,6 +64,7 @@ export const createUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -78,6 +79,18 @@ export const createUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
+      }
+      sentNotifs {
+        items {
+          id
+          toUserID
+          fromUserID
+          hasRead
+          content
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
@@ -147,6 +160,7 @@ export const updateUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -161,6 +175,18 @@ export const updateUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
+      }
+      sentNotifs {
+        items {
+          id
+          toUserID
+          fromUserID
+          hasRead
+          content
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
@@ -230,6 +256,7 @@ export const deleteUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -244,6 +271,18 @@ export const deleteUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
+      }
+      sentNotifs {
+        items {
+          id
+          toUserID
+          fromUserID
+          hasRead
+          content
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
@@ -285,8 +324,12 @@ export const createChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -298,6 +341,16 @@ export const createChatRoomUser = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -342,8 +395,12 @@ export const updateChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -355,6 +412,16 @@ export const updateChatRoomUser = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -399,8 +466,12 @@ export const deleteChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -412,6 +483,16 @@ export const deleteChatRoomUser = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -450,6 +531,34 @@ export const createChatRoom = /* GraphQL */ `
         }
         nextToken
       }
+      lastMessageID
+      lastMessage {
+        id
+        createdAt
+        userID
+        chatRoomID
+        content
+        imageURL
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -484,6 +593,34 @@ export const updateChatRoom = /* GraphQL */ `
         }
         nextToken
       }
+      lastMessageID
+      lastMessage {
+        id
+        createdAt
+        userID
+        chatRoomID
+        content
+        imageURL
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -517,6 +654,34 @@ export const deleteChatRoom = /* GraphQL */ `
           updatedAt
         }
         nextToken
+      }
+      lastMessageID
+      lastMessage {
+        id
+        createdAt
+        userID
+        chatRoomID
+        content
+        imageURL
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
       }
       createdAt
       updatedAt
@@ -561,8 +726,12 @@ export const createMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -574,6 +743,16 @@ export const createMessage = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -620,8 +799,12 @@ export const updateMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -633,6 +816,16 @@ export const updateMessage = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -679,8 +872,12 @@ export const deleteMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -693,9 +890,175 @@ export const deleteMessage = /* GraphQL */ `
         messages {
           nextToken
         }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
+        }
         createdAt
         updatedAt
       }
+      updatedAt
+    }
+  }
+`;
+export const createNotification = /* GraphQL */ `
+  mutation CreateNotification(
+    $input: CreateNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    createNotification(input: $input, condition: $condition) {
+      id
+      toUserID
+      fromUserID
+      fromUser {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
+        friends
+        blockedUsers
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          flowerOutfit
+          createdAt
+          updatedAt
+        }
+        sentNotifs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      hasRead
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateNotification = /* GraphQL */ `
+  mutation UpdateNotification(
+    $input: UpdateNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    updateNotification(input: $input, condition: $condition) {
+      id
+      toUserID
+      fromUserID
+      fromUser {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
+        friends
+        blockedUsers
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          flowerOutfit
+          createdAt
+          updatedAt
+        }
+        sentNotifs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      hasRead
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteNotification = /* GraphQL */ `
+  mutation DeleteNotification(
+    $input: DeleteNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    deleteNotification(input: $input, condition: $condition) {
+      id
+      toUserID
+      fromUserID
+      fromUser {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
+        friends
+        blockedUsers
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          flowerOutfit
+          createdAt
+          updatedAt
+        }
+        sentNotifs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      hasRead
+      content
+      createdAt
       updatedAt
     }
   }
@@ -710,6 +1073,7 @@ export const createGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -736,8 +1100,12 @@ export const createGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -757,6 +1125,7 @@ export const updateGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -783,8 +1152,12 @@ export const updateGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -804,6 +1177,7 @@ export const deleteGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -830,8 +1204,12 @@ export const deleteGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt

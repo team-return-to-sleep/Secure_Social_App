@@ -89,7 +89,7 @@ const Home = ({navigation}) => {
                     console.log(selfRegion)
                     console.log(selfInterests)
                     if(!selfName || !selfAge || !selfRegion || !selfInterests) {
-                        navigation.navigate("SignUpFlowProfileBasicSetup", {user: selfData.data.getUser})
+                        navigation.navigate("ProfileAge", {user: selfData.data.getUser})
                     }
 
                     const usersData = await API.graphql(

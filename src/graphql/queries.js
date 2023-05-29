@@ -70,6 +70,7 @@ export const getUser = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -84,6 +85,18 @@ export const getUser = /* GraphQL */ `
         }
         createdAt
         updatedAt
+      }
+      sentNotifs {
+        items {
+          id
+          toUserID
+          fromUserID
+          hasRead
+          content
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
@@ -113,7 +126,7 @@ export const listUsers = /* GraphQL */ `
                 createdAt
                 updatedAt
             }
-            nextToken
+          nextToken
         }
         favoriteInterests {
           nextToken
@@ -131,8 +144,12 @@ export const listUsers = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -173,8 +190,12 @@ export const getChatRoomUser = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -186,6 +207,16 @@ export const getChatRoomUser = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -220,6 +251,7 @@ export const listChatRoomUsers = /* GraphQL */ `
         }
         chatRoom {
           id
+          lastMessageID
           createdAt
           updatedAt
         }
@@ -256,6 +288,34 @@ export const getChatRoom = /* GraphQL */ `
         }
         nextToken
       }
+      lastMessageID
+      lastMessage {
+        id
+        createdAt
+        userID
+        chatRoomID
+        content
+        imageURL
+        user {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        chatRoom {
+          id
+          lastMessageID
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -275,6 +335,16 @@ export const listChatRooms = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -318,8 +388,12 @@ export const getMessage = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -331,6 +405,16 @@ export const getMessage = /* GraphQL */ `
         }
         messages {
           nextToken
+        }
+        lastMessageID
+        lastMessage {
+          id
+          createdAt
+          userID
+          chatRoomID
+          content
+          imageURL
+          updatedAt
         }
         createdAt
         updatedAt
@@ -367,9 +451,91 @@ export const listMessages = /* GraphQL */ `
         }
         chatRoom {
           id
+          lastMessageID
           createdAt
           updatedAt
         }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getNotification = /* GraphQL */ `
+  query GetNotification($id: ID!) {
+    getNotification(id: $id) {
+      id
+      toUserID
+      fromUserID
+      fromUser {
+        id
+        name
+        imageUri
+        age
+        region
+        status
+        interests {
+          nextToken
+        }
+        favoriteInterests {
+          nextToken
+        }
+        friends
+        blockedUsers
+        chatRoomUser {
+          nextToken
+        }
+        message {
+          nextToken
+        }
+        garden {
+          id
+          userID
+          points
+          flowerSize
+          flowerOutfit
+          createdAt
+          updatedAt
+        }
+        sentNotifs {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      hasRead
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listNotifications = /* GraphQL */ `
+  query ListNotifications(
+    $filter: ModelNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotifications(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        toUserID
+        fromUserID
+        fromUser {
+          id
+          name
+          imageUri
+          age
+          region
+          status
+          friends
+          blockedUsers
+          createdAt
+          updatedAt
+        }
+        hasRead
+        content
+        createdAt
         updatedAt
       }
       nextToken
@@ -383,6 +549,7 @@ export const getGarden = /* GraphQL */ `
       userID
       points
       flowerSize
+      flowerOutfit
       user {
         id
         name
@@ -409,8 +576,12 @@ export const getGarden = /* GraphQL */ `
           userID
           points
           flowerSize
+          flowerOutfit
           createdAt
           updatedAt
+        }
+        sentNotifs {
+          nextToken
         }
         createdAt
         updatedAt
@@ -432,6 +603,7 @@ export const listGardens = /* GraphQL */ `
         userID
         points
         flowerSize
+        flowerOutfit
         user {
           id
           name
@@ -517,6 +689,7 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
         }
         chatRoom {
           id
+          lastMessageID
           createdAt
           updatedAt
         }
@@ -560,6 +733,7 @@ export const chatRoomUsersByUserID = /* GraphQL */ `
         }
         chatRoom {
           id
+          lastMessageID
           createdAt
           updatedAt
         }
@@ -605,6 +779,7 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
         }
         chatRoom {
           id
+          lastMessageID
           createdAt
           updatedAt
         }
@@ -653,6 +828,7 @@ export const messagesByUser = /* GraphQL */ `
         }
         chatRoom {
           id
+          lastMessageID
           createdAt
           updatedAt
         }
@@ -700,6 +876,7 @@ export const messagesByChatRoom = /* GraphQL */ `
         }
         chatRoom {
           id
+          lastMessageID
           createdAt
           updatedAt
         }

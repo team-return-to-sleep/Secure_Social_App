@@ -15,9 +15,11 @@ import ProfileInterests from './ProfileInterests'
 import ProfileBasicInfo from './ProfileBasicInfo'
 import ProfilePicture from './ProfilePicture'
 import ProfileAge from './ProfileAge'
+import ProfileBlocklist from './ProfileBlocklist'
 import ProfileRegion from './ProfileRegion'
 import ProfileSpecificInterests from './ProfileSpecificInterests'
 import UserProfile from '../UserProfile'
+import OtherUserProfile from '../OtherUserProfile'
 
 const Stack = createNativeStackNavigator()
 
@@ -56,6 +58,12 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfilePicture" component={ProfilePicture}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileBlocklist" component={ProfileBlocklist}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>

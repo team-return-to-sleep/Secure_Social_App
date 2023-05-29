@@ -13,7 +13,7 @@ import Home from './Home'
 import ChatRoot from './Chat/ChatRoot'
 import Account from './Account'
 import ProfileRoot from './Profile/ProfileRoot'
-import PointScreen from './PointScreen'
+import PointScreenRoot from './PointScreenRoot'
 import Root from './Root'
 
 const BOTTOM_APPBAR_HEIGHT = 80;
@@ -61,7 +61,7 @@ const Toolbar = () => {
             <Tab.Screen name="Home" component={Root} options={{ headerShown: false}} />
             <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
             <Tab.Screen name="Chats" component={ChatRoot} options={{ headerShown: false}} />
-            <Tab.Screen name="PointScreen" component={PointScreen} options={{ headerShown: false}} />
+            <Tab.Screen name="PointScreen" component={PointScreenRoot} options={{ headerShown: false}} />
             <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
         </Tab.Navigator>
     );

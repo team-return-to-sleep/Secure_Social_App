@@ -54,8 +54,6 @@ const Chats = ({navigation}) => {
                 if (myFriends && blockedIDs) {
                     myFriends = myFriends.filter(e => blockedIDs.includes(e) === false)
                 }
-                myFriends = myFriends.filter(e => !e.blockedUsers ||
-                        e.blockedUsers && (e.blockedUsers.includes(userData.data.getUser.id) === false))
 
                 const friendUsers = []
                 if (myFriends) {
@@ -67,7 +65,14 @@ const Chats = ({navigation}) => {
                                 authMode: "API_KEY"
                             }
                         )
-                        friendUsers.push(friendData.data.getUser)
+
+                        if (friendData) {
+                            const friendUser = friendData.data.getUser
+                            if (friendUser && (!friendUser.blockedUsers ||
+                                friendUser.blockedUsers.includes(userData.data.getUser.id) === false)) {
+                                friendUsers.push(friendData.data.getUser)
+                            }
+                        }
                     }
                     //console.log("friends: ", friendUsers)
                     setUsers(friendUsers)
@@ -115,6 +120,11 @@ const Chats = ({navigation}) => {
             for (let i=0; i<myRooms.length; i++) {
                 // TODO: room with yourself; do we still want this since you can't create a room
                 // TODO: with yourself with the current UI
+
+                if (myRooms[i].chatRoom.chatRoomUsers.items.length < 2) {
+                    console.log("not a valid chatroom: ", myRooms[i].chatRoom.chatRoomUsers.items)
+                    continue;
+                }
 
                 if (myUserData.id == otherUser.id) {
                     if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID == otherUser.id &&

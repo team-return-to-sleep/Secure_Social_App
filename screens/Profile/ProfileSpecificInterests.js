@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginLeft: 5,
         marginRight: 5,
-        width: 90,
+        width: 'auto',
         height: 30,
         alignItems: 'center',
         justifyContent: 'center',
@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF7EA',
         borderWidth: 1.5,
         borderColor: '#FFA34E',
+        padding: 5,
     },
     promptWrapper: {
         flexDirection: 'row',

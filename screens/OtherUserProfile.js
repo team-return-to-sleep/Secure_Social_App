@@ -171,13 +171,18 @@ const OtherUserProfile = ({route, navigation}) => {
                             }
                         </View>
                     </View>
-
-                <Button icon="chat-plus"
-                                mode="contained"
-                                style={styles.chatButton}
-                                onPress={() => onClickHandler()}>
-                                    Start Chatting!
-                </Button>
+                <View>
+                    { isBlocked ? (
+                        <Text>Unblock to start chatting</Text>
+                    ) : (
+                        <Button icon="chat-plus"
+                                        mode="contained"
+                                        style={styles.chatButton}
+                                        onPress={() => onClickHandler()}>
+                                            Start Chatting!
+                        </Button>
+                    )}
+                </View>
                 <Button icon="account-cancel"
                                 mode="contained"
                                 style={styles.chatButton}

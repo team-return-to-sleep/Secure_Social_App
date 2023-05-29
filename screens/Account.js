@@ -79,6 +79,13 @@ const Account = ({route, navigation}) => {
                             <Text>View Public Profile</Text>
                         </Button>
 
+                        <Button mode="contained"
+                            style={styles.accountButton}
+                            onPress={() => navigation.navigate("ProfileBlocklist")}
+                        >
+                            <Text>View Blocklist</Text>
+                        </Button>
+
                         </>
                     );
                 })}

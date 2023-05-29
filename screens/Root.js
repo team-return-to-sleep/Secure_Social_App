@@ -11,6 +11,7 @@ import UserProfile from './UserProfile'
 import OtherUserProfile from './OtherUserProfile'
 import SignUpFlowProfileBasicSetup from './Profile/SignUpFlowProfileBasicSetup'
 import SignUpFlowProfileSpecificInterests from './Profile/SignUpFlowProfileSpecificInterests'
+import FlowerShop from './FlowerShop'
 
 const Stack = createNativeStackNavigator()
 
