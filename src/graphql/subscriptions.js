@@ -34,6 +34,7 @@ export const onCreateUser = /* GraphQL */ `
       }
       friends
       blockedUsers
+      bestBuds
       chatRoomUser {
         items {
           id
@@ -72,6 +73,7 @@ export const onCreateUser = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -128,6 +130,7 @@ export const onUpdateUser = /* GraphQL */ `
       }
       friends
       blockedUsers
+      bestBuds
       chatRoomUser {
         items {
           id
@@ -166,6 +169,7 @@ export const onUpdateUser = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -222,6 +226,7 @@ export const onDeleteUser = /* GraphQL */ `
       }
       friends
       blockedUsers
+      bestBuds
       chatRoomUser {
         items {
           id
@@ -260,6 +265,7 @@ export const onDeleteUser = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -306,6 +312,7 @@ export const onCreateChatRoomUser = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -377,6 +384,7 @@ export const onUpdateChatRoomUser = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -448,6 +456,7 @@ export const onDeleteChatRoomUser = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -540,6 +549,7 @@ export const onCreateChatRoom = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -601,6 +611,7 @@ export const onUpdateChatRoom = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -662,6 +673,7 @@ export const onDeleteChatRoom = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -703,6 +715,7 @@ export const onCreateMessage = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -775,6 +788,7 @@ export const onUpdateMessage = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -847,6 +861,7 @@ export const onDeleteMessage = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -918,6 +933,7 @@ export const onCreateNotification = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -969,6 +985,7 @@ export const onUpdateNotification = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -1020,6 +1037,7 @@ export const onDeleteNotification = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -1071,6 +1089,7 @@ export const onCreateGarden = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -1120,6 +1139,7 @@ export const onUpdateGarden = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -1169,6 +1189,7 @@ export const onDeleteGarden = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
