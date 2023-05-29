@@ -47,6 +47,16 @@ export const getUser = /* GraphQL */ `
                     userID
                 }
             }
+            lastMessage {
+                id
+                createdAt
+                userID
+                chatRoomID
+                content
+                imageURL
+                updatedAt
+                hasRead
+            }
           }
           createdAt
           updatedAt
@@ -61,6 +71,7 @@ export const getUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -216,6 +227,7 @@ export const getChatRoomUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
@@ -284,6 +296,7 @@ export const getChatRoom = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -314,6 +327,7 @@ export const getChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       createdAt
@@ -344,6 +358,7 @@ export const listChatRooms = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
@@ -414,11 +429,13 @@ export const getMessage = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
         updatedAt
       }
+      hasRead
       updatedAt
     }
   }
@@ -455,6 +472,7 @@ export const listMessages = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       nextToken
@@ -832,6 +850,7 @@ export const messagesByUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       nextToken
@@ -880,6 +899,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       nextToken

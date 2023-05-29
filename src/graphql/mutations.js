@@ -55,6 +55,7 @@ export const createUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -151,6 +152,7 @@ export const updateUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -247,6 +249,7 @@ export const deleteUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -350,6 +353,7 @@ export const createChatRoomUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
@@ -421,6 +425,7 @@ export const updateChatRoomUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
@@ -492,6 +497,7 @@ export const deleteChatRoomUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
@@ -527,6 +533,7 @@ export const createChatRoom = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -557,6 +564,7 @@ export const createChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       createdAt
@@ -589,6 +597,7 @@ export const updateChatRoom = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -619,6 +628,7 @@ export const updateChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       createdAt
@@ -651,6 +661,7 @@ export const deleteChatRoom = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -681,6 +692,7 @@ export const deleteChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       createdAt
@@ -752,11 +764,13 @@ export const createMessage = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
         updatedAt
       }
+      hasRead
       updatedAt
     }
   }
@@ -825,11 +839,13 @@ export const updateMessage = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
         updatedAt
       }
+      hasRead
       updatedAt
     }
   }
@@ -898,11 +914,13 @@ export const deleteMessage = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
         updatedAt
       }
+      hasRead
       updatedAt
     }
   }
