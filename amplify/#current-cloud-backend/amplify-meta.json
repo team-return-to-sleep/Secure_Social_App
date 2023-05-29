@@ -52,7 +52,7 @@
         "IdentityPoolName": "testAuthIdentityPool__staging",
         "UserPoolName": "Wallflower"
       },
-      "lastPushTimeStamp": "2023-05-23T04:33:29.378Z",
+      "lastPushTimeStamp": "2023-05-29T01:06:09.497Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-wallflower-staging-63629-deployment/amplify-cfn-templates/auth/Wallflower-cloudformation-template.json",
         "logicalId": "authWallflower"
@@ -96,12 +96,12 @@
         "GraphQLAPIEndpointOutput": "https://gqcty2xkxfcczpj2r3i53chopu.appsync-api.us-west-2.amazonaws.com/graphql",
         "GraphQLAPIKeyOutput": "da2-hi2ekwcfvfawzl3oziuhodlbzu"
       },
-      "lastPushTimeStamp": "2023-05-23T04:33:35.974Z",
+      "lastPushTimeStamp": "2023-05-29T01:06:14.871Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-wallflower-staging-63629-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiwallflower"
       },
-      "lastPushDirHash": "Jrl+hyRp6XNqsFfed7vEsAjP6So="
+      "lastPushDirHash": "TNrBNH3CPJRVKiBYtLxqFd8q3QA="
     }
   }
 }
