@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react'
-import { Appbar, Title, TextInput, Button } from 'react-native-paper';
+import { Appbar, Title, TextInput, Button, Badge } from 'react-native-paper';
 import {View,Text,SafeAreaView,ScrollView, FlatList,Linking,TouchableOpacity,Image,StyleSheet,Alert,Pressable} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
@@ -31,6 +31,7 @@ const Chats = ({navigation}) => {
 
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
+    const [chatRooms, setChatRooms] = useState({})
 
     const { ContextMenu } = renderers;
 
@@ -49,6 +50,8 @@ const Chats = ({navigation}) => {
                 )
                 setMyUserData(userData.data.getUser)
                 let myFriends = userData.data.getUser.friends
+                let myRooms = userData.data.getUser.chatRoomUser.items
+                const myID = userData.data.getUser.id
 
                 var blockedIDs = userData.data.getUser.blockedUsers
                 if (myFriends && blockedIDs) {
@@ -77,20 +80,32 @@ const Chats = ({navigation}) => {
                     //console.log("friends: ", friendUsers)
                     setUsers(friendUsers)
                 }
+
+                // set UserToLastMessage map
+                if (myRooms) {
+                    for (let i=0; i<myRooms.length; i++) {
+                        if (myRooms[i].chatRoom.chatRoomUsers.items.length < 2) {
+                            console.log("not a valid chatroom: ", myRooms[i].chatRoom.chatRoomUsers.items)
+                            continue;
+                        }
+
+                        if (myRooms[i].chatRoom.chatRoomUsers.items[0].userID != myID) {
+                            // room with this person already exists!
+                            setChatRooms(chatRooms => ({
+                                ...chatRooms,
+                                [myRooms[i].chatRoom.chatRoomUsers.items[0].userID] : myRooms[i].chatRoom.lastMessage
+                            }))
+                        } else if (myRooms[i].chatRoom.chatRoomUsers.items[1].userID != myID) {
+                            setChatRooms(chatRooms => ({
+                                ...chatRooms,
+                                [myRooms[i].chatRoom.chatRoomUsers.items[1].userID] : myRooms[i].chatRoom.lastMessage
+                            }))
+                        }
+                    }
+                }
             }
 
-            // fetch data for all users
-            const fetchUsers = async() => {
-                const usersData = await API.graphql(
-                    {
-                        query: listUsers,
-                        authMode: "API_KEY"
-                    }
-                )
-                setUsers(usersData.data.listUsers.items)
-            }
             fetchUser();
-            //fetchUsers();
         }
     }, [isFocused]);
 
@@ -258,19 +273,49 @@ const Chats = ({navigation}) => {
             <View style={styles.chatWrapper}>
                 {users.map((user) => {
                     if(user){
+                        //console.log("CHATROOMS: ", chatRooms)
+                        let latestMessage = null
+                        if (chatRooms.hasOwnProperty(user.id)) {
+                            latestMessage = chatRooms[user.id]
+                            //console.log("CHATS LATESTMESSAGE: ", latestMessage)
+                        }
+                        let isNew = (latestMessage &&
+                                     latestMessage.userID == user.id &&
+                                     !latestMessage.hasRead) ? true : false
                     return (
                         <View style={styles.chatContainer}>
                             <Pressable
                             style={styles.chat}
                             onPress={() => onClickHandler(user)}>
                                 <View style={styles.imageWrapper}>
-                                    <Image
-                                        style={styles.profileImage}
-                                        source={{uri: user.imageUri}}
-                                    />
+                                    <View>
+                                        { isNew ? (
+                                            <View>
+                                                <Image
+                                                    style={styles.profileImage}
+                                                    source={{uri: user.imageUri}}
+                                                />
+                                                <Badge style={styles.badge}>
+                                                    1
+                                                </Badge>
+                                            </View>
+                                        ) : (
+                                            <Image
+                                                style={styles.profileImage}
+                                                source={{uri: user.imageUri}}
+                                            />
+                                        )}
+
+                                    </View>
                                     <View>
                                         <Text style={styles.subtext}> {user.name} </Text>
-                                        <Text style={styles.msgtext}> Latest Message Here </Text>
+
+                                        {isNew ? (
+                                            <Text style={styles.msgtext}> New Message! </Text>
+                                        ) : (
+                                            <Text style={styles.msgtext}> No New Messages </Text>
+                                        )}
+
                                     </View>
 
                                 </View>
@@ -389,7 +434,12 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: "#181818",
         alignSelf: 'center',
-    }
+    },
+    badge: {
+        position: 'absolute',
+        top: 30,
+        right: 0,
+    },
 });
 
 export default Chats;

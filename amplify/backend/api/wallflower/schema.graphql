@@ -45,6 +45,7 @@ type Message @model {
     content: String
     user: User @belongsTo(fields: ["userID"])
     chatRoom: ChatRoom @belongsTo(fields: ["chatRoomID"])
+    hasRead: Boolean
 }
 
 type Notification @model {

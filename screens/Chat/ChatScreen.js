@@ -5,8 +5,8 @@ import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'reac
 import { useIsFocused } from "@react-navigation/native";
 
 import {Auth} from 'aws-amplify'
-import {getUser, getGarden, listUsers, messagesByChatRoom} from '../../src/graphql/queries'
-import {createMessage, createGarden, updateGarden} from '../../src/graphql/mutations'
+import {getUser, getGarden, listUsers, messagesByChatRoom, getChatRoom} from '../../src/graphql/queries'
+import {createMessage, createGarden, updateGarden, updateChatRoom, updateMessage} from '../../src/graphql/mutations'
 import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
@@ -279,10 +279,19 @@ export function ChatScreen({route, navigation}) {
                 authMode: "API_KEY",
             }
         )
+        const chatRoomData = await API.graphql(
+            {
+                query: getChatRoom,
+                variables: {id: myChatRoomID},
+                authMode: "API_KEY",
+            }
+        )
 //        console.log(myChatRoomID)
 //        console.log(messagesData.data.messagesByChatRoom.items)
 
         const messagesDataArr = messagesData.data.messagesByChatRoom.items
+        const latestMessage = chatRoomData.data.getChatRoom.lastMessage
+        //console.log("CHATSCREEN LATESTMESSAGE ", latestMessage)
 
         for(let i=0; i<messagesDataArr.length; i++) {
 
@@ -331,6 +340,20 @@ export function ChatScreen({route, navigation}) {
                   avatar: curr.user.imageUri,
                 },
               };
+            }
+
+            if (sender != myUserData.id && curr.id == latestMessage.id) {
+                console.log("message read")
+                await API.graphql({
+                    query: updateMessage,
+                    variables: {
+                      input: {
+                        id: latestMessage.id,
+                        hasRead: true,
+                      },
+                    },
+                    authMode: 'API_KEY',
+                });
             }
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
         }
@@ -527,17 +550,30 @@ export function ChatScreen({route, navigation}) {
      }
      const encryptedText = await eThreeUser.authEncrypt(messageContent, findUsersResult);
 
-     await API.graphql({
+     const newMessageData = await API.graphql({
        query: createMessage,
        variables: {
          input: {
            content: encryptedText,
            userID: route.params.user.id,
            chatRoomID: route.params.chatRoomID,
+           hasRead: false,
          },
        },
        authMode: 'API_KEY',
      });
+
+     await API.graphql({
+        query: updateChatRoom,
+        variables: {
+          input: {
+            id: route.params.chatRoomID,
+            lastMessageID: newMessageData.data.createMessage.id,
+          },
+        },
+        authMode: 'API_KEY',
+     });
+
      console.log('end');
     }
 
