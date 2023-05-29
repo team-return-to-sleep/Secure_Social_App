@@ -226,6 +226,13 @@ const OtherUserProfile = ({route, navigation}) => {
                                     {isBlocked ? (<>Unblock</>) : (<>Block</>)}
                 </Button>
                 </View>
+                <Button icon="account-heart"
+                        mode="contained"
+                        style={styles.chatButton}
+                        onPress={() => onBestBudClickHandler()}>
+                            {isBestBud ? (<>Remove Best Bud</>) : (<>Add as Best Bud</>)}
+                </Button>
+                </View>
 
                 <View style={{marginBottom:26}}>
                             <Text>  {'\n\n'} </Text>
