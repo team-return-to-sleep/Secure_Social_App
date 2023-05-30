@@ -62,28 +62,28 @@ const Account = ({route, navigation}) => {
                                 navigation.navigate("ProfileInterests", {user: user})}
                             }
                         >
-                            <Text>Edit Interests Profile</Text>
+                            <Text style={styles.buttonText}>Edit Interests Profile</Text>
                         </Button>
 
                         <Button mode="contained"
                             style={styles.accountButton}
                             onPress={() => navigation.navigate("ProfileBasicInfo", {user: user})}
                         >
-                            <Text>Edit Personal Details</Text>
+                            <Text style={styles.buttonText}>Edit Personal Details</Text>
                         </Button>
 
                         <Button mode="contained"
                             style={styles.accountButton}
                             onPress={() => navigation.navigate("UserProfile", {user: user})}
                         >
-                            <Text>View Public Profile</Text>
+                            <Text style={styles.buttonText}>View Public Profile</Text>
                         </Button>
 
                         <Button mode="contained"
                             style={styles.accountButton}
                             onPress={() => navigation.navigate("ProfileBlocklist")}
                         >
-                            <Text>View Blocklist</Text>
+                            <Text style={styles.buttonText}>View Blocklist</Text>
                         </Button>
 
                         </>
@@ -126,13 +126,16 @@ const styles = StyleSheet.create({
     },
     profPicText: {
         color: 'rgba(255, 148, 114, 0.75)',
-        fontStyle: 'italic',
+        fontFamily: 'ABeeZee-Italic'
     },
     username: {
         margin:15,
         fontSize: 30,
-        fontWeight: 'bold',
         color: 'black',
+        fontFamily: 'ABeeZee-Regular'
+    },
+    buttonText: {
+        fontFamily: 'ABeeZee-Regular',
     },
 });
 

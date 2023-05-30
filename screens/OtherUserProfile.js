@@ -179,7 +179,7 @@ const OtherUserProfile = ({route, navigation}) => {
                         source={{uri: user.imageUri}}
                     />
                     <View style={styles.bioContainer}>
-                        <Text style={styles.bio}>{user.status}</Text>
+                        <Text style={styles.bioText}>{user.status}</Text>
                     </View>
 
 
@@ -215,7 +215,7 @@ const OtherUserProfile = ({route, navigation}) => {
                                         mode="contained"
                                         style={styles.chatButton}
                                         onPress={() => onClickHandler()}>
-                                            Start Chatting!
+                                            <Text style={styles.buttonText}>Start Chatting!</Text>
                         </Button>
                     )}
                 </View>
@@ -223,13 +223,13 @@ const OtherUserProfile = ({route, navigation}) => {
                                 mode="contained"
                                 style={styles.chatButton}
                                 onPress={() => onBlockClickHandler()}>
-                                    {isBlocked ? (<>Unblock</>) : (<>Block</>)}
+                                    <Text style={styles.buttonText}>{isBlocked ? (<>Unblock</>) : (<>Block</>)}</Text>
                 </Button>
                 <Button icon="account-heart"
                                         mode="contained"
                                         style={styles.chatButton}
                                         onPress={() => onBestBudClickHandler()}>
-                                            {isBestBud ? (<>Remove Best Bud</>) : (<>Add as Best Bud</>)}
+                                            <Text style={styles.buttonText}>{isBestBud ? (<>Remove Best Bud</>) : (<>Add as Best Bud</>)}</Text>
                 </Button>
                 </View>
                 <View style={{marginBottom:26}}>
@@ -250,8 +250,8 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: '#181818'
+        color: '#181818',
+        fontFamily: 'ABeeZee-Regular'
     },
     bioContainer: {
         width: '80%',
@@ -261,14 +261,15 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
     },
-    bio: {
+    bioText: {
         fontSize: 12,
         margin: 15,
+        fontFamily: 'ABeeZee-Regular',
     },
     username: {
         margin:15,
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: 'ABeeZee-Regular',
     },
     specifics: {
         marginBottom: 15,
@@ -285,6 +286,7 @@ const styles = StyleSheet.create({
     },
     interestText: {
         fontSize: 10,
+        fontFamily: 'ABeeZee-Regular',
     },
     interests: {
         width: 80,
@@ -296,6 +298,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f4f4f4',
         borderWidth: 2,
         borderColor: '#DDEDEA',
+        fontFamily: 'ABeeZee-Regular',
     },
     divider: {
         borderBottomColor: 'black',
@@ -341,6 +344,10 @@ const styles = StyleSheet.create({
     profPicText: {
         color: '#89A8D6',
         fontStyle: 'italic',
+        fontFamily: 'ABeeZee-Regular',
+    },
+    buttonText: {
+        fontFamily: 'ABeeZee-Regular',
     },
 });
 

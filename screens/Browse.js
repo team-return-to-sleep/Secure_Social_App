@@ -344,7 +344,7 @@ const Browse = ({navigation}) => {
                     style={styles.searchButton}
                     onPress={() => onClickHandler()
                 }>
-                    Search Users
+                    <Text style={styles.buttonText}>Search Users</Text>
                 </Button>
 
 
@@ -363,7 +363,7 @@ const Browse = ({navigation}) => {
                                 </Pressable>
                             );
                         })) : (
-                            <Text>No Users Found</Text>
+                            <Text style={styles.noUsersText}>No Users Found</Text>
                         )
                     }
                 </View>
@@ -375,6 +375,9 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:'#FFFFFF',
+    },
+    noUsersText: {
+        fontFamily: 'ABeeZee-Regular',
     },
     profile: {
         marginLeft: 10,
@@ -498,9 +501,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign:"center",
         marginHorizontal: '10%',
-        fontColor: '#181818',
         marginTop: 20,
-        fontWeight: 'bold',
+        fontFamily: 'ABeeZee-Regular'
+    },
+    buttonText: {
+        fontFamily: 'ABeeZee-Regular'
     },
 });
 

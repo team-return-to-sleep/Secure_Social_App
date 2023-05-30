@@ -228,19 +228,19 @@ const styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 54,
         lineWidth: 100,
-        fontWeight: 'bold',
         borderRadius: 20,
+        fontFamily: 'ABeeZee-Regular'
     },
     status: {
         marginHorizontal: 30,
+        fontFamily: 'ABeeZee-Regular'
     },
     subtext: {
         alignSelf: 'center',
         fontSize: 16,
         textAlign:"center",
         marginHorizontal: '10%',
-        fontColor: '#181818',
-        fontWeight: 'bold',
+        fontFamily: 'ABeeZee-Regular'
     },
     flowerText: {
         alignSelf: 'center',
@@ -263,12 +263,14 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize:10,
         color: "#181818",
+        fontFamily: 'ABeeZee-Italic'
     },
     buttons: {
         width:'100%',
         alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
+        fontFamily: 'ABeeZee-Regular'
     },
 });
 

@@ -31,7 +31,7 @@ const UserProfile = ({route, navigation}) => {
                         source={{uri: user.imageUri}}
                     />
                     <View style={styles.bioContainer}>
-                        <Text style={styles.bio}>{user.status}</Text>
+                        <Text style={styles.bioText}>{user.status}</Text>
                     </View>
 
 
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: '#181818'
+        color: '#181818',
+        fontFamily: 'ABeeZee-Regular'
     },
     bioContainer: {
         width: '80%',
@@ -89,14 +89,15 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
     },
-    bio: {
+    bioText: {
         fontSize: 12,
         margin: 15,
+        fontFamily: 'ABeeZee-Regular'
     },
     username: {
         margin:15,
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: 'ABeeZee-Regular'
     },
     specifics: {
         marginBottom: 15,
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
     },
     interestText: {
         fontSize: 10,
+        fontFamily: 'ABeeZee-Regular',
     },
     interests: {
         width: 80,
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     },
     profPicText: {
         color: '#89A8D6',
-        fontStyle: 'italic',
+        fontFamily: 'ABeeZee-Regular',
     },
 });
 

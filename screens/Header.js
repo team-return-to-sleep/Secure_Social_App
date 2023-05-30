@@ -6,7 +6,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Auth} from 'aws-amplify'
 
 const Header = (props) => {
-
     return (
         <Appbar.Header style={styles.head}>
             <Image
@@ -28,8 +27,8 @@ const styles = StyleSheet.create({
     },
     name: {
         marginLeft: 10,
-        fontWeight: 'bold',
         color: '#C62F00',
+        fontFamily: 'Amaranth-Regular'
     },
     logout: {
         marginLeft: 'auto',

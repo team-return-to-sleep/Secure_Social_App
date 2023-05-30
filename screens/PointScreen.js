@@ -151,8 +151,9 @@ const styles = StyleSheet.create({
         //alignItems: 'end',
         justifyContent: 'flex-end',
     },
-    points: {
+    name: {
         float: 'right',
+        fontFamily: 'ABeeZee-Regular'
     },
     actionsBar: {
         alignItems: 'center',

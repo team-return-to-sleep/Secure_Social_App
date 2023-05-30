@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/ABeeZee-Italic.ttf",
+      "sha1": "30fbee512a50eb921eb2fb6df123d83ed3c9ad9b"
+    },
+    {
+      "path": "assets/fonts/ABeeZee-Regular.ttf",
+      "sha1": "9d9737fa3ed2b3f88da68d250830f3b39506675b"
+    },
+    {
+      "path": "assets/fonts/Amaranth-Bold.ttf",
+      "sha1": "f9c3898a4fe9702033fc280e3b9d4dba8a13e934"
+    },
+    {
+      "path": "assets/fonts/Amaranth-Regular.ttf",
+      "sha1": "8ead418993a39dcca03d108273dbc46e25b91f25"
+    }
+  ]
+}

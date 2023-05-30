@@ -396,8 +396,8 @@ const styles = StyleSheet.create({
     subtext: {
         marginLeft:5,
         fontSize: 20,
-        fontWeight: 'bold',
         color: 'black',
+        fontFamily: 'ABeeZee-Regular'
     },
     midtext: {
         fontSize: 15,
@@ -405,10 +405,12 @@ const styles = StyleSheet.create({
         marginHorizontal: '10%',
         color: 'black',
         margin: 10,
+        fontFamily: 'ABeeZee-Regular'
     },
     msgtext: {
         marginLeft:5,
         color:'#181818',
+        fontFamily: 'ABeeZee-Regular'
     },
     gameButton: {
         width: 30,
