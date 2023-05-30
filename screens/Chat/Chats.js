@@ -410,6 +410,7 @@ const styles = StyleSheet.create({
     msgtext: {
         marginLeft:5,
         color:'#181818',
+        fontSize: 12,
         fontFamily: 'ABeeZee-Regular'
     },
     gameButton: {
