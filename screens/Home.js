@@ -149,7 +149,7 @@ const Home = ({navigation}) => {
 
                 <View style={styles.profileWrapper}>
                 <Pressable mode="contained"
-                    onPress={() => navigation.navigate("ChatRequests")}>
+                    onPress={() => navigation.navigate("ChatRequests")}
                     style={styles.profile}>
                     <Text style={styles.name}>Click here to see who wants to chat with you!</Text>
                 </Pressable>

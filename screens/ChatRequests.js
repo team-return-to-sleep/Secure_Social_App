@@ -5,7 +5,7 @@ import {View,Text,SafeAreaView,ScrollView, FlatList,Linking,TouchableOpacity,Ima
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
-import Header from '../Header'
+import Header from './Header'
 import {
  Menu,
  MenuProvider,
