@@ -112,33 +112,50 @@ export function ChatScreen({route, navigation}) {
 
 
     const chooseFile = () => {
-      let options = {
-        mediaType: 'photo',
-      };
-      launchImageLibrary(options, (response) => {
-        console.log('Response = ', response);
-        if (response.assets && response.assets[0].type) {
-            console.log('Type = ', response.assets[0].type);
-          } else {
-            console.log('Type is not defined');
-          }
+     if (myUserData.bestBuds.includes(otherUser.id)){
+       console.log("I included the other user");
+     } else {
+       console.log("I did not include the other user");
+     }
 
-        setUploadSuccessMessage('');
-        if (response.didCancel) {
-        //  alert('User cancelled camera picker');
-          return;
-        } else if (response.errorCode == 'camera_unavailable') {
-          alert('Camera not available on device');
-          return;
-        } else if (response.errorCode == 'permission') {
-          alert('Permission not satisfied');
-          return;
-        } else if (response.errorCode == 'others') {
-          alert(response.errorMessage);
-          return;
-        }
-        uploadFile(response);
-      });
+     if (otherUser.bestBuds && otherUser.bestBuds.includes(myUserData.id)) {
+     console.log("The other user has included me");
+     } else {
+     console.log("The other user has not included me");
+     }
+
+     if (myUserData.bestBuds.includes(otherUser.id) && otherUser.bestBuds && otherUser.bestBuds.includes(myUserData.id)) {
+          let options = {
+            mediaType: 'photo',
+          };
+          launchImageLibrary(options, (response) => {
+            console.log('Response = ', response);
+            if (response.assets && response.assets[0].type) {
+                console.log('Type = ', response.assets[0].type);
+              } else {
+                console.log('Type is not defined');
+              }
+
+            setUploadSuccessMessage('');
+            if (response.didCancel) {
+            //  alert('User cancelled camera picker');
+              return;
+            } else if (response.errorCode == 'camera_unavailable') {
+              alert('Camera not available on device');
+              return;
+            } else if (response.errorCode == 'permission') {
+              alert('Permission not satisfied');
+              return;
+            } else if (response.errorCode == 'others') {
+              alert(response.errorMessage);
+              return;
+            }
+            uploadFile(response);
+          });
+       } else {
+        alert('Best buds must be enabled on both users if pictures are to be sent. Go to View Profile of this person to Enable');
+       }
+
     };
 
     const uploadFile = async (filePath) => {
@@ -667,6 +684,7 @@ export function ChatScreen({route, navigation}) {
     );
   }
 
+
   const renderActions = (props) => {
       return (
         <View style={{ flexDirection: 'row', paddingBottom: 12 }}>
@@ -705,15 +723,19 @@ export function ChatScreen({route, navigation}) {
       );
     };
 
+
   return (
     <>
         <MenuProvider>
+
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Title>
                 {otherUser.name}
             </Title>
         </Appbar.Header>
+
+
 
         {eThreeInitialized ? (
         <GiftedChat
@@ -743,7 +765,6 @@ export function ChatScreen({route, navigation}) {
           placeholder='Type your message here...'
           showUserAvatar
           alwaysShowSend
-          // renderActions={renderActions}
           renderSend={renderSend}
           renderLoading={renderLoading}
           bottomOffset={36}
