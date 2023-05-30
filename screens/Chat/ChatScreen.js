@@ -11,6 +11,7 @@ import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import { Storage } from 'aws-amplify';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { v4 as uuidv4 } from 'uuid';
 import DeviceInfo from 'react-native-device-info';
 import { DEVELOPMENT_MACHINE_IP } from '@env';
@@ -501,6 +502,50 @@ export function ChatScreen({route, navigation}) {
     );
   }
 
+  const renderActions = (props) => {
+        return (
+          <View style={{
+              flexDirection: 'row',
+              paddingLeft: 5,
+              paddingBottom: 5,
+              backgroundColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+          <Menu renderer={ContextMenu} {...props}>
+              <MenuTrigger>
+                <View style={styles.gameButton}>
+                  <Icon name="game-controller" size={32} color="black" />
+                </View>
+              </MenuTrigger>
+              <MenuOptions>
+                  <FlatList
+                      data={Activities}
+                      keyExtractor={(item) => item.id}
+                      style={{height:200}}
+                      renderItem={({item}) => (
+                          <MenuOption
+
+                              onSelect={() => props.onSend({text: item.uri})}
+                              customStyles={{
+                                  optionWrapper: {
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "space-between",
+                                  },
+                              }}
+                          >
+                              <Text>{item.name}</Text>
+                          </MenuOption>
+                      )}
+                  />
+              </MenuOptions>
+          </Menu>
+        </View>
+
+        );
+      };
+
   function scrollToBottomComponent() {
     return (
       <View style={styles.bottomComponentContainer}>
@@ -509,43 +554,7 @@ export function ChatScreen({route, navigation}) {
     );
   }
 
-  const renderActions = (props) => {
-      return (
-        <View style={{ flexDirection: 'row', paddingBottom: 12 }}>
-        <Menu renderer={ContextMenu} {...props}>
-            <MenuTrigger>
-                <Image
-                    style={styles.gameButton}
-                    source={{ uri: 'https://www.freepnglogos.com/uploads/games-png/games-controller-game-icon-17.png'}}
-                    resizeMode='contain'/>
-            </MenuTrigger>
-            <MenuOptions>
-                <FlatList
-                    data={Activities}
-                    keyExtractor={(item) => item.id}
-                    style={{height:200}}
-                    renderItem={({item}) => (
-                        <MenuOption
 
-                            onSelect={() => props.onSend({text: item.uri})}
-                            customStyles={{
-                                optionWrapper: {
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                },
-                            }}
-                        >
-                            <Text>{item.name}</Text>
-                        </MenuOption>
-                    )}
-                />
-            </MenuOptions>
-        </Menu>
-      </View>
-
-      );
-    };
 
   return (
     <>
@@ -565,13 +574,13 @@ export function ChatScreen({route, navigation}) {
             _id: route.params.user.id,
             avatar: route.params.user.imageUri,
           }}
+          renderActions={renderActions}
           renderBubble={renderBubble}
           scrollToBottom
           scrollToBottomComponent={scrollToBottomComponent}
           placeholder='Type your message here...'
           showUserAvatar
           alwaysShowSend
-          renderActions={renderActions}
           renderSend={renderSend}
           renderLoading={renderLoading}
           bottomOffset={36}
@@ -619,13 +628,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-
-    //BREAK
     gameButton: {
-        paddingLeft: 30,
-        marginBottom: '-10%',
-        width: 30,
-        height: 30,
-        borderRadius: 30,
+        alignItems: 'center',
+        marginBotton: '-10%',
+        justifyContent: 'center',
     },
 });
