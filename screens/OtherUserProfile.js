@@ -22,9 +22,11 @@ const OtherUserProfile = ({route, navigation}) => {
 
     const {user} = route.params;
     const [isBlocked, setIsBlocked] = useState(false);
+    const [isBestBud, setIsBestBud] = useState(false);
     const [myUser, setMyUser] = useState()
     const isFocused = useIsFocused()
     //console.log("OTHER USER: ", user)
+
 
     useEffect( ()=> {
         if(isFocused){
@@ -127,6 +129,40 @@ const OtherUserProfile = ({route, navigation}) => {
 
     }
 
+    const onBestBudClickHandler = async () => {
+      let bestBudIDs = myUser.bestBuds;
+      if (isBestBud) {
+        // remove from best buds
+        if (!bestBudIDs) {
+          // do nothing
+        } else {
+          bestBudIDs = bestBudIDs.filter(e => e !== user.id.toString());
+        }
+        setIsBestBud(false);
+      } else {
+        // add to best buds
+        if (!bestBudIDs) {
+          bestBudIDs = [user.id.toString()];
+        } else {
+          bestBudIDs.push(user.id.toString());
+        }
+        setIsBestBud(true);
+      }
+
+      const updatedUser = {
+        id: myUser.id,
+        bestBuds: bestBudIDs,
+      };
+
+      const updated = await API.graphql (
+        {
+          query: updateUser,
+          variables: {input: updatedUser},
+          authMode: "API_KEY"
+        }
+      );
+    }
+
 
     return (
         <ScrollView style={styles.container}>
@@ -189,8 +225,13 @@ const OtherUserProfile = ({route, navigation}) => {
                                 onPress={() => onBlockClickHandler()}>
                                     {isBlocked ? (<>Unblock</>) : (<>Block</>)}
                 </Button>
+                <Button icon="account-heart"
+                                        mode="contained"
+                                        style={styles.chatButton}
+                                        onPress={() => onBestBudClickHandler()}>
+                                            {isBestBud ? (<>Remove Best Bud</>) : (<>Add as Best Bud</>)}
+                </Button>
                 </View>
-
                 <View style={{marginBottom:26}}>
                             <Text>  {'\n\n'} </Text>
                 </View>
