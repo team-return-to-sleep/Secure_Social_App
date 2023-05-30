@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import {Auth} from 'aws-amplify'
 import {getUser} from '../src/graphql/queries'
-import {updateUser} from '../src/graphql/mutations'
+import {createNotification, updateUser} from '../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import Header from './Header'
@@ -106,10 +106,76 @@ const OtherUserProfile = ({route, navigation}) => {
                     return;
                 }
             }
-
             myFriends.push(user.id.toString())
+            let otherUserChatRequestNotifications = user.sentNotifs
+            console.log(otherUserChatRequestNotifications)
+            // whoever this friend is should be notified!!
+            const newNotif = {
+                toUserID: user.id,
+                fromUserID: userData.data.getUser.id,
+                fromUser: userData.data.getUser,
+                hasRead: false,
+                content: "chat request",
+            }
+            const notification = await API.graphql(
+                {
+                    query: createNotification,
+                    variables: {input: newNotif},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(notification)
+            otherUserChatRequestNotifications.push(notification)
+            // TODO: what do we do if that other person already wants to chat?
+            // cuz if that's the case, then a chatroom will be automatically created
+            // maybe we can take them to that chatroom?
+            console.log(otherUserChatRequestNotifications)
+            const updatedUser = {
+                id: user.id,
+                sentNotifs: otherUserChatRequestNotifications,
+            };
+
+            const updated = await API.graphql (
+                {
+                    query: updateUser,
+                    variables: {input: updatedUser},
+                    authMode: "API_KEY"
+                }
+            )
         } else {
             myFriends = [user.id.toString()]
+            let otherUserChatRequestNotifications = user.sentNotifs
+            // whoever this friend is should be notified!!
+            const newNotif = {
+                toUserID: user.id,
+                fromUserID: userData.data.getUser.id,
+                fromUser: userData.data.getUser,
+                hasRead: false,
+                content: "chat request",
+            }
+            const notification = await API.graphql(
+                {
+                    query: createNotification,
+                    variables: {input: newNotif},
+                    authMode: "API_KEY"
+                }
+            )
+            otherUserChatRequestNotifications.push(notification)
+            // TODO: what do we do if that other person already wants to chat?
+            // cuz if that's the case, then a chatroom will be automatically created
+            // maybe we can take them to that chatroom?
+            const updatedUser = {
+                id: user.id,
+                sentNotifs: otherUserChatRequestNotifications,
+            };
+
+            const updated = await API.graphql (
+                {
+                    query: updateUser,
+                    variables: {input: updatedUser},
+                    authMode: "API_KEY"
+                }
+            )
         }
 
         const updatedUser = {

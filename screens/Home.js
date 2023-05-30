@@ -16,6 +16,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toolbar from './Toolbar'
 import UserProfile from './UserProfile'
+import ChatRequests from './ChatRequests'
 import Browse from './Account'
 import ProfileAge from './Profile/ProfileAge'
 import ProfileRegion from './Profile/ProfileRegion'
@@ -145,6 +146,15 @@ const Home = ({navigation}) => {
                 <Header />
                 <Text style={styles.flowerText}>✿</Text>
                 <Text style={styles.subtext}>Hello {user}! Let's grow your next friendship. </Text>
+
+                <View style={styles.profileWrapper}>
+                <Pressable mode="contained"
+                    onPress={() => navigation.navigate("ChatRequests")}>
+                    style={styles.profile}>
+                    <Text style={styles.name}>Click here to see who wants to chat with you!</Text>
+                </Pressable>
+                </View>
+
                 <View style={styles.profileWrapper}>
                     {users.map((user) => {
                         return (
