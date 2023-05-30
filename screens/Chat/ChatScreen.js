@@ -5,16 +5,16 @@ import { ActivityIndicator,Appbar,Title,Button,TextInput,IconButton } from 'reac
 import { useIsFocused } from "@react-navigation/native";
 
 import {Auth} from 'aws-amplify'
-import {getUser, getGarden, listUsers, messagesByChatRoom} from '../../src/graphql/queries'
-import {createMessage, createGarden, updateGarden} from '../../src/graphql/mutations'
+import {getUser, getGarden, listUsers, messagesByChatRoom, getChatRoom} from '../../src/graphql/queries'
+import {createMessage, createGarden, updateGarden, updateChatRoom, updateMessage} from '../../src/graphql/mutations'
 import {onCreateMessage} from '../../src/graphql/subscriptions'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import { Storage } from 'aws-amplify';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { v4 as uuidv4 } from 'uuid';
-import DeviceInfo from 'react-native-device-info';
-import { DEVELOPMENT_MACHINE_IP } from '@env';
+import RNFS from 'react-native-fs';
+import { RNS3 } from 'react-native-aws3';
 
 import { Activities } from '../../assets/Activities';
 import {
@@ -28,8 +28,15 @@ import {
 
 import Toolbar from '../Toolbar'
 import { Platform } from 'react-native';
+import { Buffer } from 'buffer';
 
 import { EThree } from '@virgilsecurity/e3kit-native';
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from "@aws-sdk/client-secrets-manager";
+
+
 
 const getTokenFactory = (identity) => {
   return async () => {
@@ -50,6 +57,33 @@ const getTokenFactory = (identity) => {
   };
 };
 
+const fetchSecretsFactory = () => {
+  return async () => {
+    const secret_name = "S3secret";
+
+    const client = new SecretsManagerClient({
+      region: "us-west-2",
+    });
+
+    try {
+      const response = await client.send(
+        new GetSecretValueCommand({
+          SecretId: secret_name,
+          VersionStage: "AWSCURRENT", // VersionStage defaults to AWSCURRENT if unspecified
+        })
+      );
+
+      return JSON.parse(response.SecretString);
+
+    } catch (error) {
+      // For a list of exceptions thrown, see
+      // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+      console.log("Here");
+      throw error;
+    }
+  };
+};
+
 
 function isBase64(str) {
   try {
@@ -58,24 +92,6 @@ function isBase64(str) {
     return false;
   }
 }
-
-const uploadImageToS3 = async (fileUri) => {
-  try {
-    const response = await fetch(fileUri);
-    const blob = await response.blob();
-    const imageName = new Date().toISOString() + '-' + Math.random().toString(36).substring(2, 7);
-    const fileKey = `${route.params.chatRoomID}/${imageName}`;
-    const result = await Storage.put(fileKey, blob, {
-      contentType: 'image/jpeg',
-      level: 'public',
-    });
-    const url = await Storage.get(result.key);
-    return url;
-  } catch (error) {
-    console.error('Error uploading image:', error);
-    return null;
-  }
-};
 
 export function ChatScreen({route, navigation}) {
     const isFocused = useIsFocused()
@@ -92,6 +108,112 @@ export function ChatScreen({route, navigation}) {
     const [eThreeInitialized, setEThreeInitialized] = useState(false);
     const [showEncryptionMessage, setShowEncryptionMessage] = useState(true);
 
+    const [uploadSuccessMessage, setUploadSuccessMessage] = useState('');
+
+
+    const chooseFile = () => {
+     if (myUserData.bestBuds.includes(otherUser.id)){
+       console.log("I included the other user");
+     } else {
+       console.log("I did not include the other user");
+     }
+
+     if (otherUser.bestBuds && otherUser.bestBuds.includes(myUserData.id)) {
+     console.log("The other user has included me");
+     } else {
+     console.log("The other user has not included me");
+     }
+
+     if (myUserData.bestBuds.includes(otherUser.id) && otherUser.bestBuds && otherUser.bestBuds.includes(myUserData.id)) {
+          let options = {
+            mediaType: 'photo',
+          };
+          launchImageLibrary(options, (response) => {
+            console.log('Response = ', response);
+            if (response.assets && response.assets[0].type) {
+                console.log('Type = ', response.assets[0].type);
+              } else {
+                console.log('Type is not defined');
+              }
+
+            setUploadSuccessMessage('');
+            if (response.didCancel) {
+            //  alert('User cancelled camera picker');
+              return;
+            } else if (response.errorCode == 'camera_unavailable') {
+              alert('Camera not available on device');
+              return;
+            } else if (response.errorCode == 'permission') {
+              alert('Permission not satisfied');
+              return;
+            } else if (response.errorCode == 'others') {
+              alert(response.errorMessage);
+              return;
+            }
+            uploadFile(response);
+          });
+       } else {
+        alert('Best buds must be enabled on both users if pictures are to be sent. Go to View Profile of this person to Enable');
+       }
+
+    };
+
+    const uploadFile = async (filePath) => {
+      if (Object.keys(filePath).length == 0) {
+        alert('Please select image first');
+        return;
+      }
+      console.log("file path",filePath);
+
+      /*
+      const fetchSecrets = fetchSecretsFactory();
+      const secrets = await fetchSecrets();
+      console.log("Secrets: ",secrets);
+      */
+
+      RNS3.put(
+            {
+              uri: filePath.assets[0].uri,
+              name: filePath.assets[0].fileName,
+              type: filePath.assets[0].type,
+            },
+        {
+          keyPrefix: 'public/',
+          bucket: 'amplify-wallflower-staging-63629-deployment',
+          region: 'us-west-2',
+          accessKey: process.env.ACCESS_KEY,
+          secretKey: process.env.SECRET_KEY,
+          successActionStatus: 201,
+        },
+      )
+        .progress((progress) =>
+          setUploadSuccessMessage(
+            `Uploading: ${progress.loaded / progress.total} (${
+              progress.percent
+            }%)`,
+          ),
+        )
+        .then((response) => {
+          if (response.status !== 201)
+            alert('Failed to upload image to S3');
+          console.log(response.body);
+          let {
+            bucket,
+            etag,
+            key,
+            location
+          } = response.body.postResponse;
+          onSend([{ image: location }]);
+          setUploadSuccessMessage(
+            `Uploaded Successfully:
+            \n1. bucket => ${bucket}
+            \n2. etag => ${etag}
+            \n3. key => ${key}
+            \n4. location => ${location}`,
+          );
+        });
+    };
+
   useEffect(() => {
     const initEThree = async () => {
           let identity = myUserData.id;
@@ -100,11 +222,7 @@ export function ChatScreen({route, navigation}) {
 
           let isRegistered_user = await eThree_user.hasLocalPrivateKey();
 
-          console.log("Check 2");
-
-
           if (!isRegistered_user) {
-          console.log("Check 1");
               // Attempt to register the user
               try {
                 await eThree_user.register();
@@ -178,10 +296,19 @@ export function ChatScreen({route, navigation}) {
                 authMode: "API_KEY",
             }
         )
+        const chatRoomData = await API.graphql(
+            {
+                query: getChatRoom,
+                variables: {id: myChatRoomID},
+                authMode: "API_KEY",
+            }
+        )
 //        console.log(myChatRoomID)
 //        console.log(messagesData.data.messagesByChatRoom.items)
 
         const messagesDataArr = messagesData.data.messagesByChatRoom.items
+        const latestMessage = chatRoomData.data.getChatRoom.lastMessage
+        //console.log("CHATSCREEN LATESTMESSAGE ", latestMessage)
 
         for(let i=0; i<messagesDataArr.length; i++) {
 
@@ -192,27 +319,59 @@ export function ChatScreen({route, navigation}) {
            // Get sender card with public key
            const senderCard = await eThreeUser.findUsers(sender);
 
-           let decryptedText;
+           let decryptedContent;
            // Decrypt text with the recipient private key and ensure it was written by sender
            try {
-            decryptedText = await eThreeUser.authDecrypt(curr.content, senderCard);
+            decryptedContent = await eThreeUser.authDecrypt(curr.content, senderCard);
            } catch (err) {
             // This might happen if the messages didn't undergo encryption because it was sent before the set up
-            decryptedText = curr.content;
+            decryptedContent = curr.content;
            }
 
-            const msg = {
+            const isImageUrl = decryptedContent.startsWith('https://amplify-wallflower-staging-63629-deployment.s3.amazonaws.com/'); // or use a more robust URL check
+            console.log("Image Url ", isImageUrl);
+
+            let msg;
+
+            if (isImageUrl) {
+              // Message is an image
+              msg = {
                 _id: curr.id,
-                text: decryptedText,
+                image: decryptedContent, // pass the image URL
                 createdAt: curr.createdAt,
                 user: {
-                    _id: curr.user.id,
-                    name: curr.user.name,
-                    avatar: curr.user.imageUri,
+                  _id: curr.user.id,
+                  name: curr.user.name,
+                  avatar: curr.user.imageUri,
                 },
+              };
+            } else {
+              // Message is text
+              msg = {
+                _id: curr.id,
+                text: decryptedContent, // pass the decrypted text
+                createdAt: curr.createdAt,
+                user: {
+                  _id: curr.user.id,
+                  name: curr.user.name,
+                  avatar: curr.user.imageUri,
+                },
+              };
             }
 
-
+            if (sender != myUserData.id && curr.id == latestMessage.id) {
+                console.log("message read")
+                await API.graphql({
+                    query: updateMessage,
+                    variables: {
+                      input: {
+                        id: latestMessage.id,
+                        hasRead: true,
+                      },
+                    },
+                    authMode: 'API_KEY',
+                });
+            }
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
         }
 
@@ -341,34 +500,40 @@ export function ChatScreen({route, navigation}) {
             // console.log("CHeck sender")
 
             // Decrypt text with sender's private key and ensure it was written by sender
-            const decryptedText = await eThreeUser.authDecrypt(newMessage.content, senderCard);
+            const decryptedContent = await eThreeUser.authDecrypt(newMessage.content, senderCard);
 
-            /*
-            console.log('Sender ID:', sender);
-            try {
-                const senderCard = await eThreeUser.findUsers(sender);
-                console.log('Sender card found:', senderCard);
-            } catch (error) {
-                console.error('Sender card not found:', error);
-            }
-            console.log('Encrypted message:', newMessage.content);
+            console.log("Hi there");
+            const isImageUrl = decryptedContent.startsWith('https://amplify-wallflower-staging-63629-deployment.s3.amazonaws.com/'); // or use a more robust URL check
+            console.log("Image Url ", isImageUrl);
 
-            const sender_Card = await eThreeUser.findUsers(sender);
-            const decryptedText = await eThreeUser.authDecrypt(newMessage.content, sender_Card);
-            console.log('Decrypted message:', decryptedText);
-            */
+            let msg;
 
-
-            const msg = {
+            if (isImageUrl) {
+              // Message is an image
+              msg = {
                 _id: newMessage.id,
-                text: decryptedText,
+               image: decryptedContent, // pass the image URL
                 createdAt: newMessage.createdAt,
                 user: {
-                    _id: newMessage.user.id,
-                    name: newMessage.user.name,
-                    avatar: newMessage.user.imageUri,
+                  _id: newMessage.user.id,
+                  name: newMessage.user.name,
+                  avatar: newMessage.user.imageUri,
                 },
+              };
+            } else {
+              // Message is text
+              msg = {
+                _id: newMessage.id,
+                text: decryptedContent, // pass the decrypted text
+                createdAt: newMessage.createdAt,
+                user: {
+                  _id: newMessage.user.id,
+                  name: newMessage.user.name,
+                  avatar: newMessage.user.imageUri,
+                },
+              };
             }
+
             setMessages(previousMessages => GiftedChat.append(previousMessages, msg))
         },
         error: error => console.warn(error.error.errors)
@@ -379,6 +544,7 @@ export function ChatScreen({route, navigation}) {
   const onSend = async(newMessage = []) => {
 
     // Get recipient id
+    console.log("Inside onsend");
     const identities = [otherUser.id];
     // console.log('Identities:', identities);
 
@@ -393,30 +559,38 @@ export function ChatScreen({route, navigation}) {
     // console.log("ENcrrypt:", encryptedText);
 
     // Check if the message has an image
-        const imageObject = newMessage[0].image;
-        let imageURL = null;
-        if (imageObject) {
-          imageURL = await uploadImageToS3(imageObject.uri);
-          if (!imageURL) {
-            // Error uploading image, exit function
-            return;
-          }
-        }
+    console.log("message content", newMessage[0].image);
+    let messageContent = newMessage[0].text;
+    if (newMessage[0].image) {
+          messageContent = newMessage[0].image; // use the image URL as the message content
+          console.log("Inside onsend 2 and content", messageContent);
+     }
+     const encryptedText = await eThreeUser.authEncrypt(messageContent, findUsersResult);
 
-     const encryptedText = imageURL ? '' : await eThreeUser.authEncrypt(newMessage[0].text, findUsersResult);
-
-
-     await API.graphql({
+     const newMessageData = await API.graphql({
        query: createMessage,
        variables: {
          input: {
            content: encryptedText,
            userID: route.params.user.id,
            chatRoomID: route.params.chatRoomID,
+           hasRead: false,
          },
        },
        authMode: 'API_KEY',
      });
+
+     await API.graphql({
+        query: updateChatRoom,
+        variables: {
+          input: {
+            id: route.params.chatRoomID,
+            lastMessageID: newMessageData.data.createMessage.id,
+          },
+        },
+        authMode: 'API_KEY',
+     });
+
      console.log('end');
     }
 
@@ -502,50 +676,6 @@ export function ChatScreen({route, navigation}) {
     );
   }
 
-  const renderActions = (props) => {
-        return (
-          <View style={{
-              flexDirection: 'row',
-              paddingLeft: 5,
-              paddingBottom: 5,
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-          <Menu renderer={ContextMenu} {...props}>
-              <MenuTrigger>
-                <View style={styles.gameButton}>
-                  <Icon name="game-controller" size={32} color="black" />
-                </View>
-              </MenuTrigger>
-              <MenuOptions>
-                  <FlatList
-                      data={Activities}
-                      keyExtractor={(item) => item.id}
-                      style={{height:200}}
-                      renderItem={({item}) => (
-                          <MenuOption
-
-                              onSelect={() => props.onSend({text: item.uri})}
-                              customStyles={{
-                                  optionWrapper: {
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                      justifyContent: "space-between",
-                                  },
-                              }}
-                          >
-                              <Text>{item.name}</Text>
-                          </MenuOption>
-                      )}
-                  />
-              </MenuOptions>
-          </Menu>
-        </View>
-
-        );
-      };
-
   function scrollToBottomComponent() {
     return (
       <View style={styles.bottomComponentContainer}>
@@ -555,16 +685,57 @@ export function ChatScreen({route, navigation}) {
   }
 
 
+  const renderActions = (props) => {
+      return (
+        <View style={{ flexDirection: 'row', paddingBottom: 12 }}>
+        <Menu renderer={ContextMenu} {...props}>
+            <MenuTrigger>
+                <Image
+                    style={styles.gameButton}
+                    source={{ uri: 'https://www.freepnglogos.com/uploads/games-png/games-controller-game-icon-17.png'}}
+                    resizeMode='contain'/>
+            </MenuTrigger>
+            <MenuOptions>
+                <FlatList
+                    data={Activities}
+                    keyExtractor={(item) => item.id}
+                    style={{height:200}}
+                    renderItem={({item}) => (
+                        <MenuOption
+
+                            onSelect={() => props.onSend({text: item.uri})}
+                            customStyles={{
+                                optionWrapper: {
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                },
+                            }}
+                        >
+                            <Text>{item.name}</Text>
+                        </MenuOption>
+                    )}
+                />
+            </MenuOptions>
+        </Menu>
+      </View>
+
+      );
+    };
+
 
   return (
     <>
         <MenuProvider>
+
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Title>
                 {otherUser.name}
             </Title>
         </Appbar.Header>
+
+
 
         {eThreeInitialized ? (
         <GiftedChat
@@ -574,7 +745,20 @@ export function ChatScreen({route, navigation}) {
             _id: route.params.user.id,
             avatar: route.params.user.imageUri,
           }}
-          renderActions={renderActions}
+           renderActions={() => (
+                <View style={{
+                    flexDirection: 'row',
+                    paddingLeft: 5,
+                    paddingBottom: 5,
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                  <TouchableOpacity onPress={chooseFile}>
+                     <Icon name="camera-outline" size={32} color="black" />
+                  </TouchableOpacity>
+                </View>
+              )}
           renderBubble={renderBubble}
           scrollToBottom
           scrollToBottomComponent={scrollToBottomComponent}
@@ -628,9 +812,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+
+    //BREAK
     gameButton: {
-        alignItems: 'center',
-        marginBotton: '-10%',
-        justifyContent: 'center',
+        paddingLeft: 30,
+        marginBottom: '-10%',
+        width: 30,
+        height: 30,
+        borderRadius: 30,
     },
 });
