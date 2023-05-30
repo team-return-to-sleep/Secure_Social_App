@@ -34,6 +34,7 @@ export const getUser = /* GraphQL */ `
       }
       friends
       blockedUsers
+      bestBuds
       chatRoomUser {
         items {
           id
@@ -46,6 +47,16 @@ export const getUser = /* GraphQL */ `
                     chatRoomID
                     userID
                 }
+            }
+            lastMessage {
+                id
+                createdAt
+                userID
+                chatRoomID
+                content
+                imageURL
+                updatedAt
+                hasRead
             }
           }
           createdAt
@@ -61,6 +72,7 @@ export const getUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -80,6 +92,7 @@ export const getUser = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -133,6 +146,7 @@ export const listUsers = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -179,6 +193,7 @@ export const getChatRoomUser = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -216,6 +231,7 @@ export const getChatRoomUser = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
@@ -246,6 +262,7 @@ export const listChatRoomUsers = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -284,6 +301,7 @@ export const getChatRoom = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         nextToken
@@ -305,6 +323,7 @@ export const getChatRoom = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -314,6 +333,7 @@ export const getChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       createdAt
@@ -344,6 +364,7 @@ export const listChatRooms = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
@@ -377,6 +398,7 @@ export const getMessage = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -414,11 +436,13 @@ export const getMessage = /* GraphQL */ `
           chatRoomID
           content
           imageURL
+          hasRead
           updatedAt
         }
         createdAt
         updatedAt
       }
+      hasRead
       updatedAt
     }
   }
@@ -446,6 +470,7 @@ export const listMessages = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -455,6 +480,7 @@ export const listMessages = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       nextToken
@@ -482,6 +508,7 @@ export const getNotification = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -530,6 +557,7 @@ export const listNotifications = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -565,6 +593,7 @@ export const getGarden = /* GraphQL */ `
         }
         friends
         blockedUsers
+        bestBuds
         chatRoomUser {
           nextToken
         }
@@ -613,6 +642,7 @@ export const listGardens = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -684,6 +714,7 @@ export const chatRoomUsersByUserIDAndChatRoomID = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -728,6 +759,7 @@ export const chatRoomUsersByUserID = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -774,6 +806,7 @@ export const chatRoomUsersByChatRoomIDAndUserID = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -823,6 +856,7 @@ export const messagesByUser = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -832,6 +866,7 @@ export const messagesByUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       nextToken
@@ -871,6 +906,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           status
           friends
           blockedUsers
+          bestBuds
           createdAt
           updatedAt
         }
@@ -880,6 +916,7 @@ export const messagesByChatRoom = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        hasRead
         updatedAt
       }
       nextToken
