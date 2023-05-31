@@ -95,6 +95,8 @@ const ChatRequests = ({navigation}) => {
             authMode: "API_KEY"
         }
         )
+        users.splice(index, 1)
+        notifIDs.splice(index, 1)
     }
 
     return (
