@@ -18,7 +18,7 @@ import { Activities } from '../assets/Activities';
 
 import {Auth} from 'aws-amplify'
 import {getUser, listUsers, getChatRoomUser, listNotifications} from '../src/graphql/queries'
-import {createChatRoom, createChatRoomUser} from '../src/graphql/mutations'
+import {updateUser, createChatRoomUser, updateNotification, deleteNotification} from '../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import { useIsFocused } from "@react-navigation/native";
@@ -54,7 +54,7 @@ const ChatRequests = ({navigation}) => {
                 let requests = await API.graphql(
                     {
                         query: listNotifications,
-                        variables: {filter: {toUserID: {eq: userData.data.getUser.id}}},
+                        variables: {filter: {content: {eq: "chat request"}, toUserID: {eq: userData.data.getUser.id}}},
                         authMode: "API_KEY"
                     }
                 )
@@ -64,7 +64,14 @@ const ChatRequests = ({navigation}) => {
                 const userRequests = []
                 if (chatRequests) {
                     for (let i=0; i<chatRequests.length; i++) {
-                        userRequests.push(chatRequests[i].fromUser)
+                        const requestData = await API.graphql (
+                        {
+                            query: getUser,
+                            variables: {id: chatRequests[i].fromUserID},
+                            authMode: "API_KEY"
+                        }
+                        )
+                        userRequests.push(requestData.data.getUser)
                         // update Notif to change isRead to true
                     }
                     setUsers(userRequests)
@@ -76,12 +83,15 @@ const ChatRequests = ({navigation}) => {
     }, [isFocused]);
 
 
-    const onBlockClickHandler = async () => {
+    const onIgnoreClickHandler = async () => {
         let notifs = myUser.sentNotifs
         var index = notifs.indexOf(user.id.toString());
         if (index > -1) {
             notifs.splice(index, 1);
         }
+
+        // TODO: delete notification entirely rather than doing this!!
+        // deleting notification entirely should also remove it from a user's sentNotifs
 
         const updatedUser = {
             id: myUser.id,
@@ -107,11 +117,11 @@ const ChatRequests = ({navigation}) => {
             <View>
                 {users.length > 0 ? (
                     <View style={styles.headerWrapper}>
-                        <Text style={styles.subtext}>Blocked Users</Text>
+                        <Text style={styles.subtext}>Chat Requests</Text>
                     </View>
                 ) : (
                     <View style={styles.emptyChatsWrapper}>
-                        <Text style={styles.midtext}>You have no bans! </Text>
+                        <Text style={styles.midtext}>You have no chat requests</Text>
                     </View>
                 )}
             </View>
@@ -137,7 +147,7 @@ const ChatRequests = ({navigation}) => {
                             </Pressable>
                             <Pressable mode="contained"
                             style={styles.chatButton}
-                            onPress={() => onBlockClickHandler()}>
+                            onPress={() => onIgnoreClickHandler()}>
                                 <Text style={styles.buttonText}>Ignore</Text>
                             </Pressable>
                         </View>

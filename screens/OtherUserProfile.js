@@ -113,10 +113,10 @@ const OtherUserProfile = ({route, navigation}) => {
             const newNotif = {
                 toUserID: user.id,
                 fromUserID: userData.data.getUser.id,
-                fromUser: userData.data.getUser,
                 hasRead: false,
                 content: "chat request",
             }
+            console.log(newNotif)
             const notification = await API.graphql(
                 {
                     query: createNotification,
@@ -149,7 +149,6 @@ const OtherUserProfile = ({route, navigation}) => {
             const newNotif = {
                 toUserID: user.id,
                 fromUserID: userData.data.getUser.id,
-                fromUser: userData.data.getUser,
                 hasRead: false,
                 content: "chat request",
             }
