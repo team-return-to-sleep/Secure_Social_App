@@ -97,6 +97,7 @@ const ChatRequests = ({navigation}) => {
         )
         users.splice(index, 1)
         notifIDs.splice(index, 1)
+        window.location.reload();
     }
 
     return (
