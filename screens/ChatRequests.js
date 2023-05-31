@@ -32,6 +32,7 @@ const ChatRequests = ({navigation}) => {
 
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
+    const [notifIDs, setNotifIDs] = useState([])
 
     const { ContextMenu } = renderers;
 
@@ -62,6 +63,7 @@ const ChatRequests = ({navigation}) => {
                 let chatRequests = requests.data.listNotifications.items
 
                 const userRequests = []
+                const requestIDs = []
                 if (chatRequests) {
                     for (let i=0; i<chatRequests.length; i++) {
                         const requestData = await API.graphql (
@@ -72,9 +74,11 @@ const ChatRequests = ({navigation}) => {
                         }
                         )
                         userRequests.push(requestData.data.getUser)
-                        // update Notif to change isRead to true
+                        requestIDs.push(chatRequests[i].id)
+                        // update Notif to change isRead to true?
                     }
                     setUsers(userRequests)
+                    setNotifIDs(requestIDs)
                 }
             }
 
@@ -83,27 +87,13 @@ const ChatRequests = ({navigation}) => {
     }, [isFocused]);
 
 
-    const onIgnoreClickHandler = async () => {
-        let notifs = myUser.sentNotifs
-        var index = notifs.indexOf(user.id.toString());
-        if (index > -1) {
-            notifs.splice(index, 1);
+    const onIgnoreClickHandler = async (index) => {
+        let notificationToDelete = await API.graphql(
+        {
+            query: deleteNotification,
+            variables: {input: {id: notifIDs[index]}},
+            authMode: "API_KEY"
         }
-
-        // TODO: delete notification entirely rather than doing this!!
-        // deleting notification entirely should also remove it from a user's sentNotifs
-
-        const updatedUser = {
-            id: myUser.id,
-            sentNotifs: notifs,
-        };
-
-        const updated = await API.graphql (
-            {
-                query: updateUser,
-                variables: {input: updatedUser},
-                authMode: "API_KEY"
-            }
         )
     }
 
@@ -127,7 +117,7 @@ const ChatRequests = ({navigation}) => {
             </View>
 
             <View style={styles.chatWrapper}>
-                {users.map((user) => {
+                {users.map((user, index) => {
                     if(user){
                     return (
                         <View style={styles.chatContainer}>
@@ -147,7 +137,7 @@ const ChatRequests = ({navigation}) => {
                             </Pressable>
                             <Pressable mode="contained"
                             style={styles.chatButton}
-                            onPress={() => onIgnoreClickHandler()}>
+                            onPress={() => onIgnoreClickHandler(index)}>
                                 <Text style={styles.buttonText}>Ignore</Text>
                             </Pressable>
                         </View>
