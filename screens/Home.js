@@ -7,7 +7,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import Header from './Header'
 
 import {Auth} from 'aws-amplify'
-import {updateUser} from '../src/graphql/mutations'
+import {updateUser, createNotification } from '../src/graphql/mutations'
 
 import {getUser, listUsers} from '../src/graphql/queries'
 import {API, graphqlOperation} from '@aws-amplify/api'
@@ -43,10 +43,45 @@ const Home = ({navigation}) => {
                     return;
                 }
             }
-
             myFriends.push(user.id.toString())
+            const newNotif = {
+                toUserID: user.id,
+                fromUserID: userData.data.getUser.id,
+                hasRead: false,
+                content: "chat request",
+            }
+            console.log(newNotif)
+            const notification = await API.graphql(
+                {
+                    query: createNotification,
+                    variables: {input: newNotif},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(notification)
+            // TODO: what do we do if that other person already wants to chat?
+            // cuz if that's the case, then a chatroom will be automatically created
+            // maybe we can take them to that chatroom?
         } else {
             myFriends = [user.id.toString()]
+            const newNotif = {
+                toUserID: user.id,
+                fromUserID: userData.data.getUser.id,
+                hasRead: false,
+                content: "chat request",
+            }
+            console.log(newNotif)
+            const notification = await API.graphql(
+                {
+                    query: createNotification,
+                    variables: {input: newNotif},
+                    authMode: "API_KEY"
+                }
+            )
+            console.log(notification)
+            // TODO: what do we do if that other person already wants to chat?
+            // cuz if that's the case, then a chatroom will be automatically created
+            // maybe we can take them to that chatroom?
         }
         const updatedUser = {
             id: userData.data.getUser.id,
