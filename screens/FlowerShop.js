@@ -91,8 +91,8 @@ const FlowerShop = ({navigation}) => {
 
     // NOTE: VERY UNOPTIMAL CODE JUST TO GET THINGS WORKING FIRST
     const _buyCowboy = async() => {
-        if (garden.points >= 1) {
-                    garden.points = garden.points - 1
+        if (garden.points >= 10) {
+                    garden.points = garden.points - 10
                     garden.flowerOutfit = require('../assets/images/cowboy_flower.png')
                     setUserGarden(garden)
                     await API.graphql(
@@ -109,8 +109,8 @@ const FlowerShop = ({navigation}) => {
     }
 
     const _buyRibbon = async() => {
-        if (garden.points >= 1) {
-            garden.points = garden.points - 1
+        if (garden.points >= 10) {
+            garden.points = garden.points - 10
             garden.flowerOutfit = require('../assets/images/ribbon_flower.png')
             setUserGarden(garden)
             await API.graphql(
@@ -129,9 +129,9 @@ const FlowerShop = ({navigation}) => {
     const _buyHeadphone = async() => {
         console.log(garden.points)
         console.log(garden.flowerOutfit)
-        if (garden.points >= 1) {
+        if (garden.points >= 10) {
             garden.flowerOutfit = require('../assets/images/headphone_flower.png')
-            garden.points = garden.points - 1
+            garden.points = garden.points - 10
             setUserGarden(garden)
             await API.graphql(
                 {
@@ -170,43 +170,51 @@ const FlowerShop = ({navigation}) => {
         </Title>
         <View style={styles.shopLayout}>
             <View style={styles.item}>
+                <Image style={styles.outfits}
+                    source={require('../assets/images/cowboy_flower.png')}
+                />
+                <Text styles={styles.priceTag}>Cost: 10 points</Text>
                 <Pressable
-                    onPress={_buyCowboy}>
-                    <Image style={styles.outfits}
-                        source={require('../assets/images/cowboy_flower.png')}
-                    />
+                style={styles.buyButton}
+                onPress={_buyCowboy}>
+                    <Text style={styles.buyText}>Buy</Text>
                 </Pressable>
-                <Text styles={styles.priceTag}>Cost: 1 point</Text>
             </View>
 
             <View style={styles.item}>
-                <Pressable
-                    onPress={_buyRibbon}>
                     <Image style={styles.outfits}
                         source={require('../assets/images/ribbon_flower.png')}
                     />
+                <Text styles={styles.priceTag}>Cost: 10 points</Text>
+                <Pressable
+                style={styles.buyButton}
+                onPress={_buyRibbon}>
+                    <Text style={styles.buyText}>Buy</Text>
                 </Pressable>
-                <Text styles={styles.priceTag}>Cost: 1 point</Text>
             </View>
 
             <View style={styles.item}>
+                <Image style={styles.outfits}
+                    source={require('../assets/images/headphone_flower.png')}
+                />
+                <Text styles={styles.priceTag}>Cost: 10 points</Text>
                 <Pressable
-                    onPress={_buyHeadphone}>
-                    <Image style={styles.outfits}
-                        source={require('../assets/images/headphone_flower.png')}
-                    />
+                style={styles.buyButton}
+                onPress={_buyHeadphone}>
+                    <Text style={styles.buyText}>Buy</Text>
                 </Pressable>
-                <Text styles={styles.priceTag}>Cost: 1 point</Text>
             </View>
 
             <View style={styles.item}>
-                <Pressable
-                    onPress={_reset}>
-                    <Image style={styles.outfits}
-                        source={require('../assets/images/original_flower.png')}
-                    />
-                </Pressable>
+                <Image style={styles.outfits}
+                    source={require('../assets/images/original_flower.png')}
+                />
                 <Text styles={styles.priceTag}>Free</Text>
+                <Pressable
+                style={styles.buyButton}
+                onPress={_reset}>
+                    <Text style={styles.buyText}>Buy</Text>
+                </Pressable>
             </View>
         </View>
 
@@ -272,6 +280,22 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    buyButton: {
+        width: 50,
+        height: 20,
+        backgroundColor: '#FFA34E',
+        justifyContent: 'center',
+        borderColor: '#FFA34E',
+        borderRadius: 24,
+        borderWidth: 1.5,
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    buyText: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#FFFFFF'
     },
     image: {
         width: 120,
