@@ -140,7 +140,7 @@ export function ChatScreen({route, navigation}) {
      console.log("The other user has not included me");
      }
 
-     if (myUserData.bestBuds.includes(otherUser.id) && otherUser.bestBuds && otherUser.bestBuds.includes(myUserData.id)) {
+     if (myUserData.bestBuds && myUserData.bestBuds.includes(otherUser.id) && otherUser.bestBuds && otherUser.bestBuds.includes(myUserData.id)) {
           let options = {
             mediaType: 'photo',
           };
