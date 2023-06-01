@@ -128,7 +128,7 @@ export function ChatScreen({route, navigation}) {
 
 
     const chooseFile = () => {
-     if (myUserData.bestBuds.includes(otherUser.id)){
+     if (myUserData.bestBuds && myUserData.bestBuds.includes(otherUser.id)){
        console.log("I included the other user");
      } else {
        console.log("I did not include the other user");
