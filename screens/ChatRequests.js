@@ -33,6 +33,7 @@ const ChatRequests = ({navigation}) => {
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
     const [notifIDs, setNotifIDs] = useState([])
+    const [ignoreButtonText, setIgnoreButtonText] = useState([])
 
     const { ContextMenu } = renderers;
 
@@ -64,6 +65,7 @@ const ChatRequests = ({navigation}) => {
 
                 const userRequests = []
                 const requestIDs = []
+                const ignoreButtons = []
                 if (chatRequests) {
                     for (let i=0; i<chatRequests.length; i++) {
                         const requestData = await API.graphql (
@@ -75,10 +77,12 @@ const ChatRequests = ({navigation}) => {
                         )
                         userRequests.push(requestData.data.getUser)
                         requestIDs.push(chatRequests[i].id)
+                        ignoreButtons.push("Ignore")
                         // update Notif to change isRead to true?
                     }
                     setUsers(userRequests)
                     setNotifIDs(requestIDs)
+                    setIgnoreButtonText(ignoreButtons)
                 }
             }
 
@@ -97,7 +101,9 @@ const ChatRequests = ({navigation}) => {
         )
         users.splice(index, 1)
         notifIDs.splice(index, 1)
-        window.location.reload();
+        let oldText = ignoreButtonText
+        oldText[index] = "CHAT REQUEST IGNORED."
+        setIgnoreButtonText(oldText)
     }
 
     return (
@@ -141,7 +147,7 @@ const ChatRequests = ({navigation}) => {
                             <Pressable mode="contained"
                             style={styles.chatButton}
                             onPress={() => onIgnoreClickHandler(index)}>
-                                <Text style={styles.buttonText}>Ignore</Text>
+                                <Text style={styles.buttonText}>{ignoreButtonText[index]}</Text>
                             </Pressable>
                         </View>
                     );

@@ -159,6 +159,7 @@ const OtherUserProfile = ({route, navigation}) => {
                 authMode: "API_KEY"
             }
         )
+        navigation.navigate("Chats")
 
     }
 
