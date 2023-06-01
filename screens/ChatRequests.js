@@ -5,7 +5,7 @@ import {View,Text,SafeAreaView,ScrollView, FlatList,Linking,TouchableOpacity,Ima
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
-import Header from '../Header'
+import Header from './Header'
 import {
  Menu,
  MenuProvider,
@@ -14,24 +14,26 @@ import {
  MenuTrigger,
  renderers
 } from 'react-native-popup-menu';
-import { Activities } from '../../assets/Activities';
+import { Activities } from '../assets/Activities';
 
 import {Auth} from 'aws-amplify'
-import {getUser, listUsers, getChatRoomUser} from '../../src/graphql/queries'
-import {createChatRoom, createChatRoomUser} from '../../src/graphql/mutations'
+import {getUser, listUsers, getChatRoomUser, listNotifications} from '../src/graphql/queries'
+import {updateUser, createChatRoomUser, updateNotification, deleteNotification} from '../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import { useIsFocused } from "@react-navigation/native";
 import {createNativeStackNavigator } from '@react-navigation/native-stack';
-import {ChatScreen} from './ChatScreen'
+import {ChatScreen} from './Chat/ChatScreen'
 
 
-const ProfileBlocklist = ({navigation}) => {
+const ChatRequests = ({navigation}) => {
     const isFocused = useIsFocused()
     const Stack = createNativeStackNavigator()
 
     const [myUserData, setMyUserData] = useState()
     const [users, setUsers] = useState([])
+    const [notifIDs, setNotifIDs] = useState([])
+    const [ignoreButtonText, setIgnoreButtonText] = useState([])
 
     const { ContextMenu } = renderers;
 
@@ -49,22 +51,38 @@ const ProfileBlocklist = ({navigation}) => {
                     }
                 )
                 setMyUserData(userData.data.getUser)
-                let myBlocks = userData.data.getUser.blockedUsers
-
-                const blockedUsers = []
-                if (myBlocks) {
-                    for (let i=0; i<myBlocks.length; i++) {
-                        const blockedData = await API.graphql (
-                            {
-                                query: getUser,
-                                variables: {id: myBlocks[i]},
-                                authMode: "API_KEY"
-                            }
-                        )
-                        blockedUsers.push(blockedData.data.getUser)
+                // get all requests that have the proper toUserID
+                // use filters!!! heheheh
+                let requests = await API.graphql(
+                    {
+                        query: listNotifications,
+                        variables: {filter: {content: {eq: "chat request"}, toUserID: {eq: userData.data.getUser.id}}},
+                        authMode: "API_KEY"
                     }
+                )
 
-                    setUsers(blockedUsers)
+                let chatRequests = requests.data.listNotifications.items
+
+                const userRequests = []
+                const requestIDs = []
+                const ignoreButtons = []
+                if (chatRequests) {
+                    for (let i=0; i<chatRequests.length; i++) {
+                        const requestData = await API.graphql (
+                        {
+                            query: getUser,
+                            variables: {id: chatRequests[i].fromUserID},
+                            authMode: "API_KEY"
+                        }
+                        )
+                        userRequests.push(requestData.data.getUser)
+                        requestIDs.push(chatRequests[i].id)
+                        ignoreButtons.push("Ignore")
+                        // update Notif to change isRead to true?
+                    }
+                    setUsers(userRequests)
+                    setNotifIDs(requestIDs)
+                    setIgnoreButtonText(ignoreButtons)
                 }
             }
 
@@ -72,24 +90,20 @@ const ProfileBlocklist = ({navigation}) => {
         }
     }, [isFocused]);
 
-    const onClickHandler = async (otherUser) => {
-//        const userInfo = await Auth.currentAuthenticatedUser();
-//            const userData = await API.graphql (
-//                {
-//                    query: getUser,
-//                    variables: {id: userInfo.attributes.sub},
-//                    authMode: "API_KEY"
-//                }
-//            )
-//        const myData = userData.data.getUser
-//        setMyUserData(myData)
-//        let myRooms = myData.chatRoomUser.items
-        let myRooms = myUserData.chatRoomUser.items
-        let exists = false
 
-
-
-
+    const onIgnoreClickHandler = async (index) => {
+        let notificationToDelete = await API.graphql(
+        {
+            query: deleteNotification,
+            variables: {input: {id: notifIDs[index]}},
+            authMode: "API_KEY"
+        }
+        )
+        users.splice(index, 1)
+        notifIDs.splice(index, 1)
+        let oldText = ignoreButtonText
+        oldText[index] = "CHAT REQUEST IGNORED."
+        setIgnoreButtonText(oldText)
     }
 
     return (
@@ -102,17 +116,17 @@ const ProfileBlocklist = ({navigation}) => {
             <View>
                 {users.length > 0 ? (
                     <View style={styles.headerWrapper}>
-                        <Text style={styles.subtext}>Blocked Users</Text>
+                        <Text style={styles.subtext}>Chat Requests</Text>
                     </View>
                 ) : (
                     <View style={styles.emptyChatsWrapper}>
-                        <Text style={styles.midtext}>You have no bans! </Text>
+                        <Text style={styles.midtext}>You have no chat requests</Text>
                     </View>
                 )}
             </View>
 
             <View style={styles.chatWrapper}>
-                {users.map((user) => {
+                {users.map((user, index) => {
                     if(user){
                     return (
                         <View style={styles.chatContainer}>
@@ -128,12 +142,12 @@ const ProfileBlocklist = ({navigation}) => {
                                         <Text style={styles.subtext}> {user.name} </Text>
                                         <Text style={styles.msgtext}> Click to view profile </Text>
                                     </View>
-                                    <Pressable mode="contained"
-                                    style={styles.accountButton}
-                                    onPress={() => onClickHandler(user)}>
-                                        <Text style={styles.buttonText}>Ignore</Text>
-                                    </Pressable>
                                 </View>
+                            </Pressable>
+                            <Pressable mode="contained"
+                            style={styles.chatButton}
+                            onPress={() => onIgnoreClickHandler(index)}>
+                                <Text style={styles.buttonText}>{ignoreButtonText[index]}</Text>
                             </Pressable>
                         </View>
                     );
@@ -195,6 +209,14 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         flexDirection: 'row'
     },
+    chatButton: {
+        margin: 10,
+        width: 200,
+        height: 40,
+        marginTop: '5%',
+        backgroundColor: '#FFA34E',
+        justifyContent: 'center',
+    },
     imageWrapper: {
         marginRight: 'auto',
         marginLeft: 10,
@@ -252,4 +274,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ProfileBlocklist;
+export default ChatRequests;

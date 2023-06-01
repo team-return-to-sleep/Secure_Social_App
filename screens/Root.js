@@ -8,6 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 
 import Home from './Home'
 import UserProfile from './UserProfile'
+import ChatRequests from './ChatRequests'
 import OtherUserProfile from './OtherUserProfile'
 import SignUpFlowProfileBasicSetup from './Profile/SignUpFlowProfileBasicSetup'
 import SignUpFlowProfileSpecificInterests from './Profile/SignUpFlowProfileSpecificInterests'
@@ -22,6 +23,9 @@ const Root = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="UserProfile" component={UserProfile}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="ChatRequests" component={ChatRequests}
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
