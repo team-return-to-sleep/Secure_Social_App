@@ -27,8 +27,8 @@ This is a senior design project for ECS193A/B at UC Davis. Our client and mentor
 - [Project Structure](#project-structure)
 - [App Functionality](#app-functionality)
   - [Sign Up, Login, and Updating User Information](#sign-up-login-and-updating-user-information)
-  - [Local Storage](#local-storage)
-  - [Room List and Room Creation](#room-list-and-room-creation)
+  - [Finding Friends](#finding-friends)
+  - [Chatrooms](#chatrooms)
   - [Chat](#chat)
   - [Message Queue](#message-queue)
   - [Room Settings](#room-settings)
@@ -274,6 +274,36 @@ Upon logging in to a newly created account, users will be guided through a signu
 
 #### Updating User Information
 At any later point, users may update their information by navigating to their account screen (bottom right button of the toolbar) and selecting “Change Profile Picture,” “Edit Interests Profile,” or “Edit Personal Details.”
+
+### Finding Friends
+Wallflower provides several features that support users in finding friends and choosing who to talk to.
+
+#### Home Screen
+The home screen will display other profiles that are compatible with the user. This will be ordered based on compatibility in geographical location and interests. Users may click on a profile and start a conversation from there.
+
+#### Browse Screen
+From the browse screen, a user may filter all other profiles by details such as interests, region, age, and username. This will allow them more fine-grained control over what type of people they want to meet. Any profiles that meet the requirements of the instantiated filter options will be displayed and can be clicked on for viewing. 
+
+### Chatrooms
+#### Starting a Chat
+To start a chat, users may select another person’s profile and click the “Start Chatting!” button. As a safety feature, given any two users, neither can message the other until both parties consent. Thus a chat room will not be created until both users have clicked “Start Chatting!”
+
+Once both users have expressed interest in starting a conversation, a chat room will be created and will be accessible from the messages tab. Users may click on a chat from the messages tab to enter that chatroom and continue a conversation.
+
+#### Safety and Security Measures
+As previously mentioned, Wallflower protects users who are worried about receiving unwanted messages by requiring that both participants express interest in starting a conversation before being permitted to send a message.
+
+As further protection from spam or harassment, users may not send or receive photos to another person unless both parties have agreed to designate each other as "best buds" by selecting the "best buds" button on the other person's profile. By initially keeping personal photos private, Wallflower aims to increase user safety and reduce unconscious biases that may hinder friendships. 
+
+Users may block any other person by clicking the block button on the offending user's profile. After blocking a user, neither user will be able to find or access the person's profile on the home screen, browse screen, or messages. Users can access a list of the people they've blocked on their account screen by selecting “View Blocklist.”
+
+To ensure that messages are protected from MITM (Man in the Middle) attacks, we utilize the E3Kit for encrypting conversations so that they are not visible to anyone but the sender or receiver. The true message content is not available to even developers, as messages are encrypted before storing.
+
+#### Chat Interface
+Our chat interface utilizes Gifted Chat by FaridSafi. Like most messaging interfaces, there is a text box at the bottom of the screen which is used to enter and send messages. The sender's messages appear on the right and other person's messages appear on the left. Each user's messages are displayed with their profile photo, and the chatroom is labeled with the name of the correspondent. Users may scroll up to view previous messages.
+
+#### Activities Together
+To allow users to interact with their matches through remote activities, Wallflower integrates an “Activities Together” button into each chatroom which provides access to several multiplayer games. Users will be able to do more activities with their newly made friends.
 
 
 - **Sign up** - After submitting the above account information, they must verify their account by entering a temporary passcode that they receive via text message to complete the signup process. 
