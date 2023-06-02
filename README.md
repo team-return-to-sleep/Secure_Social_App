@@ -208,69 +208,51 @@ To send test queries, mutations, and subscriptions from AWS AppSync to AWS Dynam
 ##### Note: in the above steps, `Hobbyte` refers to the root directory of the App
 ##### That’s it! You have successfully added and configured the AWS services for Sanctuary Chat! I hope that you enjoy the code!
  
-### Setting up encryption (TweetNaCl.js)
+### Setting up encryption (Virgil E3Kit)
 
-TweetNaCl is the world's first auditable high-security cryptographic library. For encrypting text, we use the slightly modified files from TweetNaCl.js that work with react native expo specifically. 
+Virgil E3Kit is a powerful cryptographic library that enables end-to-end encryption for your applications. For this specific application, we use the E3Kit SDK that is compatible with React Native.
+
+#### Guide
+https://developer.virgilsecurity.com/docs/e3kit/get-started/
 
 #### Installation
 ```
-npm i tweet-nacl-react-native-expo
+npm install @virgilsecurity/e3kit-native
 ```
-Or download [source code](https://github.com/rajtatata/react-native-expo-tweet-nacl) 
 
 #### Usage
 
-All API functions accept and return bytes as ```Uint8 Arrays```. If you need to encode or decode strings, use functions from [here](https://github.com/rajtatata/react-native-expo-tweet-nacl/blob/master/nacl-util.js).
+All API functions work with binary data and strings interchangeably, providing flexible options for your encryption needs.
 
-##### Public key exchange encryption (box)
+##### Identity Verification (JwtGenerator)
+The JwtGenerator generates JSON Web Tokens (JWTs) that assert the identity of the users who try to access the Virgil Cloud.
+```
+EThree.initialize(tokenCallback)
+```
 
-```
-nacl.box.keyPair()
-```
-Generates a new random key pair for box and returns it as an object with publicKey and privateKey members:
+Generates a new set of encryption keys for a user and stores the public key in the Virgil Cloud.
 ```
 {
-   mypublicKey: ...,  // 32 bit Uint8Array 
-   myprivateKey: ...   // 32 bit Uint8Array 
+publicKey: ..., // Public Key
+privateKey: ... // Private Key
 }
 ```
-
-```nacl.box.before(theirPublicKey, mySecretKey)```
-
-Using the Diffie Hellman key exchange, ```box.before()``` creates the shared key with a fetched public key and local private key.
-###### Encryption
+##### Encryption
 ```
-nacl.box(message, nonce, theirPublicKey, mySecretKey)
+EThree.encrypt(text, theirPublicKey)
 ```
-Encrypts and authenticates messages using recipient's public key, sender's private key, and the uniquely generated nonce.
+Encrypts and protects data using the recipient's and sender’s public key.
 
-Returns an encrypted and authenticated message in the `Uint8Array` format, which is ```nacl.box.overheadLength``` longer than the original message.
+Returns an encrypted string, which is ready to be securely transmitted or stored.
 
-###### Decryption
-
-```nacl.box.open(box, nonce, theirPublicKey, mySecretKey)```
-
-Authenticates and decrypts the given box with sender's public key, recipient's private key, and the given nonce.
-
-Returns the original message, or null if authentication fails.
-
-##### Symmetric Encryption (secretbox)
-###### Encryption
+##### Decryption
 ```
-nacl.secretbox(message, nonce, key)
+EThree.decrypt(text, myPrivateKey)
 ```
-Encrypts and authenticates messages using the key and the nonce. The nonce must be unique for each distinct message for this key.
 
-Returns an encrypted and authenticated message, which is nacl.secretbox.overheadLength longer than the original message.
-###### Decryption
+Decrypts and verifies the provided encrypted text using your private key.
 
-
-```
-nacl.secretbox.open(box, nonce, key)
-```
-Authenticates and decrypts the given secret box using the key and the nonce.
-
-Returns the original message, or null if authentication fails.
+Returns the original text if the decryption and verification process is successful, or an error if it fails.
 
 
 ## App Functionality
