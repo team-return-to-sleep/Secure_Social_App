@@ -1,6 +1,4 @@
-# Secure_Social_App
-
-TEMPLATE DRAFT
+# Wallflower
 
 <div style="text-align:center" >
  <p style="color:teal"> <b>UC Davis Senior Design Project 2023: 
@@ -28,7 +26,7 @@ This is a senior design project for ECS193A/B at UC Davis. Our client and mentor
 - [Installation or Distribution](#installation-or-distribution)
 - [Project Structure](#project-structure)
 - [App Functionality](#app-functionality)
-  - [Sign Up, Login, and User Information Changes](#sign-up-login-and-user-information-changes)
+  - [Sign Up, Login, and Updating User Information](#sign-up-login-and-updating-user-information)
   - [Local Storage](#local-storage)
   - [Room List and Room Creation](#room-list-and-room-creation)
   - [Chat](#chat)
@@ -255,17 +253,28 @@ Returns the original text if the decryption and verification process is successf
 
 
 ## App Functionality
-### Sign Up, Login, and User Information Changes
-
+### Sign Up, Login, and Updating User Information
+#### Sign Up
 Sign up requires the user to provide:
 
-- Username 
-- Password - must be longer than 8 characters
-- Email 
-- Phone Number
-- Consent to Terms and Conditions
+User must provide the following information:
+- Name
+- Email
+- Username
+- Password - must be 7+ characters, contain upper and lowercase letters, numbers, and symbols
 
-The goal of Sanctuary is to have minimal user information on record. This information is stored on AWS Cognito which has customizable multi-factor authentication steps. In Sanctuary, the following two-factor authentication policies were set up to maintain optimal security for the user:
+After submitting the above account information, users must verify their account by entering a temporary passcode that they receive via email to complete the signup process.
+
+#### Login
+Users must enter a username and password for a verified account.
+- If a user tries to login with an account that has not been verified through the one time passcode, they are told ‘User is not confirmed’ and must first enter the code.
+- A user can recover their account if they lose or forget their password by selecting the ‘Forgot Password’ button on the login page. 
+
+Upon logging in to a newly created account, users will be guided through a signup flow where they will be prompted to enter user details such as name, region, age, and interests.
+
+#### Updating User Information
+At any later point, users may update their information by navigating to their account screen (bottom right button of the toolbar) and selecting “Change Profile Picture,” “Edit Interests Profile,” or “Edit Personal Details.”
+
 
 - **Sign up** - After submitting the above account information, they must verify their account by entering a temporary passcode that they receive via text message to complete the signup process. 
 
