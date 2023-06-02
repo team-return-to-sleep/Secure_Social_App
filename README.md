@@ -44,22 +44,21 @@ This is a senior design project for ECS193A/B at UC Davis. Our client and mentor
 
 
 ## Overview of the Product
-Sanctuary Chat offers two-factor authentication (by default) as an additional security layer. After entering a user's credentials to login, Sanctuary Chat sends an SMS text containing an OTP (one time password) to the phone number associated with that profile. This ensures that a user can be logged-in from only one device.
+For privacy and safety, our app supports two-factor user authentication, end-to-end encrypted messaging, restricted photo sharing with “best buds” only, a handshake messaging system, and convenient blocking features. 
 
-Chat messages are deleted from Sanctuary Chat's database once the messages are sent to the respective recipients' devices. If a user loses chat history or conversations with a recipient, a backup of the conversation history can be provided by other recipients in the same chat room.
+For encouragement of conversations and making friends, we have public interests shown on profiles, a matching algorithm to connect users with similar interests, and a convenient in-chat button with activities to break the ice. Users will also be able to select profile pictures and update their statuses with their latest interests to attract the attention of those with similar tastes.
 
-Additionally, conversations are encrypted in transit into ciphertext before they're stored in Dynamo DB. Personal conversations are end to end encrypted using the Diffie-Hellman key exchange. Group conversations are encrypted symmetrically.
+We have also implemented a virtual pet plant in the app, raised through points you earn by messaging others. This encourages increased usage of our app and thus increases the likelihood of striking a meaningful conversation with a new friend.
 
-Sanctuary Chat is transparent with storing user's data and collects miniminal user information during SignUp. The personally identifiable information collected from users include email and phone number, both of which are crucial for password recovery and two-factor authentication respectively.
-
-
-**Software:**
-- React Native - UI/UX
-- Expo - CLI for building, testing
-- AWS AppSync - Communication
-- AWS DynamoDB - Message queue
-- AWS Cognito - Two-Factor Authentication
-- TweetNaCL.js - Encryption library 
+**Software tools used in this app:**
+React Native - UI
+React Native - Building and test app
+AWS Amplify - Configure and manage AWS services
+AWS AppSync - Communication/GraphQL
+AWS DynamoDB - Store all user data 
+AWS Cognito - Two-Factor Authentication
+VirgilCrypto E3Kit - End-to-end Encryption
+Android Studio - IDE
 
 
 ![](assets/images/overview.png)
