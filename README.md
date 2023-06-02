@@ -2,7 +2,7 @@
 
 <div style="text-align:center" >
  <p style="color:teal"> <b>UC Davis Senior Design Project 2023: 
-     <br>Private and Secure Social Networking Servicep</b></p>
+     <br>Private and Secure Social Networking Service</b></p>
  
 <b>Client</b>
     Justin Jia
@@ -27,12 +27,20 @@ This is a senior design project for ECS193A/B at UC Davis. Our client and mentor
 - [Project Structure](#project-structure)
 - [App Functionality](#app-functionality)
   - [Sign Up, Login, and Updating User Information](#sign-up-login-and-updating-user-information)
+    - [Sign Up](#sign-up)
+    - [Login](#login)
+    - [Updating User Information](#updating-user-information)
   - [Finding Friends](#finding-friends)
+    - [Home Screen](#home-screen)
+    - [Browse Screen](#browse-screen)
   - [Chatrooms](#chatrooms)
+    - [Starting a Chat](#starting-a-chat)
+    - [Safety and Security Measures](#safety-and-security-measures)
+    - [Chat Interface](#chat-interface)
+    - [Activities Together](#activities-together)
   - [Incentivizing Conversations](#incentivizing-conversations)
   - [Privacy and Security](#privacy-and-security)
-  - [Room Settings](#room-settings)
-  - [Encryption](#encryption)
+    - [Encryption Overview](#encryption-overview)
 - [Troubleshooting](#troubleshooting)
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Known Issues and Edge Cases](#known-issues-and-edge-cases)
