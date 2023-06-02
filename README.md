@@ -19,9 +19,10 @@ TEMPLATE DRAFT
 
 ## Preface
 
-As many contemporary social media platforms use our user data to curate advertisements and give access to third parties, the demand for private social media arises Sanctuary Chat is a cross platform social media app featuring two-factor authentication and end-to-end encryption, thereby providing users with optimal security and privacy. 
+Many messaging and social media apps today are not comfortable for users to use. Unsolicited messaging and fear of giving information to third parties are only two reasons for this. On top of this, there are many people who struggle to make new lasting personal relationships. Our app aims to target both of these audiences and create a space for users to chat with others over mutual interests while ensuring their privacy and safety.
 
-This is a senior design project, specifically for the class ECS193 A/B at UC Davis. Justin Jia, a former student and mentor for the senior design class at UC Davis, was our client who mentored us as we built this application.
+This is a senior design project for ECS193A/B at UC Davis. Our client and mentor for this project is Justin Jia, a former student and teaching assistant for this class.
+
 
 ## Table of Contents
 - [Overview of the Product](#overview-of-the-product) 
