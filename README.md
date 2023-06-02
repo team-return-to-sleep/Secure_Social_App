@@ -9,9 +9,8 @@ TEMPLATE DRAFT
 <b>Client</b>
     Justin Jia
     <br>
-    <b>Team Hobbyte</b> 
-    Abigail Lee, Nathan Hoffman, 
-    Viswaas Prabunathan, John Paulus Francia
+    <b>Team return to_sleep;</b> 
+    Jessica Cai, Rahul George, Richard Qin, Cathy Wang
 </div>
 <div>
     
