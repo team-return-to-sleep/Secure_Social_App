@@ -29,8 +29,8 @@ This is a senior design project for ECS193A/B at UC Davis. Our client and mentor
   - [Sign Up, Login, and Updating User Information](#sign-up-login-and-updating-user-information)
   - [Finding Friends](#finding-friends)
   - [Chatrooms](#chatrooms)
-  - [Chat](#chat)
-  - [Message Queue](#message-queue)
+  - [Incentivizing Conversations](#incentivizing-conversations)
+  - [Privacy and Security](#privacy-and-security)
   - [Room Settings](#room-settings)
   - [Encryption](#encryption)
 - [Troubleshooting](#troubleshooting)
@@ -304,6 +304,36 @@ Our chat interface utilizes Gifted Chat by FaridSafi. Like most messaging interf
 
 #### Activities Together
 To allow users to interact with their matches through remote activities, Wallflower integrates an “Activities Together” button into each chatroom which provides access to several multiplayer games. Users will be able to do more activities with their newly made friends.
+
+### Incentivizing Conversations
+Wallflower provides additional in-app features to motivate users to interact with their peers. Each user is given their very own wallflower, which they can water or change the appearance of using points. Points are earned through user interactions. Each message that is received is worth 1 point. Users can spend points to grow their flower in size or to change the appearance of their flower.
+
+### Privacy and Security
+Along with the aforementioned safety features (blocking, etc.), Wallflower protects user privacy by having minimal user information on record. All sign up information is stored through AWS Cognito. Amazon Cognito is used to handle user authentication, creation of user pools, and management of user data. We address concerns of information leaking to third parties by employing end-to-end encryption to keep messages private.
+
+#### Encryption Overview
+User messages are encrypted using Virgil Security’s E3Kit.
+
+Initialization of E3kit
+- At the start of the chat session, the app checks if the user has been registered with Virgil's E3kit. If they are not registered, the app registers them and backs up their private key. If the user has previously registered but lost their private key, the app restores it.
+
+Getting Other User's Public Key
+- The app retrieves the public key of the other user. If the other user is not registered yet, an error message will be logged.
+
+Loading Previous Messages
+- The app retrieves previous messages and decrypts them for display using E3kit. The decryption process ensures that the messages were written by the sender, enhancing the security of your chat.
+
+Real-Time Updates
+- The app subscribes to real-time updates, enabling instant message delivery. When a new message arrives, it is decrypted using E3kit and then added to the chat.
+
+Sending a Message
+- When a user sends a message, it's encrypted with the other user's public key and then stored in the database. This encryption process ensures only the recipient of the message can decrypt and read it.
+
+Text & Image Handling
+- The app allows users to send both text and image messages. It checks if the message is an image or text and handles each type correctly during the encryption and decryption processes.
+
+Encryption Indicator
+- For added transparency, an informative system message is shown in the chat to let users know their messages are being end-to-end encrypted.
 
 
 - **Sign up** - After submitting the above account information, they must verify their account by entering a temporary passcode that they receive via text message to complete the signup process. 
