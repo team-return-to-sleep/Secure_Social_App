@@ -3,8 +3,8 @@
 TEMPLATE DRAFT
 
 <div style="text-align:center" >
- <p style="color:teal"> <b>UC Davis Senior Design Project 2020: 
-     <br>Secure and Private Social Media App</b></p>
+ <p style="color:teal"> <b>UC Davis Senior Design Project 2023: 
+     <br>Private and Secure Social Networking Servicep</b></p>
  
 <b>Client</b>
     Justin Jia
