@@ -575,25 +575,39 @@ See `Password Recovery`
 - [Abigail Lee](https://www.linkedin.com/in/abigail133/) 
 - [Viswaas L Prabunathan](https://www.linkedin.com/in/viswaasprabunathan)
 
-
-
+Please email wallflowerdevs@gmail.com to contact the Wallflower team.
 
 
 ## Glossary
 
- - **App** - The app is in reference to the Sanctuary app.
- - **User** - The user is a person who has created an account in our app and uses it to message others.
- - **App creator** - This includes all developers of Hobbyte Team and any other programmer who chooses to use and build the Sanctuary App.
- - **Two-factor Authentication** - Two factor authentication is a security measure which requires the user to enter a piece of information they know and provide input from something they have. For example, a password would be something they know and a phone verification code sent to them would be something they have.
- - **End-to-End Encryption** - This is a security measure which encrypts a message that is sent from one user to another and cannot be intercepted by a man in the middle (MITM).
- -  **TweetNaCl** - An open source library providing decoding, key pair generation, encryption and decryption functions for two different encryption techniques 'box' and 'secretbox'.
- -  **Diffie–Hellman key exchange** - Conceived by Ralph Merkle, this is a method of securely exchanging cryptographic keys over a public channel.This key exchange method allows two parties that have no prior knowledge of each other to jointly establish a shared secret key over an insecure channel. Used by TweetNaCl's box to exchange public keys. 
- -  **Nonce** - a random or pseudo-random number generated for every message to obtain a hash ciphertext. Nonce ensures the encrypted ciphertext and initial unencrypted text don't remain equal in length.
- - **Amazon Web Service (aka: AWS)** - This is a backend service which provides several microservices such as multi-factor authentication, user pools, and serverless pipelines for a certain price depending on data transactions and usage. This is a third party API.
- - **AWS Cognito** - This service allows the app creator to create groups of users, known as user pools, which have access to certain features or databases. This service also allows app creators to customize the handling of multi-factor authentication, user authentication, password recovery, and sign in setup.
- - **AWS Amplify** - This is the development platform on Amazon Web Service that allows the app creator to set up the React Native App with an AWS database and services. This provides the framework and development tools necessary for cross platform development for backends.
- - **AWS AppSync** - This service handles GraphQL requests and communication between the app and AWS databases. 
- - **AWS Databases** - Amazon Web Service provides a number of databases to work with. When building the Sanctuary App, we chose to use DynamoDB tables for creating our message queue and room tables.
+- **App** - The app is the Wallflower app, a social messaging app for making real friends. It is an Android mobile app built with React Native.
+
+- **Users** - The user is a person who has created an account in our email and actively engages with the app to meet new people, message others, and take care of their virtual pet.
+
+- **Handshake messaging** - We use this term to refer to only being able to see and send messages when both parties have consented/requested to message each other. 
+
+- **Two-factor authentication** - Two factor authentication is a safety and security measure that requires a user to provide two kinds of secure tokens to login successfully. (e.g. password and phone number security code verification) 
+
+- **End-to-end encryption** - A security method that keeps true messages hidden from any third party. Messages sent from a user are encrypted and messages received by a user must be decrypted to be read. This makes communications protected from Man-In-The-Middle (MITM) attacks.
+
+- **MITM Attacks** - Situation where a perpetrator or unauthorized individual positions themselves between a user and an application, often resulting in stolen personal information. 
+
+- **Virgil E3Kit** - The open source encryption library that we used to implement end-to-end encrypted messaging in our app.
+
+- **GiftedChat** - A messaging chat UI package that we used to implement our basic messaging screen, later personalized for our app.
+
+- **Android Studio** - The IDE that we used for Android development.
+
+- **Amazon Web Services (AWS)** - A backend service which provides various microservices used in our app (see other AWS entries).
+
+- **AWS Amplify** - This service allows us to build our mobile app using AWS services and DynamoDB database.
+
+- **AWS AppSync** - This service allows us to use GraphQL operations to have our app communicate with our database. 
+
+- **AWS Cognito** - This service handles two-factor authentication as well as creates user groups (pools) to limit access to features/databases.
+
+- **Amazon DynamoDB** - A NoSQL database that we used to store user information in.
+
 
 ## Appendix 
 - Secure and Private Social Media App Requirements v2.pdf 
