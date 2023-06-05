@@ -164,6 +164,9 @@ const FlowerShop = ({navigation}) => {
         <Appbar.BackAction onPress={() => navigation.navigate(PointScreen)} />
         <Text style={styles.mainText}>Style Shop</Text>
         <Text style={styles.subtext}>Bored of your look? Let's change things up with your own personal style!</Text>
+        <Title style={styles.points}>
+                Points: {userGarden.points}
+        </Title>
         <View style={styles.shopLayout}>
             <View style={styles.item}>
                 <Image style={styles.outfits}
@@ -228,7 +231,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     points: {
-        float: 'right',
+        alignSelf: 'center',
     },
     outfits: {
         width: 200,

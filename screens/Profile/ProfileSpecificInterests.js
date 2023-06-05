@@ -148,7 +148,7 @@ const ProfileSpecificInterests = ({route, navigation}) => {
                                                     style = {styles.selected}
                                                     onPress = {()=>removeInterest(interest, specifics)}
                                                 >
-                                                    <Text>{specifics}{" "}</Text>
+                                                    <Text style={styles.specificText}>{specifics}{" "}</Text>
                                                     <AntDesign color="black" name="delete" size={17} />
                                                 </TouchableOpacity>
                                             </View>
@@ -268,7 +268,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF7EA',
         borderWidth: 1.5,
         borderColor: '#FFA34E',
+        paddingHorizontal: 10,
+    },
+    specificText: {
         padding: 5,
+        textAlign: 'center',
     },
     promptWrapper: {
         flexDirection: 'row',

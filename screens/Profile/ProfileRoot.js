@@ -18,6 +18,7 @@ import ProfileAge from './ProfileAge'
 import ProfileBlocklist from './ProfileBlocklist'
 import ProfileRegion from './ProfileRegion'
 import ProfileSpecificInterests from './ProfileSpecificInterests'
+import ChatRequests from '../ChatRequests'
 import UserProfile from '../UserProfile'
 import OtherUserProfile from '../OtherUserProfile'
 
@@ -61,6 +62,9 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileBlocklist" component={ProfileBlocklist}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ChatRequests" component={ChatRequests}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
