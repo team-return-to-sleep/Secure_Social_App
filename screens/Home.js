@@ -183,14 +183,6 @@ const Home = ({navigation}) => {
                 <Text style={styles.subtext}>Hello {user}! Let's grow your next friendship. </Text>
 
                 <View style={styles.profileWrapper}>
-                <Pressable mode="contained"
-                    onPress={() => navigation.navigate("ChatRequests")}
-                    style={styles.profile}>
-                    <Text style={styles.name}>Click here to see who wants to chat with you!</Text>
-                </Pressable>
-                </View>
-
-                <View style={styles.profileWrapper}>
                     {users.map((user) => {
                         return (
                             <Pressable

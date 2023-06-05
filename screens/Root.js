@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 
 import Home from './Home'
+import Header from './Header'
 import UserProfile from './UserProfile'
 import ChatRequests from './ChatRequests'
 import OtherUserProfile from './OtherUserProfile'
@@ -20,6 +21,9 @@ const Root = () => {
     return (
         <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={Home}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="Header" component={Header}
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="UserProfile" component={UserProfile}
