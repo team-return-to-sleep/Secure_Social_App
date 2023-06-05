@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,SafeAreaView,ScrollView, FlatList,Linking,TouchableOpacity,Image,StyleSheet,Alert,Pressable} from 'react-native'
+import {TouchableHighlight, View,Text,SafeAreaView,ScrollView, FlatList,Linking,TouchableOpacity,Image,StyleSheet,Alert,Pressable} from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import Feather from 'react-native-vector-icons/Feather'
@@ -99,10 +99,10 @@ const ChatRequests = ({navigation}) => {
             authMode: "API_KEY"
         }
         )
-        users.splice(index, 1)
-        notifIDs.splice(index, 1)
+        setUsers(users.splice(index, 1))
+        setNotifIDs(notifIDs.splice(index, 1))
         let oldText = ignoreButtonText
-        oldText[index] = "CHAT REQUEST IGNORED."
+        oldText[index] = "REQUEST IGNORED."
         setIgnoreButtonText(oldText)
     }
 
@@ -144,11 +144,14 @@ const ChatRequests = ({navigation}) => {
                                     </View>
                                 </View>
                             </Pressable>
-                            <Pressable mode="contained"
-                            style={styles.chatButton}
+
+                            <TouchableHighlight
+                            mode="contained"
+                            style={styles.ignoreButton}
+                            style = {users[index] ? styles.pressed : styles.ignoreButton}
                             onPress={() => onIgnoreClickHandler(index)}>
                                 <Text style={styles.buttonText}>{ignoreButtonText[index]}</Text>
-                            </Pressable>
+                            </TouchableHighlight>
                         </View>
                     );
                     }
@@ -209,13 +212,25 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         flexDirection: 'row'
     },
-    chatButton: {
+    ignoreButton: {
         margin: 10,
-        width: 200,
-        height: 40,
+        width: 50,
+        height: 30,
         marginTop: '5%',
+        width: 150,
         backgroundColor: '#FFA34E',
         justifyContent: 'center',
+        borderRadius: 20,
+    },
+    pressed: {
+        margin: 10,
+        width: 50,
+        height: 30,
+        marginTop: '5%',
+        width: 150,
+        backgroundColor: 'grey',
+        justifyContent: 'center',
+        borderRadius: 20,
     },
     imageWrapper: {
         marginRight: 'auto',
@@ -271,7 +286,12 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: "#181818",
         alignSelf: 'center',
-    }
+    },
+    buttonText: {
+        alignSelf: 'center',
+        color: 'black',
+        fontFamily: 'ABeeZee-Regular',
+    },
 });
 
 export default ChatRequests;
