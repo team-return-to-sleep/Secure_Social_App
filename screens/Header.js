@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     messageNotifs: {
-
     },
     name: {
         marginLeft: 10,

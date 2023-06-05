@@ -277,7 +277,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign:"center",
         marginHorizontal: '10%',
-        fontFamily: 'ABeeZee-Regular'
+        fontFamily: 'ABeeZee-Regular',
+        color: 'black',
     },
     flowerText: {
         alignSelf: 'center',

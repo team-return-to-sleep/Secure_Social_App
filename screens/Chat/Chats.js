@@ -226,27 +226,28 @@ const Chats = ({navigation}) => {
         }
     }
 
+    /* UNUSED UI FOR ONLINE STATUS
+    <SafeAreaView>
+       <ScrollView
+           contentContainerStyle={styles.headerWrapper}
+           horizontal={true}
+           showsHorizontalScrollIndicator={false}
+       >
+           {users.map((user) => {
+               if (user){
+               return (
+                   <Image
+                       style={styles.profileImage}
+                       source={{uri: user.imageUri}}
+                   />
+               );}
+           })}
+       </ScrollView>
+   </SafeAreaView> */
+
     return (
         <ScrollView style={styles.container}>
             <Header />
-
-            <SafeAreaView>
-                <ScrollView
-                    contentContainerStyle={styles.headerWrapper}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                >
-                    {users.map((user) => {
-                        if (user){
-                        return (
-                            <Image
-                                style={styles.profileImage}
-                                source={{uri: user.imageUri}}
-                            />
-                        );}
-                    })}
-                </ScrollView>
-            </SafeAreaView>
 
             <View>
                 {users.length > 0 ? (
