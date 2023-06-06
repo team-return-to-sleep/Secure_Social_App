@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: '20%',
     },
     mainText: {
         alignSelf: 'center',

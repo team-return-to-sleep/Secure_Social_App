@@ -337,7 +337,10 @@ const Chats = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex:1,
+        flexWrap: 'nowrap',
         backgroundColor:'#FFFFFF',
+        marginBottom: '10%',
+        maxWidth: '100%',
     },
     headerWrapper: {
         flexDirection: 'row',
