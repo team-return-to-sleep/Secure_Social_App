@@ -502,7 +502,8 @@ const styles = StyleSheet.create({
         textAlign:"center",
         marginHorizontal: '10%',
         marginTop: 20,
-        fontFamily: 'ABeeZee-Regular'
+        fontFamily: 'ABeeZee-Regular',
+        color: 'black',
     },
     buttonText: {
         fontFamily: 'ABeeZee-Regular'

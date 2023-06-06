@@ -226,27 +226,28 @@ const Chats = ({navigation}) => {
         }
     }
 
+    /* UNUSED UI FOR ONLINE STATUS
+    <SafeAreaView>
+       <ScrollView
+           contentContainerStyle={styles.headerWrapper}
+           horizontal={true}
+           showsHorizontalScrollIndicator={false}
+       >
+           {users.map((user) => {
+               if (user){
+               return (
+                   <Image
+                       style={styles.profileImage}
+                       source={{uri: user.imageUri}}
+                   />
+               );}
+           })}
+       </ScrollView>
+   </SafeAreaView> */
+
     return (
         <ScrollView testID="scrollViewChat" style={styles.container}>
             <Header />
-
-            <SafeAreaView>
-                <ScrollView
-                    contentContainerStyle={styles.headerWrapper}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                >
-                    {users.map((user) => {
-                        if (user){
-                        return (
-                            <Image
-                                style={styles.profileImage}
-                                source={{uri: user.imageUri}}
-                            />
-                        );}
-                    })}
-                </ScrollView>
-            </SafeAreaView>
 
             <View>
                 {users.length > 0 ? (
@@ -338,7 +339,10 @@ const Chats = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex:1,
+        flexWrap: 'nowrap',
         backgroundColor:'#FFFFFF',
+        marginBottom: '10%',
+        maxWidth: '100%',
     },
     headerWrapper: {
         flexDirection: 'row',

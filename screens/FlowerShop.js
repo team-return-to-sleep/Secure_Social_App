@@ -21,8 +21,8 @@ const FlowerShop = ({navigation}) => {
         userID: "0",
         id: "0",
         flowerSize: 120,
-        points: 0,
-        flowerOutfit: "require('../assets/images/original_flower.png')",
+        points: 10,
+        flowerOutfit: "original",
     }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
@@ -61,7 +61,7 @@ const FlowerShop = ({navigation}) => {
                                 id: myUserData.id,
                                 flowerSize: 120,
                                 points: 10,
-                                flowerOutfit: "require('../assets/images/original_flower.png')"
+                                flowerOutfit: "original"
                                 //flowerOutfit: require('../assets/images/original_flower.png'),
                             }
                             await API.graphql(
@@ -89,11 +89,10 @@ const FlowerShop = ({navigation}) => {
         flowerOutfit: userGarden.flowerOutfit,
     }
 
-    // NOTE: VERY UNOPTIMAL CODE JUST TO GET THINGS WORKING FIRST
     const _buyCowboy = async() => {
         if (garden.points >= 10) {
                     garden.points = garden.points - 10
-                    garden.flowerOutfit = require('../assets/images/cowboy_flower.png')
+                    garden.flowerOutfit = "cowboy"
                     setUserGarden(garden)
                     await API.graphql(
                         {
@@ -111,7 +110,7 @@ const FlowerShop = ({navigation}) => {
     const _buyRibbon = async() => {
         if (garden.points >= 10) {
             garden.points = garden.points - 10
-            garden.flowerOutfit = require('../assets/images/ribbon_flower.png')
+            garden.flowerOutfit = "ribbon"
             setUserGarden(garden)
             await API.graphql(
                 {
@@ -130,7 +129,7 @@ const FlowerShop = ({navigation}) => {
         console.log(garden.points)
         console.log(garden.flowerOutfit)
         if (garden.points >= 10) {
-            garden.flowerOutfit = require('../assets/images/headphone_flower.png')
+            garden.flowerOutfit = "headphone"
             garden.points = garden.points - 10
             setUserGarden(garden)
             await API.graphql(
@@ -147,7 +146,7 @@ const FlowerShop = ({navigation}) => {
     }
 
     const _reset = async() => {
-        garden.flowerOutfit = require('../assets/images/original_flower.png')
+        garden.flowerOutfit = "original"
         setUserGarden(garden)
         await API.graphql(
             {
@@ -251,6 +250,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: '20%',
     },
     mainText: {
         alignSelf: 'center',

@@ -433,6 +433,7 @@ export function ChatScreen({route, navigation}) {
                             id: userGarden.data.getGarden.id,
                             userID: userGarden.data.getGarden.userID,
                             points: userGarden.data.getGarden.points,
+                            flowerOutfit: userGarden.data.getGarden.flowerOutfit,
                         }
                         console.log("flower points: ", garden.points)
                         //setPoints(parseInt(val))
@@ -443,7 +444,8 @@ export function ChatScreen({route, navigation}) {
                             userID: myUserData.id,
                             id: myUserData.id,
                             flowerSize: 120,
-                            points: 10
+                            points: 10,
+                            flowerOutfit: 'original',
                         }
                         await API.graphql(
                             {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,SafeAreaView,Alert,StyleSheet,Image,AsyncStorage} from 'react-native'
+import {View,Pressable,Text,SafeAreaView,Alert,StyleSheet,Image,AsyncStorage} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useIsFocused } from "@react-navigation/native";
@@ -16,18 +16,13 @@ import Header from './Header'
 import FlowerShop from './FlowerShop'
 import Outfits from '../assets/images/Outfits';
 
-const PointScreen = ({navigation,route}) => {
-    //console.log(route.params.paramKey)
-    //var flowerStyle = require('../assets/images/original_flower.png')
-    if (route.params.paramKey != null) {
-            flowerStyle = route.params.paramKey
-        }
+const PointScreen = ({navigation}) => {
     const default_garden = {
         userID: "0",
         id: "0",
         flowerSize: 120,
-        points: 0,
-        flowerOutfit: "require('../assets/images/original_flower.png')",
+        points: 10,
+        flowerOutfit: "original",
     }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
@@ -59,6 +54,18 @@ const PointScreen = ({navigation,route}) => {
                             flowerOutfit: userGarden.data.getGarden.flowerOutfit,
                         }
                         console.log("garden exists; flower points: ", garden.points)
+                        console.log("garden exists; flower outfit: ", garden.flowerOutfit)
+                        const dboutfit = garden.flowerOutfit
+                        if (dboutfit=="original"){
+                            setOutfit(Outfits.fits.original)
+                        } else if (dboutfit=="ribbon") {
+                            setOutfit(Outfits.fits.ribbon)
+                        } else if (dboutfit=="cowboy") {
+                            setOutfit(Outfits.fits.cowboy)
+                        } else if (dboutfit=="headphone") {
+                            setOutfit(Outfits.fits.headphone)
+                        }
+
 
                 } else {
                         garden = {
@@ -66,7 +73,7 @@ const PointScreen = ({navigation,route}) => {
                             id: myUserData.id,
                             flowerSize: 120,
                             points: 10,
-                            flowerOutfit: "require('../assets/images/original_flower.png')",
+                            flowerOutfit: "original",
                         }
                         await API.graphql(
                             {
@@ -87,6 +94,10 @@ const PointScreen = ({navigation,route}) => {
 
     const _toShop = async() => {
         navigation.navigate("FlowerShop")
+    }
+
+    const _checkOutfit = async() => {
+        console.log(Number(require('../assets/images/cowboy_flower.png')))
     }
 
     const _waterPlant = async () => {
@@ -136,8 +147,12 @@ const PointScreen = ({navigation,route}) => {
             </View>
         </Appbar.Header>
         <View style={styles.imageBox}>
-                <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                    source={Number(userGarden.flowerOutfit)}/>
+            <Pressable
+            onPress={_checkOutfit}>
+                    <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
+                        source={outfit}/>
+
+            </Pressable>
         </View>
     </View>
  );

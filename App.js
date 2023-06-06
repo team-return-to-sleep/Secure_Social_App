@@ -95,7 +95,8 @@ const App = ({navigation}) => {
                                     userID: userData.data.getUser.id,
                                     id: userData.data.getUser.id,
                                     flowerSize: 120,
-                                    points: 10
+                                    points: 10,
+                                    flowerOutfit: 'original',
                                 }
                             },
                             authMode: "API_KEY"
@@ -128,7 +129,8 @@ const App = ({navigation}) => {
                                 userID: newUser.id,
                                 id: newUser.id,
                                 flowerSize: 120,
-                                points: 10
+                                points: 10,
+                                flowerOutfit: 'original',
                             }
                         },
                         authMode: "API_KEY"

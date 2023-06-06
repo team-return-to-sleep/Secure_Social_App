@@ -218,6 +218,7 @@ const Home = ({navigation}) => {
                                             </Pressable>
                                         );
                                     })}
+
                                 </View>
                 <View style={{marginBottom:26}}>
                     <Text> {'\n\n'} </Text>
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginTop: 30,
         color: 'black',
-        fontSize: 20,
+        fontSize: 16,
         lineHeight: 54,
         lineWidth: 100,
         borderRadius: 20,
@@ -287,7 +288,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign:"center",
         marginHorizontal: '10%',
-        fontFamily: 'ABeeZee-Regular'
+        fontFamily: 'ABeeZee-Regular',
+        color: 'black',
     },
     flowerText: {
         alignSelf: 'center',
