@@ -161,7 +161,7 @@ const FlowerShop = ({navigation}) => {
 
 
   return (
-    <ScrollView>
+    <ScrollView testID = "scrollView3">
         <Appbar.BackAction onPress={() => navigation.navigate(PointScreen)} />
         <Text style={styles.mainText}>Style Shop</Text>
         <Text style={styles.subtext}>Bored of your look? Let's change things up with your own personal style!</Text>
@@ -175,6 +175,7 @@ const FlowerShop = ({navigation}) => {
                 />
                 <Text styles={styles.priceTag}>Cost: 10 points</Text>
                 <Pressable
+                testID="buyCowboyButton"
                 style={styles.buyButton}
                 onPress={_buyCowboy}>
                     <Text style={styles.buyText}>Buy</Text>
@@ -187,6 +188,7 @@ const FlowerShop = ({navigation}) => {
                     />
                 <Text styles={styles.priceTag}>Cost: 10 points</Text>
                 <Pressable
+                testID="buyRibbonButton"
                 style={styles.buyButton}
                 onPress={_buyRibbon}>
                     <Text style={styles.buyText}>Buy</Text>
@@ -199,6 +201,7 @@ const FlowerShop = ({navigation}) => {
                 />
                 <Text styles={styles.priceTag}>Cost: 10 points</Text>
                 <Pressable
+                testID="buyHeadphoneButton"
                 style={styles.buyButton}
                 onPress={_buyHeadphone}>
                     <Text style={styles.buyText}>Buy</Text>
@@ -211,6 +214,7 @@ const FlowerShop = ({navigation}) => {
                 />
                 <Text styles={styles.priceTag}>Free</Text>
                 <Pressable
+                testID="buyOriginalButton"
                 style={styles.buyButton}
                 onPress={_reset}>
                     <Text style={styles.buyText}>Buy</Text>

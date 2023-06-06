@@ -648,9 +648,9 @@ export function ChatScreen({route, navigation}) {
 
   function renderSend(props) {
     return (
-      <Send {...props}>
+      <Send {...props} >
         <View style={styles.sendingContainer}>
-          <IconButton icon='send-circle' size={32} color='#6646ee' />
+          <IconButton icon='send-circle' size={32} color='#6646ee' testID='sendMessageButton' />
         </View>
       </Send>
     );
@@ -712,6 +712,7 @@ export function ChatScreen({route, navigation}) {
               </MenuOptions>
           </Menu>
             <TouchableOpacity
+            testID='camera'
             onPress={chooseFile}
             style={styles.cameraButton}>
                <Icon name="camera-outline" size={32} color="black" />
@@ -750,6 +751,9 @@ export function ChatScreen({route, navigation}) {
               renderSend={renderSend}
               renderLoading={renderLoading}
               bottomOffset={36}
+              textInputProps={{
+                  testID: 'messageInput',
+                }}
             />
             ) : (
                <View style={styles.loadingContainer}>

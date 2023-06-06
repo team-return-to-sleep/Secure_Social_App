@@ -177,9 +177,9 @@ const Home = ({navigation}) => {
      }, [isFocused]);
 
          return (
-            <ScrollView style={styles.container}>
+            <ScrollView testID = "scrollview3" style={styles.container}>
                 <Header />
-                <Text style={styles.flowerText}>✿</Text>
+                <Text style={styles.flowerText} testID="flower-text">✿</Text>
                 <Text style={styles.subtext}>Hello {user}! Let's grow your next friendship. </Text>
 
                 <View style={styles.profileWrapper}>
@@ -190,33 +190,35 @@ const Home = ({navigation}) => {
                 </Pressable>
                 </View>
 
+
                 <View style={styles.profileWrapper}>
-                    {users.map((user) => {
-                        return (
-                            <Pressable
-                                style={styles.profile}>
-                                <Image
-                                    style={styles.profileImage}
-                                    source={{uri: user.imageUri}}
-                                />
-                                <Text style={styles.name}>{user.name}</Text>
-                                <Text style={styles.status}>{user.status}</Text>
-                                <View style={styles.buttons}>
-                                    <Pressable mode="contained"
-                                    style={styles.accountButton}
-                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
-                                        <Text style={styles.buttonText}>View Profile</Text>
-                                    </Pressable>
-                                    <Pressable mode="contained"
-                                    style={styles.accountButton}
-                                    onPress={() => onClickHandler(user)}>
-                                        <Text style={styles.buttonText}>Start Chatting</Text>
-                                    </Pressable>
+                                    {users.map((user) => {
+                                        return (
+                                            <Pressable
+                                                style={styles.profile}>
+                                                <Image
+                                                    style={styles.profileImage}
+                                                    source={{uri: user.imageUri}}
+                                                />
+                                                <Text style={styles.name}>{user.name}</Text>
+                                                <Text style={styles.status}>{user.status}</Text>
+                                                <View style={styles.buttons}>
+                                                    <Pressable mode="contained"
+                                                    style={styles.accountButton}
+                                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
+                                                    testID={`viewprofile-${user.name}`}>
+                                                        <Text style={styles.buttonText}>View Profile</Text>
+                                                    </Pressable>
+                                                    <Pressable mode="contained"
+                                                    style={styles.accountButton}
+                                                    onPress={() => onClickHandler(user)}>
+                                                        <Text style={styles.buttonText}>Start Chatting</Text>
+                                                    </Pressable>
+                                                </View>
+                                            </Pressable>
+                                        );
+                                    })}
                                 </View>
-                            </Pressable>
-                        );
-                    })}
-                </View>
                 <View style={{marginBottom:26}}>
                     <Text> {'\n\n'} </Text>
                 </View>

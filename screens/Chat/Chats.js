@@ -227,7 +227,7 @@ const Chats = ({navigation}) => {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView testID="scrollViewChat" style={styles.container}>
             <Header />
 
             <SafeAreaView>
@@ -274,6 +274,7 @@ const Chats = ({navigation}) => {
                 {users.map((user) => {
                     if(user){
                         //console.log("CHATROOMS: ", chatRooms)
+                        console.log("User id", user.name);
                         let latestMessage = null
                         if (chatRooms.hasOwnProperty(user.id)) {
                             latestMessage = chatRooms[user.id]
@@ -285,6 +286,7 @@ const Chats = ({navigation}) => {
                     return (
                         <View style={styles.chatContainer}>
                             <Pressable
+                            testID={`chat-${user.name}`}
                             style={styles.chat}
                             onPress={() => onClickHandler(user)}>
                                 <View style={styles.imageWrapper}>
