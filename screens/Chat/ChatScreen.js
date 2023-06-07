@@ -197,8 +197,10 @@ export function ChatScreen({route, navigation}) {
           keyPrefix: 'public/',
           bucket: 'amplify-wallflower-staging-63629-deployment',
           region: 'us-west-2',
-          accessKey: process.env.ACCESS_KEY,
-          secretKey: process.env.SECRET_KEY,
+        //  accessKey: process.env.ACCESS_KEY,
+        //  secretKey: process.env.SECRET_KEY,
+          accessKey: 'AKIAQSZYEAOKEZWUS52A',
+          secretKey: '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',
           successActionStatus: 201,
         },
       )
