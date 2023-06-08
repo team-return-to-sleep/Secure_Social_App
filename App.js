@@ -137,8 +137,8 @@ const App = ({navigation}) => {
                         authMode: "API_KEY"
                     }
                 )
-                console.log('what is up')
-                navigation.navigate("ProfileAge", {user: newUser})
+                //console.log('what is up')
+                //navigation.navigate("ProfileAge", {user: newUser})
             }
         }
     }
