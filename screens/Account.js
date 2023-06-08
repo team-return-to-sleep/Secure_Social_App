@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
+import {Pressable,View,Text,StyleSheet,Image,SafeAreaView,ScrollView} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useIsFocused } from "@react-navigation/native";
 
@@ -56,35 +56,35 @@ const Account = ({route, navigation}) => {
                             <Text style={styles.profPicText}>Change profile picture</Text>
                         </Button>
 
-                        <Button mode="contained"
+                        <Pressable mode="contained"
                             style={styles.accountButton}
                             onPress={() => {
                                 navigation.navigate("ProfileInterests", {user: user})}
                             }
                         >
                             <Text style={styles.buttonText}>Edit Interests Profile</Text>
-                        </Button>
+                        </Pressable>
 
-                        <Button mode="contained"
+                        <Pressable mode="contained"
                             style={styles.accountButton}
                             onPress={() => navigation.navigate("ProfileBasicInfo", {user: user})}
                         >
                             <Text style={styles.buttonText}>Edit Personal Details</Text>
-                        </Button>
+                        </Pressable>
 
-                        <Button mode="contained"
+                        <Pressable mode="contained"
                             style={styles.accountButton}
                             onPress={() => navigation.navigate("UserProfile", {user: user})}
                         >
                             <Text style={styles.buttonText}>View Public Profile</Text>
-                        </Button>
+                        </Pressable>
 
-                        <Button mode="contained"
+                        <Pressable mode="contained"
                             style={styles.accountButton}
                             onPress={() => navigation.navigate("ProfileBlocklist")}
                         >
                             <Text style={styles.buttonText}>View Blocklist</Text>
-                        </Button>
+                        </Pressable>
 
                         </>
                     );
@@ -108,6 +108,8 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: '#FFA34E',
         justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
     },
     accountWrapper: {
         alignItems: 'center',
@@ -136,6 +138,9 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontFamily: 'ABeeZee-Regular',
+        color: 'white',
+        padding: 5,
+        textAlign: 'center',
     },
 });
 
