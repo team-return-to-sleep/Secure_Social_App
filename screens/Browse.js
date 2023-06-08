@@ -339,13 +339,13 @@ const Browse = ({navigation}) => {
                     onChangeText={(text)=>setName(text)}
                 />
 
-                <Button icon="magnify"
+                <Pressable icon="magnify"
                     mode="contained"
                     style={styles.searchButton}
                     onPress={() => onClickHandler()
                 }>
                     <Text style={styles.buttonText}>Search Users</Text>
-                </Button>
+                </Pressable>
 
 
                 <View style={styles.profileWrapper}>
@@ -403,8 +403,9 @@ const styles = StyleSheet.create({
     searchButton: {
         alignSelf: 'center',
         margin:20,
-        width:'40%',
-        backgroundColor: '#FFA34E'
+        width:'auto',
+        backgroundColor: '#FFA34E',
+        borderRadius: 16,
     },
     filtersContainer: {
         flex: 1,
@@ -506,7 +507,8 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     buttonText: {
-        fontFamily: 'ABeeZee-Regular'
+        fontFamily: 'ABeeZee-Regular',
+        padding: 10,
     },
 });
 
