@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     name: {
         float: 'right',
         fontFamily: 'ABeeZee-Regular'
+        marginTop: '5%',
     },
     actionsBar: {
         alignItems: 'center',
