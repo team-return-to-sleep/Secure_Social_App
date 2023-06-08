@@ -90,8 +90,8 @@ const FlowerShop = ({navigation}) => {
     }
 
     const _buyCowboy = async() => {
-        if (garden.points >= 10) {
-                    garden.points = garden.points - 10
+        if (garden.points >= 50) {
+                    garden.points = garden.points - 50
                     garden.flowerOutfit = "cowboy"
                     setUserGarden(garden)
                     await API.graphql(
@@ -108,8 +108,8 @@ const FlowerShop = ({navigation}) => {
     }
 
     const _buyRibbon = async() => {
-        if (garden.points >= 10) {
-            garden.points = garden.points - 10
+        if (garden.points >= 50) {
+            garden.points = garden.points - 50
             garden.flowerOutfit = "ribbon"
             setUserGarden(garden)
             await API.graphql(
@@ -128,9 +128,9 @@ const FlowerShop = ({navigation}) => {
     const _buyHeadphone = async() => {
         console.log(garden.points)
         console.log(garden.flowerOutfit)
-        if (garden.points >= 10) {
+        if (garden.points >= 50) {
             garden.flowerOutfit = "headphone"
-            garden.points = garden.points - 10
+            garden.points = garden.points - 50
             setUserGarden(garden)
             await API.graphql(
                 {
@@ -172,7 +172,7 @@ const FlowerShop = ({navigation}) => {
                 <Image style={styles.outfits}
                     source={require('../assets/images/cowboy_flower.png')}
                 />
-                <Text styles={styles.priceTag}>Cost: 10 points</Text>
+                <Text styles={styles.priceTag}>Cost: 50 points</Text>
                 <Pressable
                 testID="buyCowboyButton"
                 style={styles.buyButton}
@@ -185,7 +185,7 @@ const FlowerShop = ({navigation}) => {
                     <Image style={styles.outfits}
                         source={require('../assets/images/ribbon_flower.png')}
                     />
-                <Text styles={styles.priceTag}>Cost: 10 points</Text>
+                <Text styles={styles.priceTag}>Cost: 50 points</Text>
                 <Pressable
                 testID="buyRibbonButton"
                 style={styles.buyButton}
@@ -198,7 +198,7 @@ const FlowerShop = ({navigation}) => {
                 <Image style={styles.outfits}
                     source={require('../assets/images/headphone_flower.png')}
                 />
-                <Text styles={styles.priceTag}>Cost: 10 points</Text>
+                <Text styles={styles.priceTag}>Cost: 50 points</Text>
                 <Pressable
                 testID="buyHeadphoneButton"
                 style={styles.buyButton}

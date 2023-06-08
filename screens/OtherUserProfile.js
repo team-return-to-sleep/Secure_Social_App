@@ -319,6 +319,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF7EA',
         borderWidth: 1.5,
         borderColor: '#FFA34E',
+        width: 'auto',
     },
     interestText: {
         fontSize: 10,
