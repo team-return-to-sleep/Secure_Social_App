@@ -22,7 +22,7 @@ const Browse = ({navigation}) => {
     const [users, setUsers] = useState([])
     const [searchedUsers, setSearched] = useState([])
     const [currUsers, setCurr] = useState([])
-    const [selfData, setSelfData] = useState()
+    const [myselfData, setMyselfData] = useState()
 
 //    const [usernameFilteredUsers, setUsernameFilteredUsers] = useState([])
 //    const [ageFilteredUsers, setAgeFilteredUsers] = useState([])
@@ -119,7 +119,7 @@ const Browse = ({navigation}) => {
                 e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
 
             setCurr(allUsers)
-            setSelfData(selfData)
+            setMyselfData(selfData.data.getUser)
 
             usernameFilteredUsers.current = usersData.data.listUsers.items
             ageFilteredUsers.current = usersData.data.listUsers.items
@@ -129,9 +129,9 @@ const Browse = ({navigation}) => {
         fetchUsers();
     }, []);
 
-    useEffect(() => {
-        console.log("updated currUsers")
-    }, [currUsers]);
+//    useEffect(() => {
+//        console.log("updated currUsers")
+//    }, [currUsers]);
 
     const onClickHandler = async () => {
         //let results = users;
@@ -144,12 +144,12 @@ const Browse = ({navigation}) => {
         )
 
         var allUsers = usernameFilteredUsersData.data.listUsers.items
-        var blockedIDs = selfData.data.getUser.blockedUsers
+        var blockedIDs = myselfData.blockedUsers
         if (blockedIDs) {
             allUsers = allUsers.filter(e => blockedIDs.includes(e.id) === false)
         }
         allUsers = allUsers.filter(e => !e.blockedUsers ||
-            e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
+            e.blockedUsers && (e.blockedUsers.includes(myselfData.id.toString()) === false))
 
         usernameFilteredUsers.current = allUsers
 //        console.log("USERNAME")

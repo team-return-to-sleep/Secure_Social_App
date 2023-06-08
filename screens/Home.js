@@ -142,7 +142,8 @@ const Home = ({navigation}) => {
                     }
                     allUsers = allUsers.filter(e => !e.blockedUsers ||
                         e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
-                    console.log("HOME BLOCKED USERS: ", blockedIDs)
+                    allUsers = allUsers.filter(e => e.id != selfID)
+                    //console.log("HOME BLOCKED USERS: ", blockedIDs)
                     //console.log("DEBUG ALL: ", allUsers)
 
                     let compareInterests = (a1, a2) =>
