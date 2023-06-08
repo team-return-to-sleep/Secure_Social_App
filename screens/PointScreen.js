@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect } from 'react'
 import { Appbar, Title, TextInput, Button } from 'react-native-paper';
-import {View,Pressable,Text,SafeAreaView,Alert,StyleSheet,Image,AsyncStorage} from 'react-native'
+import {TouchableHighlight,View,Pressable,Text,SafeAreaView,Alert,StyleSheet,Image,AsyncStorage} from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useIsFocused } from "@react-navigation/native";
+import Tooltip from 'react-native-walkthrough-tooltip';
 
 import {Auth} from 'aws-amplify'
 import {API, graphqlOperation} from '@aws-amplify/api'
 
 import {getUser, getGarden} from '../src/graphql/queries'
 import {createGarden, updateGarden} from '../src/graphql/mutations'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import Header from './Header'
 import FlowerShop from './FlowerShop'
@@ -29,6 +31,7 @@ const PointScreen = ({navigation}) => {
     const [outfit, setOutfit] = useState("")
     const [size, setSize] = useState(120)
     const [userGarden, setUserGarden] = useState(default_garden)
+    const [toolTipVisible, setToolTipVisible] = useState(false);
 
     useEffect(() => {
         if (isFocused) {
@@ -132,67 +135,120 @@ const PointScreen = ({navigation}) => {
             Alert.alert("You don't have enough points :(\nChat with someone to earn more!")
         }
     }
-
   return (
 
-    <View style={{flex:1, flexDirection:'column', backgroundColor:'#83AD85'}}>
-        <Header/>
-        <Appbar.Header style={styles.head}>
-            <Title style={styles.name}>
-                    Points: {userGarden.points}
-            </Title>
-            <View style={styles.actionsBar}>
-                <Appbar.Action style={styles.button} icon="watering-can" testID = "waterplant" onPress={_waterPlant} />
-                <Appbar.Action style={styles.button} icon="shopping" testID = "toshop" onPress={_toShop} />
-            </View>
-        </Appbar.Header>
-        <View style={styles.imageBox}>
-            <Pressable
-            onPress={_checkOutfit}>
-                    <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
-                        source={outfit}/>
+      <View style={{flex:1, flexDirection:'column', backgroundColor:'#83AD85'}}>
+          <Header/>
+          <Appbar.Header style={styles.head}>
+              <View style={styles.topOfBar}>
+                  <Title style={styles.points}>
+                          Points: {userGarden.points}
+                  </Title>
+                  <View style={styles.help}>
+                  <Tooltip
+                              animated={true}
+                              //(Optional) When true, tooltip will animate in/out when showing/hiding
+                              arrowSize={{width: 16, height: 8}}
+                              //(Optional) Dimensions of arrow bubble pointing to the highlighted element
+                              backgroundColor="rgba(0,0,0,0.5)"
+                              //(Optional) Color of the fullscreen background beneath the tooltip.
+                              isVisible={toolTipVisible}
+                              //(Must) When true, tooltip is displayed
+                              content={<Text>This is your wallflower. You will receive points when others send you messages. Points can be used to grow your flower or change up its look. Your flower is waiting, let's get chatting!</Text>}
+                              //(Must) This is the view displayed in the tooltip
+                              placement="bottom"
+                              //(Must) top, bottom, left, right, auto.
+                              onClose={() => setToolTipVisible(false)}
+                              //(Optional) Callback fired when the user taps the tooltip
+                            >
+                              <TouchableHighlight
+                                mode='contained'
+                                style={styles.helpButtonStyle}
+                                onPress={() => setToolTipVisible(true)}>
+                                <Icon name="md-help" size={20} color="black" />
+                              </TouchableHighlight>
+                            </Tooltip>
+                  </View>
 
-            </Pressable>
-        </View>
-    </View>
- );
-};
+              </View>
+              <View style={styles.actionsBar}>
+                  <Appbar.Action style={styles.button} icon="watering-can" testID = "waterplant" onPress={_waterPlant} />
+                  <Appbar.Action style={styles.button} icon="shopping" testID = "toshop" onPress={_toShop} />
+              </View>
+          </Appbar.Header>
+          <View style={styles.imageBox}>
+              <Pressable
+              onPress={_checkOutfit}>
+                      <Image style={{width:userGarden.flowerSize, height:userGarden.flowerSize}}
+                          source={outfit}/>
 
-const styles = StyleSheet.create({
-    head: {
-        width: '100%',
-        flexDirection:"column",
-        backgroundColor:'#ffffff',
-        //alignItems: 'end',
-        justifyContent: 'flex-end',
-    },
-    name: {
-        float: 'right',
-        fontFamily: 'ABeeZee-Regular'
-        marginTop: '5%',
-    },
-    actionsBar: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        marginBottom: 7,
-    },
-    button: {
-        float: 'right',
-        backgroundColor:'#FFA34E',
-    },
-    imageBox: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    image: {
-        width: 120,
-        height: 120,
-        resizeMode:"stretch"
-        //justifyContent: 'center',
-    }
-});
+              </Pressable>
+          </View>
+      </View>
+   );
+  };
 
-export default PointScreen;
+  const styles = StyleSheet.create({
+      help: {
+        position: 'absolute',
+        right: 0,
+        padding: 10,
+      },
+      topOfBar: {
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+      },
+      head: {
+          width: '100%',
+          flexDirection:"column",
+          backgroundColor:'#ffffff',
+          justifyContent: 'flex-end',
+          marginTop: '5%',
+          marginBottom: '3%',
+      },
+      points: {
+          alignSelf: 'center',
+          fontFamily: 'ABeeZee-Regular',
+      },
+      helpButtonStyle: {
+          width: 30,
+          height: 30,
+          padding: 10,
+          backgroundColor: '#FFA34E',
+          borderRadius: 30,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: -10,
+        },
+      helpButtonText: {
+          fontWeight: 'bold',
+          fontSize: 10,
+      },
+      actionsBar: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+          marginBottom: 7,
+      },
+      button: {
+          float: 'right',
+          backgroundColor:'#FFA34E',
+      },
+      imageBox: {
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+      },
+      image: {
+          width: 120,
+          height: 120,
+          resizeMode:"stretch"
+          //justifyContent: 'center',
+      }
+  });
+
+  export default PointScreen;
+

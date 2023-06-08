@@ -257,16 +257,16 @@ const Chats = ({navigation}) => {
                 ) : (
                     <View style={styles.emptyChatsWrapper}>
                         <Text style={styles.midtext}>You have no chats! Start chatting. </Text>
-                        <Button mode="contained"
+                        <Pressable
                         style={styles.goButton}
                         onPress={() => navigation.navigate("Home")}>
                             <Text style={styles.goText}>Go to Home</Text>
-                        </Button>
-                        <Button mode="contained"
+                        </Pressable>
+                        <Pressable
                         style={styles.goButton}
                         onPress={() => navigation.navigate("Browse")}>
                             <Text style={styles.goText}>Go to Browse</Text>
-                        </Button>
+                        </Pressable>
                     </View>
                 )}
             </View>
@@ -437,6 +437,7 @@ const styles = StyleSheet.create({
         height: 35,
         backgroundColor: '#FFA34E',
         justifyContent: 'center',
+        borderRadius: 16,
     },
     goText: {
         fontSize: 13,
@@ -451,17 +452,3 @@ const styles = StyleSheet.create({
 });
 
 export default Chats;
-
-/* Top horizontal bar of profiles
-    <SafeAreaView>
-     <View style={styles.headerWrapper}>
-           {users.map((user) => {
-               return (
-                   <Image
-                     style={styles.profileImage}
-                     source={{uri: user.imageUri}}
-                   />
-               );
-           })}
-     </View>
-    </SafeAreaView> */

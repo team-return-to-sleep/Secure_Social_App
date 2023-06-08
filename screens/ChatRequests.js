@@ -34,6 +34,7 @@ const ChatRequests = ({navigation}) => {
     const [users, setUsers] = useState([])
     const [notifIDs, setNotifIDs] = useState([])
     const [ignoreButtonText, setIgnoreButtonText] = useState([])
+    const [isBlocked, setIsBlocked] = useState(false);
 
     const { ContextMenu } = renderers;
 
@@ -104,6 +105,7 @@ const ChatRequests = ({navigation}) => {
         let oldText = ignoreButtonText
         oldText[index] = "Ignored Request."
         setIgnoreButtonText(oldText)
+        setIsBlocked(true)
     }
 
     return (
@@ -147,9 +149,9 @@ const ChatRequests = ({navigation}) => {
 
                             <TouchableHighlight
                             mode="contained"
-                            style = {ignoreButtonText == "Ignored Request." ? styles.pressed : styles.ignoreButton}
+                            style = {isBlocked ? styles.pressed : styles.ignoreButton}
                             onPress={() => onIgnoreClickHandler(index)}>
-                                <Text style={styles.buttonText}>{ignoreButtonText[index]}</Text>
+                                <Text style={styles.buttonText}>{isBlocked ? (<>Ignored Request</>) : (<>Ignore</>)}</Text>
                             </TouchableHighlight>
                         </View>
                     );
