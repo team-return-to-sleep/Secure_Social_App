@@ -33,6 +33,7 @@ const LoginScreen = ({navigation}) => {
             theme={{colors:{primary:"#00aaff"}}}
             value={Username}
             onChangeText={(text)=>setName(text)}
+            testID="username-input" // added testID
         />
 
         <TextInput
@@ -40,12 +41,14 @@ const LoginScreen = ({navigation}) => {
             theme={{colors:{primary:"#00aaff"}}}
             value={Password}
             onChangeText={(text)=>setPassword(text)}
+            testID="password-input" // added testID
         />
 
         <Button icon="content-save"
             mode="contained"
             style={{margin:20}}
             onPress={_loginAsync}
+            testID="login-button" // added testID
             //onPress={() => navigation.navigate("Toolbar", {screen:'Home'})}
             //onPress={Auth.signOut()}
         >

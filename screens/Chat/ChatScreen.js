@@ -197,8 +197,10 @@ export function ChatScreen({route, navigation}) {
           keyPrefix: 'public/',
           bucket: 'amplify-wallflower-staging-63629-deployment',
           region: 'us-west-2',
-          accessKey: process.env.ACCESS_KEY,
-          secretKey: process.env.SECRET_KEY,
+        //  accessKey: process.env.ACCESS_KEY,
+        //  secretKey: process.env.SECRET_KEY,
+          accessKey: 'AKIAQSZYEAOKEZWUS52A',
+          secretKey: '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',
           successActionStatus: 201,
         },
       )
@@ -433,6 +435,7 @@ export function ChatScreen({route, navigation}) {
                             id: userGarden.data.getGarden.id,
                             userID: userGarden.data.getGarden.userID,
                             points: userGarden.data.getGarden.points,
+                            flowerOutfit: userGarden.data.getGarden.flowerOutfit,
                         }
                         console.log("flower points: ", garden.points)
                         //setPoints(parseInt(val))
@@ -443,7 +446,8 @@ export function ChatScreen({route, navigation}) {
                             userID: myUserData.id,
                             id: myUserData.id,
                             flowerSize: 120,
-                            points: 10
+                            points: 10,
+                            flowerOutfit: 'original',
                         }
                         await API.graphql(
                             {
@@ -648,9 +652,9 @@ export function ChatScreen({route, navigation}) {
 
   function renderSend(props) {
     return (
-      <Send {...props}>
+      <Send {...props} >
         <View style={styles.sendingContainer}>
-          <IconButton icon='send-circle' size={32} color='#6646ee' />
+          <IconButton icon='send-circle' size={32} color='#6646ee' testID='sendMessageButton' />
         </View>
       </Send>
     );
@@ -712,6 +716,7 @@ export function ChatScreen({route, navigation}) {
               </MenuOptions>
           </Menu>
             <TouchableOpacity
+            testID='camera'
             onPress={chooseFile}
             style={styles.cameraButton}>
                <Icon name="camera-outline" size={32} color="black" />
@@ -750,6 +755,9 @@ export function ChatScreen({route, navigation}) {
               renderSend={renderSend}
               renderLoading={renderLoading}
               bottomOffset={36}
+              textInputProps={{
+                  testID: 'messageInput',
+                }}
             />
             ) : (
                <View style={styles.loadingContainer}>

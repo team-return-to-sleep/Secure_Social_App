@@ -21,8 +21,8 @@ const PointScreen = ({navigation}) => {
         userID: "0",
         id: "0",
         flowerSize: 120,
-        points: 0,
-        flowerOutfit: "require('../assets/images/original_flower.png')",
+        points: 10,
+        flowerOutfit: "original",
     }
     const isFocused = useIsFocused()
     const [points, setPoints] = useState(0)
@@ -73,7 +73,7 @@ const PointScreen = ({navigation}) => {
                             id: myUserData.id,
                             flowerSize: 120,
                             points: 10,
-                            flowerOutfit: "require('../assets/images/original_flower.png')",
+                            flowerOutfit: "original",
                         }
                         await API.graphql(
                             {
@@ -142,8 +142,8 @@ const PointScreen = ({navigation}) => {
                     Points: {userGarden.points}
             </Title>
             <View style={styles.actionsBar}>
-                <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
-                <Appbar.Action style={styles.button} icon="shopping" onPress={_toShop} />
+                <Appbar.Action style={styles.button} icon="watering-can" testID = "waterplant" onPress={_waterPlant} />
+                <Appbar.Action style={styles.button} icon="shopping" testID = "toshop" onPress={_toShop} />
             </View>
         </Appbar.Header>
         <View style={styles.imageBox}>
