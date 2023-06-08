@@ -117,6 +117,7 @@ const ProfileBlocklist = ({navigation}) => {
                     return (
                         <View style={styles.chatContainer}>
                             <Pressable
+                            testID={`blockedUser-${user.name}`}
                             style={styles.chat}
                             onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
                                 <View style={styles.imageWrapper}>

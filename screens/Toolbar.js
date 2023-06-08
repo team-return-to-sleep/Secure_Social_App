@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react'
 import { StyleSheet } from 'react-native';
+import { AccessibilityRole } from 'react-native';
 import { Appbar, FAB, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -51,18 +52,25 @@ const Toolbar = () => {
                     } else if (route.name === "PointScreen") {
                         iconName = "flower";
                     }
-                    return <MaterialCommunityIcons name={iconName} size={25} color={focused?"#FC4C02":"#000000"}/>
+                    return <MaterialCommunityIcons
+                            name={iconName}
+                            size={25}
+                            color={focused?"#FC4C02":"#000000"}
+                            //accessibilityLabel={route.name}
+                            //accessibilityRole="button"
+                            //testID={`TabIcon-${route.name}Tab`}
+                            />
                 },
             })}
 
             barStyle={{ backgroundColor: '#694fad' }}
             tabBarColor="#00aaff"
         >
-            <Tab.Screen name="Home" component={Root} options={{ headerShown: false}} />
-            <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false}} />
-            <Tab.Screen name="Chats" component={ChatRoot} options={{ headerShown: false}} />
-            <Tab.Screen name="PointScreen" component={PointScreenRoot} options={{ headerShown: false}} />
-            <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false}} />
+            <Tab.Screen name="Home" component={Root} options={{ headerShown: false, tabBarTestID: 'HomeTab'}} />
+            <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false, tabBarTestID: 'BrowseTab'}} />
+            <Tab.Screen name="Chats" component={ChatRoot} options={{ headerShown: false, tabBarTestID: 'ChatsTab'}} />
+            <Tab.Screen name="PointScreen" component={PointScreenRoot} options={{ headerShown: false, tabBarTestID: 'PointScreenTab'}} />
+            <Tab.Screen name="Account" component={ProfileRoot} options={{ headerShown: false, tabBarTestID: 'AccountTab'}} />
         </Tab.Navigator>
     );
 };

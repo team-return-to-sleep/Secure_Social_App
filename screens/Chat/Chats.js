@@ -246,7 +246,7 @@ const Chats = ({navigation}) => {
    </SafeAreaView> */
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView testID="scrollViewChat" style={styles.container}>
             <Header />
 
             <View>
@@ -275,6 +275,7 @@ const Chats = ({navigation}) => {
                 {users.map((user) => {
                     if(user){
                         //console.log("CHATROOMS: ", chatRooms)
+                        console.log("User id", user.name);
                         let latestMessage = null
                         if (chatRooms.hasOwnProperty(user.id)) {
                             latestMessage = chatRooms[user.id]
@@ -286,6 +287,7 @@ const Chats = ({navigation}) => {
                     return (
                         <View style={styles.chatContainer}>
                             <Pressable
+                            testID={`chat-${user.name}`}
                             style={styles.chat}
                             onPress={() => onClickHandler(user)}>
                                 <View style={styles.imageWrapper}>
@@ -297,7 +299,7 @@ const Chats = ({navigation}) => {
                                                     source={{uri: user.imageUri}}
                                                 />
                                                 <Badge style={styles.badge}>
-                                                    1
+
                                                 </Badge>
                                             </View>
                                         ) : (
@@ -326,9 +328,6 @@ const Chats = ({navigation}) => {
                     }
                 })}
             </View>
-            <View style={{marginBottom:26}}>
-                <Text> {'\n\n'} </Text>
-            </View>
         </ScrollView>
     );
 
@@ -352,12 +351,14 @@ const styles = StyleSheet.create({
     },
     chatWrapper: {
         flex: 1,
-        flexWrap: 'wrap',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
-        paddingBottom: 20,
+        height: 'auto',
         marginHorizontal: '3%',
+        maxWidth: '100%',
+        marginBottom: '20%'
     },
     profileImage: {
         width: 50,

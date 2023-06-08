@@ -142,6 +142,7 @@ const Home = ({navigation}) => {
                     }
                     allUsers = allUsers.filter(e => !e.blockedUsers ||
                         e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
+                    allUsers = allUsers.filter(e => e.id != selfID)
                     console.log("HOME BLOCKED USERS: ", blockedIDs)
                     //console.log("DEBUG ALL: ", allUsers)
 
@@ -177,38 +178,49 @@ const Home = ({navigation}) => {
      }, [isFocused]);
 
          return (
-            <ScrollView style={styles.container}>
+            <ScrollView testID = "scrollview3" style={styles.container}>
                 <Header />
-                <Text style={styles.flowerText}>✿</Text>
+                <Text style={styles.flowerText} testID="flower-text">✿</Text>
                 <Text style={styles.subtext}>Hello {user}! Let's grow your next friendship. </Text>
 
                 <View style={styles.profileWrapper}>
-                    {users.map((user) => {
-                        return (
-                            <Pressable
-                                style={styles.profile}>
-                                <Image
-                                    style={styles.profileImage}
-                                    source={{uri: user.imageUri}}
-                                />
-                                <Text style={styles.name}>{user.name}</Text>
-                                <Text style={styles.status}>{user.status}</Text>
-                                <View style={styles.buttons}>
-                                    <Pressable mode="contained"
-                                    style={styles.accountButton}
-                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}>
-                                        <Text style={styles.buttonText}>View Profile</Text>
-                                    </Pressable>
-                                    <Pressable mode="contained"
-                                    style={styles.accountButton}
-                                    onPress={() => onClickHandler(user)}>
-                                        <Text style={styles.buttonText}>Start Chatting</Text>
-                                    </Pressable>
-                                </View>
-                            </Pressable>
-                        );
-                    })}
+                <Pressable mode="contained"
+                    onPress={() => navigation.navigate("ChatRequests")}
+                    style={styles.profile}>
+                    <Text style={styles.name}>Click here to see who wants to chat with you!</Text>
+                </Pressable>
                 </View>
+
+
+                <View style={styles.profileWrapper}>
+                                    {users.map((user) => {
+                                        return (
+                                            <Pressable
+                                                style={styles.profile}>
+                                                <Image
+                                                    style={styles.profileImage}
+                                                    source={{uri: user.imageUri}}
+                                                />
+                                                <Text style={styles.name}>{user.name}</Text>
+                                                <Text style={styles.status}>{user.status}</Text>
+                                                <View style={styles.buttons}>
+                                                    <Pressable mode="contained"
+                                                    style={styles.accountButton}
+                                                    onPress={() => navigation.navigate("OtherUserProfile", {user: user})}
+                                                    testID={`viewprofile-${user.name}`}>
+                                                        <Text style={styles.buttonText}>View Profile</Text>
+                                                    </Pressable>
+                                                    <Pressable mode="contained"
+                                                    style={styles.accountButton}
+                                                    onPress={() => onClickHandler(user)}>
+                                                        <Text style={styles.buttonText}>Start Chatting</Text>
+                                                    </Pressable>
+                                                </View>
+                                            </Pressable>
+                                        );
+                                    })}
+
+                                </View>
                 <View style={{marginBottom:26}}>
                     <Text> {'\n\n'} </Text>
                 </View>

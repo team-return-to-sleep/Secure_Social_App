@@ -142,8 +142,8 @@ const PointScreen = ({navigation}) => {
                     Points: {userGarden.points}
             </Title>
             <View style={styles.actionsBar}>
-                <Appbar.Action style={styles.button} icon="watering-can" onPress={_waterPlant} />
-                <Appbar.Action style={styles.button} icon="shopping" onPress={_toShop} />
+                <Appbar.Action style={styles.button} icon="watering-can" testID = "waterplant" onPress={_waterPlant} />
+                <Appbar.Action style={styles.button} icon="shopping" testID = "toshop" onPress={_toShop} />
             </View>
         </Appbar.Header>
         <View style={styles.imageBox}>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useState} from 'react'
 import { connect } from 'react-redux';
 import { Appbar, Title,Button,TextInput} from 'react-native-paper';
-import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight,ScrollView} from 'react-native'
+import {View,Text,SafeAreaView,StyleSheet,TouchableHighlight,ScrollView,Alert} from 'react-native'
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -31,19 +31,23 @@ const ProfileBasicInfo = ({route, navigation}) => {
 
    const saveUpdates = async() => {
     if(name != "") {
-       await API.graphql (
-       {
-            query: updateUser,
-            variables: {
-                input: {
-                    id: user.id,
-                    name: name
-                }
-            },
-            authMode: "API_KEY"
+       if(name.length > 10) {
+            Alert.alert("Name too long!")
+       } else {
+           await API.graphql (
+           {
+                query: updateUser,
+                variables: {
+                    input: {
+                        id: user.id,
+                        name: name
+                    }
+                },
+                authMode: "API_KEY"
+           }
+           )
+           user.name = name
        }
-       )
-       user.name = name
     }
 
     if(age != -1) {
@@ -109,6 +113,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 <Text style={styles.label}>Name</Text>
                 <TextInput placeholder={user.name}
                     style={styles.inputBox}
+                    testID="NameInput"
                      onChangeText={(text) =>
                         setName(text)
                      }
@@ -118,13 +123,19 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 <TextInput placeholder={user.age ? (user.age.toString()) : ("Enter your age")}
                      numeric value
                      keyboardType={'numeric'}
+                     testID="AgeInput"
                      style={styles.inputBox}
                      onChangeText={(text) => {
+                     /*
                          if (!isNaN(+(text)) && +((text) >= 18) && +((text) <= 150)) {
                             setAge(+(text))
                          } else {
                             alert("Invalid age; must be 18 or older")
                          }
+                        */
+                        if (!isNaN(+(text))) {
+                              setAge(+(text));
+                            }
                      }}
                 />
 
@@ -148,6 +159,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 <Text style={styles.label}>Status</Text>
                 <TextInput placeholder={user.status}
                     style={styles.inputBox}
+                    testID="StatusInput"
                      onChangeText={(text) =>
                         setStatus(text)
                      }
@@ -156,7 +168,14 @@ const ProfileBasicInfo = ({route, navigation}) => {
                 <Button icon="content-save"
                 mode="contained"
                 style={styles.nextButton}
-                onPress={() => saveUpdates()}>
+                onPress={() => {
+                 if (age >= 18 && age <= 150) {
+                      saveUpdates();
+                    } else {
+                      alert("Invalid age; must be 18 or older");
+                    }
+                  }}
+                 >
                     Save
                 </Button>
 

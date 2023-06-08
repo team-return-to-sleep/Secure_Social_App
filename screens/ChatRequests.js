@@ -102,7 +102,7 @@ const ChatRequests = ({navigation}) => {
         setUsers(users.splice(index, 1))
         setNotifIDs(notifIDs.splice(index, 1))
         let oldText = ignoreButtonText
-        oldText[index] = "REQUEST IGNORED."
+        oldText[index] = "Ignored Request."
         setIgnoreButtonText(oldText)
     }
 
@@ -147,8 +147,7 @@ const ChatRequests = ({navigation}) => {
 
                             <TouchableHighlight
                             mode="contained"
-                            style={styles.ignoreButton}
-                            style = {users[index] ? styles.pressed : styles.ignoreButton}
+                            style = {ignoreButtonText == "Ignored Request." ? styles.pressed : styles.ignoreButton}
                             onPress={() => onIgnoreClickHandler(index)}>
                                 <Text style={styles.buttonText}>{ignoreButtonText[index]}</Text>
                             </TouchableHighlight>

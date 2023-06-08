@@ -63,7 +63,7 @@ const ProfilePicture = ({route, navigation}) => {
 }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView testID="scrollableView" style={styles.container}>
             <Header name="Change Profile Picture" />
             <View style={styles.accountWrapper}>
                 <Image
@@ -87,6 +87,7 @@ const ProfilePicture = ({route, navigation}) => {
                 </Pressable>
                 <Pressable onPress={() => setImageUri(Pictures.pfps.games)}>
                     <Image style={styles.pictures}
+                    testID="games"
                     source={{uri: Pictures.pfps.games}}/>
                 </Pressable>
                 <Pressable onPress={() => setImageUri(Pictures.pfps.animals)}>
@@ -130,7 +131,8 @@ const ProfilePicture = ({route, navigation}) => {
                     source={{uri: Pictures.pfps.comedy}}/>
                 </Pressable>
                 <Pressable onPress={() => setImageUri(Pictures.pfps.food)}>
-                    <Image style={styles.pictures}
+                    <Image  testID="food"
+                    style={styles.pictures}
                     source={{uri: Pictures.pfps.food}}/>
                 </Pressable>
                 <Pressable onPress={() => setImageUri(Pictures.pfps.travel)}>
@@ -162,6 +164,7 @@ const ProfilePicture = ({route, navigation}) => {
             </View>
             <Button icon="content-save"
                 mode="contained"
+                testID="SaveButton"
                 style={styles.nextButton}
                 onPress={() => { navigation.navigate("Account");
                     updatePicture();

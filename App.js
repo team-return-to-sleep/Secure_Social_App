@@ -53,6 +53,7 @@ import LoginScreen from './screens/Login/LoginScreen'
 import Toolbar from './screens/Toolbar'
 import Root from './screens/Root'
 import ProfileRoot from './screens/Profile/ProfileRoot'
+import ProfileAge from './screens/Profile/ProfileAge'
 
 const Stack = createNativeStackNavigator()
 
@@ -126,8 +127,8 @@ const App = ({navigation}) => {
                         query: createGarden,
                         variables: {
                             input: {
-                                userID: newUser.id,
-                                id: newUser.id,
+                                userID: userInfo.attributes.sub,
+                                id: userInfo.attributes.sub,
                                 flowerSize: 120,
                                 points: 10,
                                 flowerOutfit: 'original',
@@ -136,7 +137,8 @@ const App = ({navigation}) => {
                         authMode: "API_KEY"
                     }
                 )
-                //navigation.navigate("SignUpFlowProfileBasicSetup", {user: newUser})
+                console.log('what is up')
+                navigation.navigate("ProfileAge", {user: newUser})
             }
         }
     }
@@ -152,9 +154,11 @@ const App = ({navigation}) => {
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={(!exists ? ("Toolbar") : ("ProfileRoot"))}>
-                <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Navigator initialRouteName={(!exists ? ("SignUpFlowProfileBasicSetup") : ("ProfileRoot"))}>
                 <Stack.Screen name="Toolbar" component={Toolbar}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="ProfileAge" component={ProfileAge}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="ProfileRoot" component={ProfileRoot}

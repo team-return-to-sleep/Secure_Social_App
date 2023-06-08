@@ -201,7 +201,7 @@ const OtherUserProfile = ({route, navigation}) => {
 
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView testID="scrollView2" style={styles.container}>
             <Appbar.Header>
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
 
