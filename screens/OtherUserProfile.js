@@ -320,6 +320,7 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         borderColor: '#FFA34E',
         width: 'auto',
+        padding: 5,
     },
     interestText: {
         fontSize: 10,
