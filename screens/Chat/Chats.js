@@ -297,7 +297,7 @@ const Chats = ({navigation}) => {
                                                     source={{uri: user.imageUri}}
                                                 />
                                                 <Badge style={styles.badge}>
-                                                    1
+
                                                 </Badge>
                                             </View>
                                         ) : (
@@ -326,9 +326,6 @@ const Chats = ({navigation}) => {
                     }
                 })}
             </View>
-            <View style={{marginBottom:26}}>
-                <Text> {'\n\n'} </Text>
-            </View>
         </ScrollView>
     );
 
@@ -349,12 +346,14 @@ const styles = StyleSheet.create({
     },
     chatWrapper: {
         flex: 1,
-        flexWrap: 'wrap',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 20,
-        paddingBottom: 20,
+        height: 'auto',
         marginHorizontal: '3%',
+        maxWidth: '100%',
+        marginBottom: '20%'
     },
     profileImage: {
         width: 50,

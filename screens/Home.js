@@ -142,6 +142,7 @@ const Home = ({navigation}) => {
                     }
                     allUsers = allUsers.filter(e => !e.blockedUsers ||
                         e.blockedUsers && (e.blockedUsers.includes(selfID.toString()) === false))
+                    allUsers = allUsers.filter(e => e.id != selfID)
                     console.log("HOME BLOCKED USERS: ", blockedIDs)
                     //console.log("DEBUG ALL: ", allUsers)
 
