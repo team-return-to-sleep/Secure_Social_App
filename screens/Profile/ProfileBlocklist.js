@@ -171,6 +171,9 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         marginHorizontal: '3%',
     },
+    accountButton: {
+        marginLeft: '20%',
+    },
     profileImage: {
         width: 50,
         height: 50,
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         flexWrap: 'wrap',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     imageWrapper: {
         marginRight: 'auto',

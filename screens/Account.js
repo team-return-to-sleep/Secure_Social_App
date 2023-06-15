@@ -53,7 +53,7 @@ const Account = ({route, navigation}) => {
                             style={styles.profPicButton}
                             onPress={() => navigation.navigate("ProfilePicture", {user: user})}
                         >
-                            <Text style={styles.profPicText}>Change profile picture</Text>
+                            <Text style={styles.profPicText}>Change profile picture     </Text>
                         </Button>
 
                         <Pressable mode="contained"
@@ -122,14 +122,13 @@ const styles = StyleSheet.create({
     },
     profPicButton: {
         margin:10,
-        width: 200,
         height: 40,
         backgroundColor: 'transparent',
+        alignSelf:'stretch',
     },
     profPicText: {
         color: 'rgba(255, 148, 114, 0.75)',
         fontFamily: 'ABeeZee-Italic',
-        width: 'auto',
     },
     username: {
         margin:15,

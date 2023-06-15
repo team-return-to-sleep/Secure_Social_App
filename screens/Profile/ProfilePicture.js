@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
         height: 220,
         borderRadius: 220,
         borderWidth: 3,
-        borderColor: '#DDEDEA'
+        borderColor: '#ffd7b3',
     },
     username: {
         margin:15,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 80,
         borderWidth: 3,
-        borderColor: '#DDEDEA',
+        borderColor: '#ffd7b3',
     },
     picturesWrapper: {
         flex: 1,
