@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     interestText: {
         size: 14,
         textAlign: 'center',
-        padding: 2,
+        paddingHorizontal: 5,
     },
     selected: {
         marginTop: 5,
