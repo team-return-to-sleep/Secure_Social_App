@@ -133,7 +133,7 @@ const ProfileInterests = ({route, navigation}) => {
                                 setUserInterests(temp)
                               }}
                               >
-                              <Text>{interest}</Text>
+                              <Text style={styles.interestText}>{interest}</Text>
                             </TouchableHighlight>
                         );
                     })}
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         width: 100,
-        height: 40,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 24,
@@ -194,13 +194,17 @@ const styles = StyleSheet.create({
         borderColor: '#FFA34E',
         color: 'black',
     },
+    interestText: {
+        size: 14,
+        textAlign: 'center',
+    },
     selected: {
         marginTop: 5,
         marginBottom: 5,
         marginLeft: 5,
         marginRight: 5,
         width: 100,
-        height: 40,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 24,
