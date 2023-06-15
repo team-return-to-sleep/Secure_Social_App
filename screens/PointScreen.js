@@ -112,12 +112,12 @@ const PointScreen = ({navigation}) => {
             flowerOutfit: userGarden.flowerOutfit,
         }
         console.log("POINTSCREEN GARDEN: ", garden)
-        if (garden.points >= 1) {
+        if (garden.points >= 100) {
             console.log(garden.points)
             console.log(garden.flowerOutfit)
             try {
-                garden.points = garden.points - 1
-                garden.flowerSize = garden.flowerSize + 40
+                garden.points = garden.points - 100
+                garden.flowerSize = garden.flowerSize + 30
             } catch (error) {
                 console.log("error saving flower data")
             }
@@ -154,7 +154,7 @@ const PointScreen = ({navigation}) => {
                               //(Optional) Color of the fullscreen background beneath the tooltip.
                               isVisible={toolTipVisible}
                               //(Must) When true, tooltip is displayed
-                              content={<Text>This is your wallflower. You will receive points when others send you messages. Points can be used to grow your flower or change up its look. Your flower is waiting, let's get chatting!</Text>}
+                              content={<Text>This is your wallflower. You will receive points when others send you messages. 100 points can be used to grow your flower. You can also spend points to freshen up its look. Your flower is waiting, let's get chatting!</Text>}
                               //(Must) This is the view displayed in the tooltip
                               placement="bottom"
                               //(Must) top, bottom, left, right, auto.

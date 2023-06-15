@@ -172,7 +172,7 @@ const FlowerShop = ({navigation}) => {
                 <Image style={styles.outfits}
                     source={require('../assets/images/cowboy_flower.png')}
                 />
-                <Text styles={styles.priceTag}>Cost: 50 points</Text>
+                <Text styles={styles.priceTag}>50 points</Text>
                 <Pressable
                 testID="buyCowboyButton"
                 style={styles.buyButton}
@@ -185,7 +185,7 @@ const FlowerShop = ({navigation}) => {
                     <Image style={styles.outfits}
                         source={require('../assets/images/ribbon_flower.png')}
                     />
-                <Text styles={styles.priceTag}>Cost: 50 points</Text>
+                <Text styles={styles.priceTag}>50 points</Text>
                 <Pressable
                 testID="buyRibbonButton"
                 style={styles.buyButton}
@@ -198,7 +198,7 @@ const FlowerShop = ({navigation}) => {
                 <Image style={styles.outfits}
                     source={require('../assets/images/headphone_flower.png')}
                 />
-                <Text styles={styles.priceTag}>Cost: 50 points</Text>
+                <Text styles={styles.priceTag}>50 points</Text>
                 <Pressable
                 testID="buyHeadphoneButton"
                 style={styles.buyButton}
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
         textAlign:"center",
         fontSize: 50,
         color: '#181818',
-        fontWeight: 'bold',
+        fontFamily: 'ABeeZee-Regular',
     },
     subtext: {
         alignSelf: 'center',
@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
         color: '#181818',
         marginHorizontal: '20%',
         marginVertical: '5%',
+        fontFamily: 'ABeeZee-Regular',
     },
     priceTag: {
         fontSize: 10,
@@ -289,7 +290,7 @@ const styles = StyleSheet.create({
     },
     buyButton: {
         width: 50,
-        height: 20,
+        height: 30,
         backgroundColor: '#FFA34E',
         justifyContent: 'center',
         borderColor: '#FFA34E',
@@ -301,7 +302,7 @@ const styles = StyleSheet.create({
     buyText: {
         textAlign: 'center',
         fontWeight: 'bold',
-        color: '#FFFFFF'
+        color: '#FFFFFF',
     },
     image: {
         width: 120,

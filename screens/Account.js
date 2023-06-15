@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
     },
     profPicText: {
         color: 'rgba(255, 148, 114, 0.75)',
-        fontFamily: 'ABeeZee-Italic'
+        fontFamily: 'ABeeZee-Italic',
+        width: 'auto',
     },
     username: {
         margin:15,
@@ -141,6 +142,7 @@ const styles = StyleSheet.create({
         color: 'white',
         padding: 5,
         textAlign: 'center',
+        fontSize: 13,
     },
 });
 
