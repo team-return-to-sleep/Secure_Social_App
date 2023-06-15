@@ -129,12 +129,13 @@ const ProfileBlocklist = ({navigation}) => {
                                         <Text style={styles.subtext}> {user.name} </Text>
                                         <Text style={styles.msgtext}> Click to view profile </Text>
                                     </View>
-                                    <Pressable mode="contained"
-                                    style={styles.accountButton}
-                                    onPress={() => onClickHandler(user)}>
-                                        <Text style={styles.buttonText}>Ignore</Text>
-                                    </Pressable>
+
                                 </View>
+                                <Pressable mode="contained"
+                                style={styles.accountButton}
+                                onPress={() => onClickHandler(user)}>
+                                    <Text style={styles.buttonText}>Ignore</Text>
+                                </Pressable>
                             </Pressable>
                         </View>
                     );
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
         marginHorizontal: '3%',
     },
     accountButton: {
-        marginLeft: '20%',
+        marginRight: '5%',
     },
     profileImage: {
         width: 50,
@@ -191,6 +192,7 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         borderColor: '#FFA34E',
         borderWidth: 1.5,
+        flexDirection: 'row',
     },
     chatContainer: {
         margin: 7,
