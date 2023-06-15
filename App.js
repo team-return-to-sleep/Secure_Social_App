@@ -154,7 +154,7 @@ const App = ({navigation}) => {
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={(!exists ? ("SignUpFlowProfileBasicSetup") : ("ProfileRoot"))}>
+            <Stack.Navigator initialRouteName="Toolbar">
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
                 />

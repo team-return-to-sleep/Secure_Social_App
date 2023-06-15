@@ -5,6 +5,7 @@ import {View,ScrollView,Text,StyleSheet,Image,SafeAreaView,TouchableHighlight} f
 import {useState, useEffect} from 'react'
 
 import Header from '../Header'
+import ProfileRegion from './ProfileRegion'
 
 import {updateUser} from '../../src/graphql/mutations'
 import {API, graphqlOperation} from '@aws-amplify/api'
@@ -38,8 +39,10 @@ const ProfileAge = ({route, navigation}) => {
            )
            user.age = age
         }
-        navigation.navigate("ProfileRegion", {user: selfData.data.getUser});
-        console.log("done")
+        navigation.navigate('ProfileRoot', {
+          screen: 'ProfileRegion',
+          params: { user: selfData.data.getUser },
+        });
        }
 
     return (

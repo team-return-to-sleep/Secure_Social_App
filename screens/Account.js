@@ -53,7 +53,7 @@ const Account = ({route, navigation}) => {
                             style={styles.profPicButton}
                             onPress={() => navigation.navigate("ProfilePicture", {user: user})}
                         >
-                            <Text style={styles.profPicText}>Change profile picture     </Text>
+                            <Text style={styles.profPicText}>Change profile picture    </Text>
                         </Button>
 
                         <Pressable mode="contained"
