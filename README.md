@@ -71,81 +71,56 @@ Android Studio - IDE
 
 ## Installation or Distribution
 
-### Setup For First Time Users:
-### Install Expo-Cli and Node Modues
-1. `npm install` to install node modules
-2. `npm install -g expo-cli` to install expo cli
+### Install Required Packages
+In the project directory console, run `npm install` or `yarn install` to install node modules. Note that to prevent unexpected errors, it’s best to stay consistent in terms of installation packages.
 
-### Setting up and configuting AWS services
-### Ground work
-1. Please note: when the `terminal` is mentioned, it is allways reffering to the root directory of the App.
-1. Go to https://docs.amplify.aws/start/getting-started/installation/q/integration/react-nativen and follow the steps to create an AWS account.
-2. Open your terminal and type `npm install -g @aws-amplify/cli` to install the Amplify CLI.
-### Configure your Amplify CLI
-1. Type `amplify configure` into the terminal.
-5. A web browser will open to the AWS login page. Login to the AWS console and then retern to the terminal and press enter.
-6. Next select your region. Note that not all regions support SMS messaging. So select the region closest to you that does support SMS. Here is a [list](https://docs.aws.amazon.com/sns/latest/dg/sns-supported-regions-countries.html) of regions that support SMS.
-7. You can then choose an IAM username - it is not important what you choose, but remember it as you will want to use it later.
-8. Press enter. A web page will open. You will configure the user settings here. To do this: 
-    * Press `Next: Permissions`
-    * Press `Next: Tags`
-    * Press `Next: Review`
-    * Press `Create User`
-    * You will then be taken to a confirmation page that displays your `Access key ID` and `Secret access key`. These will never be displayed again so download the CSV containing them so you can access them again later.
-8. Return to your terminal and press `enter`.
-9. Enter Access key ID and then Secret access key.
-10. Give your profile a name, and then you're done configuring your Amplify CLI!
-### Add Amplify to the App
-1. Go to the terminal and type `amplify init`
-2. Next you will be asked a series of questions. The default answers will be fine, just be sure that you choose `javaScript` for `Choose the type of app that you're building`  and  `react-native` for `What javascript framework are you using`.
-3. When asked `Do you want to use an AWS profile?` select  `Yes`. Then select the profile that you just created. That's it, time for the next step!
-### Add Cognito Authentication Service The App
-1. Go to the terminal and type `amplify add auth`.
-2. Answer the following the following questions as follows:
+### Setting up AWS services
+### Set up and configure your AWS account
+1. Follow the instructions at https://portal.aws.amazon.com/billing/signup? redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start to create an AWS account if you don’t have one already
+2. In the project directory, run `npm install -g @aws-amplify/cli` to install the Amplify CLI
+3. Configure the Amplify CLI following the steps in https://docs.amplify.aws/start/ getting-started/installation/q/integration/react-native/. Note when selecting your region, you can select any region from the following list to avoid unexpected errors: https://docs.aws.amazon.com/sns/latest/dg/sns-supported-regions -countries.html. Also make sure to download the csv file containing your access keys for safe storage after creating your user.
 
-    * Do you want to use the default authentication and security configuration? `Manual configuration`
-    * Select the authentication/authorization services that you want to use: `User Sign-Up & Sign-In only (Best used with a cloud API only)`
-    * Please provide a friendly name for your resource that will be used to label this category in the project: `Anything will do`
-    * Please provide a name for your user pool: `Anything will do`
-    *  How do you want users to be able to sign in? `Username`
-    *  Do you want to add User Pool Groups? `No`
-    *  Do you want to add an admin queries API? `No`
-    *  Multifactor authentication (MFA) user login options: `ON (Required for all logins, can not be enabled later)`
-    *   For user login, select the MFA types: `SMS Text Message`
-    *    Please specify an SMS authentication message: `Anything will do`
-    *    Email based user registration/forgot password: `Enabled (Requires per-user email entry at registration)`
-    *    Please specify an email verification subject: `Anything will do`
-    *    Please specify an email verification message: `Anything will do `
-    *    Do you want to override the default password policy for this User Pool? `No`
-    *   What attributes are required for signing up? `select email and phone number`
-    *  Specify the app's refresh token expiration period (in days):`default (or anything else)`
-    *   Do you want to specify the user attributes this app can read and write? `No`
-    *    Do you want to use an OAuth flow? `No`
-    *    Do you want to configure Lambda Triggers for Cognito? `No`
+### Add Amplify into the Project
+1. In the project directory console, run `amplify init`
+2. Upon being asked a list of questions, select `javascript` for the type of app you’re building and `react-native` for the javascript framework used. Every other question can be answered using the default response.
+3. Select `Yes` when asked if you want to use an AWS profile and pick out your newly created profile
 
-3. Now you're done! In the terminal, type `amplify status` to check that `AUTH` was successfully added  to the App. Type `amplify push` to push these changes to the cloud.
-4. You should now be able to login to your AWS console, type Cognito into the `find service` search bar, select Cognito, then select `Manage user pools`, and then select the user pool that you just created. If you don't see the userpool that you just created here, go to your terminal and  type `amplify auth console`. This will open the user pool that you just created in a web browser.
-5. At this point you should be able to run the app by typing`npm start` into the terminal, and create a user through the signup page. However, you will not yet be able to verify the user or login because you have not yet enabled AWS to send SMS codes.
-### Configuring Your User Pool 
-1. Navigate to the user pool that you just create on the AWS console. Under `General settings` select `MFA and verification`, then do the following:
+### Add Cognito Authentication into the Project
+1. In the project directory console, run `amplify add auth`.
+2. You will be prompted several questions which you can answer as follows:
 
+    * Do you want to use the default authentication and security configuration? `default configuration`
+    * How do you want users to be able to sign in? `Username`
+    * Do you want to configure advanced settings? `No`
 
-    * Under `How will a user be able to recover their account?` select `Email only`.
-    * Under `Which attributes do you want to verify?` select `phone number`
-    * Now select `save changes`
-    * Now you must request a spending limit increase to enable SMS messages to be sent. (Note: I am not totally sure if this part is necessary. Maybe try to start the App and create an account before you do this.) 
-        * From the services dropdown menu select`support`.
-        * Then choose `create case`.
-        * Fillout and submit the request. 
-               Under Limit type select `SMS Text Messaging`
- 
-           
-### Test You Progress Thus Far.
-1. Open your terminal.
-2. Type `npm start` to start running the App
-3. Open the app on your phone using the expo app or open it in an emulator. Create an account and login! 
-4. Go to your userpool and make sure that you can see this new user there.
-### Add API - The AWS GraphQL Service to Your App
+3. Navigate to the AWS console and search ‘Amplify’. Click on ‘Wallflower’ if it is visible, otherwise click on `New app > build an app`. If ‘Wallflower’ is available, skip to step 5. 
+4. Enter an app name (Wallflower) and confirm deployment. Amplify may take a few minutes to set up
+5. Click on ‘launch studio’ and you should get redirected to Amplify Studio. On the left side menu, navigate to ‘Authentication’
+6. Configure the following:
+
+   * Login `‘Username’ as login mechanism`
+   * Sign up `‘Email’, ‘Name’ as attributes`
+   * Password Policy
+     * Length in characters: 7
+     * Check boxes for lowercase, uppercase, numerals, and symbols
+     * Check box for email under ‘Forgot password message’
+
+7. Press `deploy` and wait for the success message in the top right corner. Click on the message and copy the terminal command into the project directory console
+8. Run the given `amplify pull` command, and confirm login to the Amplify CLI
+9. You will be prompted more questions, which you may answer as follows:
+
+     * Choose your default editor `Android Studio`
+     * Choose the type of app that you’re building `javascript`
+     * What javascript framework are you using `React native`
+     * Source directory path `src (default)`
+     * Distribution directory path `/ (default)`
+     * Build command `npm.cmd run-script build (default)`
+     * Start command `Npm.cmd run-script start (default)`
+     * Do you plan on modifying this backend `Yes`
+
+10. Make sure an amplify folder is created in the project directory, along with the file `aws-exports.js`
+
+### Add GraphQL into the Project
 1. In the terminal type `amplify add api` 
 2.  Answer the subsequent questions as follows:
       * Please select from one of the below mentioned services: `GraphQL`
@@ -159,59 +134,60 @@ Android Studio - IDE
       *  What best describes your project: 
 `Single object with fields (e.g., “Todo” with ID, name, description)`
     * Do you want to edit the schema now? `Yes`
-        * This will open a file in your text editor. Past the following schema in the file and save.
-            ```
-            type Message @model {
-                id: ID!
-                to: String!
-                from: String!
-                payload: String!
-            }  
-            ``` 
+        * This will open a file in your text editor. In our project directory, navigate to `amplify/backend/api/Wallflower/schema.graphql` and copy over the file contents, then save
     * Return to the terminal and press `enter`
     * Type `amplify push` to make these changes present in the cloud.
 ### Modify Your GraphQL Schema
-3. Go to your AWS console and search for `AWS AppSync`. Select `AWS AppSync` and then select the API that you just created.
-4. Once you have selected your AppSync API, select `schema`
-5. Once on the schema page, scroll down the `schema` window and paste 
+Queries.js
+* Confirm the following changes to the chatRoomUser object are present under the getUser function
+
     ```
-    onCreateMessageByRecipient(to: String!): Message
-        @aws_subscribe(mutations: ["createMessage"])
-    ```
-    Into  the Subscription type. After you do this shere should be a chunk of code that looks like this:
-    ```
-    type Subscription {
-        onCreateMessageByRecipient(to: String!): Message
-        @aws_subscribe(mutations: ["createMessage"])
-        onCreateMessage: Message
-            @aws_subscribe(mutations: ["createMessage"])
-        onUpdateMessage: Message
-            @aws_subscribe(mutations: ["updateMessage"])
-        onDeleteMessage: Message
-            @aws_subscribe(mutations: ["deleteMessage"])
-    }
-    ```
-6. Then save the schema. 
-7. Now export the schema: both .json and .graphql files. Save the files somewhere.
-9. Replace `Hobbyte/src/graphql/schema.json` with the `.json` file
-10. Replace `Hobbyte/amplify/#current-cloud-backend/api/hobbyte/build/schema.graphql` with the `.graphql` file
-11. Go to `Hobbyte/src/graphql/subscriptions.graphql` and add the following code to the top of the file:
-    ```
-    export const OnCreateMessageByRecipient = /* GraphQL */ `
-        subscription OnCreateMessageByRecipient($to: String!) {
-            onCreateMessageByRecipient(to: $to) {
-                Id
-                to
-                from
-                payload
+    chatRoomUser {
+    items {
+        id
+        userID
+        chatRoomID
+        chatRoom {
+            chatRoomUsers {
+                items {
+                    id
+                    chatRoomID
+                    userID
+                }
             }
-    }`;
+            lastMessage {
+                id
+                createdAt
+                userID
+                chatRoomID
+                content
+                imageURL
+                updatedAt
+                hasRead
+            }
+        }
+        createdAt
+    }
+  
+    ```
+* Confirm the following changes to interests are present the listUser function    
+    ```
+    Interests {
+	    items {
+	        id
+	        userID
+	        categoryName
+	        specificNames
+	        createdAt
+	        updatedAt
+	    }
+	    nextToken
+    }
     ```
     
 To send test queries, mutations, and subscriptions from AWS AppSync to AWS DynamoDB, see the **Troubleshooting** section about "Testing locally using AWS query Tab". There is also more documentation in this [tutorial](https://docs.aws.amazon.com/appsync/latest/devguide/quickstart-write-queries.html) "Run Queries and Mutations": .
 
-##### Note: in the above steps, `Hobbyte` refers to the root directory of the App
-##### That’s it! You have successfully added and configured the AWS services for Sanctuary Chat! I hope that you enjoy the code!
+##### That’s it! You have successfully added and configured the AWS services for Wallflower! I hope that you enjoy the code!
  
 ### Setting up encryption (Virgil E3Kit)
 
@@ -346,10 +322,9 @@ Encryption Indicator
 
 ## Troubleshooting
 
-###  Sanctuary Chat
-**Trouble Signing Up on Sanctuary Chat**
+###  Wallflower
+**User signup issues**
 
-- Ensure the phone number is in the following format **+18885551234** exactly with the '+' and no spaces or characters between the numbers. 
 - Email must be a valid format following these guidelines:
 "mysite@ourearth.com
 my.ownsite@ourearth.org
@@ -358,62 +333,9 @@ mysite@you.me.net "
 
 - Password must be 8 characters long in our code. We did not make it a requirement to have special characters, capital letters, or numbers. 
 
-**Sanctuary App Crashing - Testflight build**
+**App crashes on startup**
 - Reinstall app to clear cache and try creating a new account again. 
 
-
-### Expo 
-
-**Debugging on Expo**
-
-If the app crashes, some ways to troubleshoot:
-- Expo App crashes on start up 
-    - The app's cache and local storage needs to be deleted. Uninstall Expo app and reinstall. If garbage data is retrieved from AWS, it can damage local storage for when one tries to open the app in the future. 
-    - Check Console Log and Expo log for warnings and stack trace
-
-If the app is not loading,
-- Expo takes roughly 2-5 minutes to first build Javascript bundle and then load app on the first try depending on Wifi connection and device being used. We found that on UCDavis campus, the app took closer to 4-5 minutes to load on the first try and we found it easier to run the app on cellular or hot spot. Debugging over our home Wifi was much faster. 
-- Use 'Tunnel' or 'LAN' to run the app on the phone.
-
-**Expo App not receiving incoming messages**
-
-- Stop Expo process running on computer and reload the entire app. 
-- A successful received message should display the following logs:
-```
-New Message: {
-  "onCreateMessageByRecipient": {
-    "id": "cc3dfe4b-030d-4771-b1db-b89db49d855e",
-    "to": "abby",
-    "from": "AWS",
-    "payload": "{\"nonce\":\"bqVdVZg7cu/kXNl15OTdhIIo2+1Z7frq\",\"key\":\"\",\"payloadEncrypted\":\"ARA6ZA5fs2FrrfMIXnoDU3ZiRkL383DyNossvrlT1JOXcTCfrbp1TZAUD9rDyfZMCMbbhv5ZhrM8vUob3i/dC3wnFibTvWEmqXD6DqrvnYcV+ssFHMMGZbR5c+s0yzYFdCG3/evskZlXOOMWQo1ZY6EF4hUt+yuoMfXGeSCByxwgW7W8MbOdZkxd2C3XD9iHAIIcfTcaJ1bfgCC21EYkQCda7aEIs2lcBHYm1A2n22X7kEn73Ccwf3Jkvs6ONMx4sGxm7YcD5I+ofHBZAyvi/jRxothdpHxR+QEtPB4Pu1WnRyr57UedVmWiKz6crmNHZzibQA==\",\"box\":true}"   
-  }
-}
-```
-- Check the sender's console logs to ensure the message has been sent successfully. A successful message sent should display the following logs:
-```
-AWS Success - Create Message
-Object {
-  "data": Object {
-    "createMessage": Object {
-      "from": "abby",
-      "id": "5fbce67e-6600-4557-bece-48a341de9344",
-      "payload": "{\"nonce\":\"bqVdVZg7cu/kXNl15OTdhIIo2+1Z7frq\",\"key\":\"\",\"payloadEncrypted\":\"ARA6ZA5fs2FrrfMIXnoDU3ZiRkL383DyNossvrlT1JOXcTCfrbp1TZAUD9rDyfZMCMbbhv5ZhrM8vUob3i/dC3wnFibTvWEmqXD6DqrvnYcV+ssFHMMGZbR5c+s0yzYFdCG3/evskZlXOOMWQo1ZY6EF4hUt+yuoMfXGeSCByxwgW7W8MbOdZkxd2C3XD9iHAIIcfTcaJ1bfgCC21EYkQCda7aEIs2lcBHYm1A2n22X7kEn73Ccwf3Jkvs6ONMx4sGxm7YcD5I+ofHBZAyvi/jRxothdpHxR+QEtPB4Pu1WnRyr57UedVmWiKz6crmNHZzibQA==\",\"box\":true}",      "to": "viswaas",
-    },
-  },
-}
-```
-This log is triggered when the subscription set up is notified of any additions to the database concerning the user.
-
-**Expo App not sending messages**
-
-If the app is not sending messages, check for 'AWS Success - Create Message' log. If it is not displayed, 
-- resend message
-- delete room and create a new one
-- Check if correct username was entered 
-- Reload app
-- Check Wifi connection
-- Check for Expo logs and warnings
-- Reinstall Expo
 
 ### Amazon Web Services
 
@@ -434,11 +356,6 @@ The API key needs to be updated. To do this, it navigates to the AWS AppSync Set
 
 The following [tutorial](https://aws-amplify.github.io/amplify-js/api/globals.html#graphqloperation) step 4 - GraphQL API Operations details the placement of API keys and how they are required for any mutation, query, or subscription requests to the AWS Dynamo database. When creating the API at the beginning, the APIkey's lifetime can be set so it doesn't expire every 7 days per default.
 
-
-
-
-**Stopped Receiving SMS codes**
-The AWS spending budget needs to be increased if the SMS text codes for authentication have stopped working. The following [tutorial](https://aws.amazon.com/premiumsupport/knowledge-center/sns-sms-spending-limit-increase/) outlines the process. 
 
 
 
