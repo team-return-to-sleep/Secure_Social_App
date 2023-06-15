@@ -228,6 +228,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20,
         color: '#E8683F',
+        fontFamily: 'ABeeZee-Regular',
     },
     nextButton: {
         width: 150,

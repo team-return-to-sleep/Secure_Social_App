@@ -148,7 +148,7 @@ const ProfileBasicInfo = ({route, navigation}) => {
                     setOpen={setOpen}
                     setValue={setValue}
                     setItems={setItems}
-                    containerStyle={{height: 40}}
+                    containerStyle={{height: 40, marginBottom: 5}}
                     itemStyle={{
                         justifyContent: 'flex-start'
                     }}
@@ -216,13 +216,14 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 30,
         fontSize: 20,
-        fontWeight: 'bold',
-        color: '#E8683F'
+        color: '#E8683F',
+        fontFamily: 'ABeeZee-Regular',
     },
     question: {
         paddingTop: 20,
         textAlign: 'center',
         fontSize: 18,
+        fontFamily: 'ABeeZee-Regular',
     },
     nextButton: {
         width: 150,
