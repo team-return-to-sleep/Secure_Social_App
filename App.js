@@ -154,7 +154,7 @@ const App = ({navigation}) => {
     <SafeAreaProvider>
         <StatusBar barStyle="dark-content" backgroundColor="#FF9913" />
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Toolbar">
+            <Stack.Navigator initialRouteName={!exists ? ("Toolbar") : ("ProfileRoot")}>
                 <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
                 />
