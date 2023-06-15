@@ -84,7 +84,7 @@ const ProfileSpecificInterests = ({route, navigation}) => {
 
     const saveUpdates = async() => {
 
-        navigation.navigate("Account");
+        navigation.navigate("Toolbar", {screen: "Account"});
     }
 
     return (

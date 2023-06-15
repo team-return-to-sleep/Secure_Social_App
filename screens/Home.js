@@ -20,6 +20,7 @@ import ChatRequests from './ChatRequests'
 import Browse from './Account'
 import ProfileAge from './Profile/ProfileAge'
 import ProfileRegion from './Profile/ProfileRegion'
+import ProfileRoot from'./Profile/ProfileRoot'
 
 const Home = ({navigation}) => {
     const [user, setUser] = useState([])
@@ -125,7 +126,8 @@ const Home = ({navigation}) => {
                     console.log(selfRegion)
                     console.log(selfInterests)
                     if(!selfName || !selfAge || !selfRegion || !selfInterests) {
-                        navigation.navigate("ProfileAge", {user: selfData.data.getUser})
+                        navigation.navigate("ProfileRoot",
+                            { screen: "ProfileAge", params: {user: selfData.data.getUser}})
                     }
 
                     const usersData = await API.graphql(

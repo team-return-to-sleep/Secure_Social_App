@@ -21,6 +21,7 @@ import ProfileSpecificInterests from './ProfileSpecificInterests'
 import ChatRequests from '../ChatRequests'
 import UserProfile from '../UserProfile'
 import OtherUserProfile from '../OtherUserProfile'
+import Toolbar from '../Toolbar'
 
 const Stack = createNativeStackNavigator()
 
@@ -68,6 +69,9 @@ const ProfileRoot = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen name="OtherUserProfile" component={OtherUserProfile}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen name="Toolbar" component={Toolbar}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>
