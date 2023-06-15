@@ -344,100 +344,6 @@ Encryption Indicator
 - For added transparency, an informative system message is shown in the chat to let users know their messages are being end-to-end encrypted.
 
 
-- **Sign up** - After submitting the above account information, they must verify their account by entering a temporary passcode that they receive via text message to complete the signup process. 
-
-(Note: If the user tries to login with an account that has not been verified by entering the one time passcode, they will be redirected to the page where they can complete the account verification process, instead of being logged in.)
-- **Login** - User must enter username and password as well as a temporary code texted to their verified phone number.
-- **Changing email** - A temporary code is sent to the user's new email to verify it. 
-- **Changing phone number** - A temporary code is sent to the new phone to verify it.
-- **Changing password** - A temporary code is sent to the verified phone number. 
-
-### Password Recovery
-A user can recover their account if they lose or forget their password. They do this by selecting the `I forgot my password` button on the login page. They are then redirected to a page where they can enter their user address. If they entered a valid username, and the email associated with that username has been verified, then a one-time-passcode will be sent to their email and the user will be directed to a page where they can enter a new password and the one-time-passcode to create a new password. If this is successful the user will then be able to login with this new password. 
-
-A user can only recover their password if they have verified their email. So, if the user enters an invalid username, or a username with an email address that has not been verified, the user will be directed to a screen where they will be informed that they can not recover their password with the information that they provided. 
-
-
-### Local Storage
-
-Sanctuary uses [AsyncStorage](https://reactnative.dev/docs/asyncstorage) to store files on devices.
-Five pieces of information are stored as the following key-value pairs:
-1. **"User"** - User token for sign in
-2. **"keys"** - the User's private key used for encryption
-3. **"rooms"** - List of all rooms with basic info.
-4. **roomId** - message history for each room based on the rooms' ids
-5. **roomId+"settings"** - settings for each room based on the rooms' ids
-
-### Room List and Room Creation
-
-The room list screen provides navigation to each chat room, creation of new chat rooms, and navigation to user settings. Room summaries are stored under the "rooms" key in async storage and displayed as a flatlist. Each item contains the room id, room name, and an unread message count. 
-
-Room creation requires a list of members (not including yourself) as a comma separated list and optionally a custom name for the chat room. The default room name will be "Chat!" if no other name is entered.
-
-### Chat
-
-Our chat interface utilizes [Gifted Chat](https://github.com/FaridSafi/react-native-gifted-chat) by FaridSafi. It's behavior and layout is similar to Apple's iMessage. It allows the user to enter a message in a discrete text box at the bottom of the screen and then send it. The sender's messages appear on the right and other member's messages appear on the left with a corresponding avatar and username.
-
-User's can scroll up to see previous messages. 
-
-Avatars of the user's initials from the username are displayed as a randomly colored and generated avatar. Avatar [source](https://ui-avatars.com/) and credits.
-
-On the Rooms list screen, the user will see an unread number count next to the room which updates when an incoming message arrives in that room. 
-
-
-Extra room customization in Chat is handled in Room Settings.
-- change text or bubble color for chat messages
-- change room name
-- add/remove member from room
-
-
-
-###  Message Queue 
-
-To maintain user privacy, the AWS Dynamo database was used as a message queue and channel. 
-
-- **Message storage** - Messages are only temporarily stored on the database if the other user is offline. 
-- **Message retrieval** - When recipient is online or comes online, messages are retrieved and stored on the user's local storage then deleted from the database. 
-- **Outstanding messages** - Any messages that are not read or retrieved are only allowed to stay on the database for a week and then they are deleted. 
-- **Encryption Key Storage** - Public encryption keys are stored indefinitely on the database and are updated every time the user signs into their account.
-
-Public keys are stored and maintained in this message queue so that they're accessible by any user who would like to start a conversation. 
-
-AWS AppSync API was used to create this message queue communication. AppSync uses GraphQL schemas to route data from the user's account to the AWS Dynamo database. In this project, GraphQL queries and mutations were used to create, delete, and query messages as well as public encryption keys from the database. User information, content, and settings are encapsulated in GraphQL requests which are JSON objects. 
-
-![](assets/images/messagequeue.png)
-
-
-### Room Settings
-
-The room settings page provides customizable room names and text or bubble colors. It also allows for the adding/removing of members and sending of the full message history (like a forced backup) to other users. Setting changes and backups are a different message type so that they are handled appropriately.
-
-
-### Encryption
-
-To ensure messages are protected from MITM (Man in the Middle) attacks, we utilize [TweetNaCl](https://github.com/dchest/tweetnacl-js) for encrypting conversations.
-
-#### Personal conversations (room of 2 participants)
-
-Conversations between two are end to end encrypted with TweetNaCl's box method. With a box, each of the two participants create a distant key pair, consisting of a *private* and *public* key.
-
-The participants share their *public* keys with each other (via AWS). Using the Diffie Hellman key exchange, the *public* keys (of the other participants) are combined with the local *private* key to sign and encrypt data.
-
-- **Encryption** -The sender signs the outgoing message with their local *private* key and encrypts with the recipients *public* key. Additionally, every message is encrypted along with a nonce. The nonce jumbles the initial text with random characters before encrypting it to ciphertext. This is crucial since the encrypted ciphertext shouldn't be identical in length to the unencrypted text.
-
-- **Decryption** -The recipient verifies the signature with the sender’s *public* key and decrypts the message with their local *private* key. The nonce, which is sent alongside the encrypted message, is used to omit the randomly added characters during encryption and view the original message.
-![](assets/images/box.png)
-
-
-#### Group conversations (rooms of 2+ participants)
-Group messages are encrypted symmetrically, using TweetNaCl's secretbox method, and are only visible to the participants of the group. 
-
-Symmetric encryption is when a single secret key is generated for every message along with a nonce which jumbles the message accordingly. The secret key and nonce is sent with the encrypted message to be used by recipients to decrypt. 
-
-
-![](assets/images/secretbox.png)
-
-
 ## Troubleshooting
 
 ###  Sanctuary Chat
@@ -646,10 +552,11 @@ See `Password Recovery`
 ## Contact Information
 
 #### LinkedIn Profiles
-- [John Paulus Francia](https://www.linkedin.com/in/john-paulus-francia/)
-- [Nathan Hoffman](https://www.linkedin.com/in/nathan-hoffman/)
-- [Abigail Lee](https://www.linkedin.com/in/abigail133/) 
-- [Viswaas L Prabunathan](https://www.linkedin.com/in/viswaasprabunathan)
+- [Jessica Cai](https://www.linkedin.com/in/jessica-cai-/)
+- [Rahul George](https://www.linkedin.com/in/rahulmatgeorge/)
+- [Richard Qin](https://www.linkedin.com/in/richardqin525/)
+- [Cathy Wang](https://www.linkedin.com/in/cathy-wang16/)
+
 
 Please email wallflowerdevs@gmail.com to contact the Wallflower team.
 
