@@ -552,10 +552,11 @@ See `Password Recovery`
 ## Contact Information
 
 #### LinkedIn Profiles
-- [John Paulus Francia](https://www.linkedin.com/in/john-paulus-francia/)
-- [Nathan Hoffman](https://www.linkedin.com/in/nathan-hoffman/)
-- [Abigail Lee](https://www.linkedin.com/in/abigail133/) 
-- [Viswaas L Prabunathan](https://www.linkedin.com/in/viswaasprabunathan)
+- [Jessica Cai](https://www.linkedin.com/in/jessica-cai-/)
+- [Rahul George](https://www.linkedin.com/in/rahulmatgeorge/)
+- [Richard Qin](https://www.linkedin.com/in/richardqin525/)
+- [Cathy Wang](https://www.linkedin.com/in/cathy-wang16/)
+
 
 Please email wallflowerdevs@gmail.com to contact the Wallflower team.
 
